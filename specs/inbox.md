@@ -259,28 +259,6 @@ repository checks also pin the SDK version.
 
 **If no answer**: launch on 10.0.112; the README states that the pin is deliberate.
 
-### How `d10` qualification evidence merges under squash-only main
-
-*2026-10-23 · agent · open*
-
-The claim check in [D-28](decisions/D-28.md) requires a qualification record's source commit to
-be an ancestor of main. The pre-public design kept it reachable by merging `d10`-entry pull
-requests with a merge commit, but this repository's main ruleset allows only squash merges with
-linear history and merge commits are disabled, so a squashed pull request head is never on main
-([change 008](changes/008-macos-qualification.md), 008/T015 and 008/T018).
-
-1. **Two-step record-then-entry** (Recommended): the code merges first, qualification runs on
-   the resulting squash commit on main, and a results-only pull request adds the record and the
-   `d10` entry. No ruleset change and linear history stays; costs a second pull request per
-   qualification, the record names a main commit rather than the pull request head, and 008/T015
-   must settle where the registry flip lands so main is not red between the two merges.
-2. **Ruleset exception for `d10`-entry pull requests**: enable merge commits and allow them for
-   those pull requests through a ruleset bypass or exception. Keeps the pre-public one-step flow;
-   relaxes linear history on main, needs a bypass actor, and relies on choosing the right merge
-   method each time, so the merge-commit reminder and squash recovery return.
-
-**If no answer**: 008/T015 builds the claim check for option 1; no `d10` entry lands before then.
-
 ## Your direction
 
 The owner direction is folded into C-01, C-03, C-06 to C-09 and C-11, D-01, D-08 and D-09,

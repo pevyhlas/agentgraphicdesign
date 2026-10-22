@@ -45,7 +45,10 @@ self-hosted runner under a separate unprivileged account, is reopened for the pu
 per-capability qualification and staged values; Darwin backends behind a syscall seam testable on
 every OS; one canonical-path entry point; a stored-name gate for pixel writer locks; one redactor;
 portable tests and scripts; a corpus comparison; a scripted, hash-bound qualification record with a
-claim check and merge evidence. Excluded: Intel Macs, older macOS, non-APFS volumes, Linux arm64 and
+claim check and merge evidence. Main is squash-only with linear history, so the pre-public rule
+that kept a record's source commit reachable through a merge commit is superseded: the claim check
+and merge evidence are redesigned to bind each record to the input digest of the qualified content
+(D-28, built at 008/T015). Excluded: Intel Macs, older macOS, non-APFS volumes, Linux arm64 and
 Windows pixel backends, handle-based no-follow reads, ephemeral runner registration, and cutting a
 release (owner). The registry and the capabilities member are owned here; change 009 consumes them
 unchanged and its phase B waits for 008/T006, 008/T012 and 008/T019.
@@ -74,34 +77,35 @@ Pull request increments, in order (task IDs as in the pre-public plan):
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).
 - [ ] 008/T013 remaining test portability; 008/T014 script portability; 008/T015 `platform-qualify`
-  and the `d10` claim check; 008/T019 the live availability probe (needed by change 009 B5).
+  and the `d10` claim check, redesigned for squash-only main: the record binds the input digest,
+  the claim check compares it with the commit that added the record on first-parent history, and
+  `verify-merge` compares it with the pull request's merge result (D-28); 008/T019 the live
+  availability probe (needed by change 009 B5).
 - [ ] 008/T016b the macOS workflow; 008/T016c the owner's one-time runner setup (self-hosted only).
 - [ ] 008/T005 the corpus at one commit with T006, T007 and T011, then the raster class wording;
   008/T017 the support matrix as the single source in the release contract and the linked docs.
-- [ ] 008/T018 final qualification (S3). The pre-public plan qualified the pull request head and
-  merged it with a merge commit; this repository's main ruleset is squash-only with linear history,
-  so how the record's source commit stays reachable is open (D-28, inbox). Recommended: merge the
-  code, qualify the resulting squash commit on main, then add the record and the `d10` entry in a
-  results-only pull request.
+- [ ] 008/T018 final qualification (S3): qualify the pull request, whose merge result carries the
+  registry flip and the `d10` entry, add the record in a results-only commit, and squash-merge once
+  `verify-merge` shows the record's input digest equals the merge result's. The pre-public plan's
+  merge commit is superseded (D-28).
 - [ ] Choose the macOS CI runner for the public repository (inbox).
-- [ ] Choose how a `d10` record's source commit stays reachable under squash-only main (inbox);
-  008/T015 builds the claim check for the chosen flow.
 
-Implementation-review checks from design closure, each settled in its task's review:
-008/RC-01 anchored, column-pinned pass patterns plus positive and `FAIL`-row self-tests (T002);
-RC-02 the first post-T018 Linux log confirms the full-history claim check (T018); RC-03
-`verify-merge` detects a non-PR head from explicit input, never a parent count (T015); RC-04 how a
-schema tightening treats a standing record (T015); RC-05 40-hex source commits passed safely to Git
-(T015); RC-06 completeness self-tests for a missing quarantine result and mode-rule violations
-(T015); RC-07, pre-public a merge-commit reminder and squash recovery, is redesigned for the
-squash-only main ruleset per the inbox choice (T015, T018); RC-08 the claim check on the flip commit
-is expected red (T018), and under the two-step flow the redesign settles where the registry flip
-lands so main is not left red between the two merges; RC-09 "not release evidence" wording for local builds; RC-10
-Linux `OsVersion` is the kernel version; RC-11 teardown removes crontab, user jobs and the account
-record first (T016a); RC-12 the token rule covers teardown (T016a); RC-13 the installed audit digest
-matches the checkout (T016a); RC-14 results-only commits wait for the head run (T016b); RC-15
-Markdown inside platform-sensitive paths (T016b, T015); RC-16 shorten macOS runs by triggering less
-often, never by shrinking the record (T016b, T018).
+Implementation-review checks from design closure, each settled in its task's review: 008/RC-01
+anchored, column-pinned pass patterns plus positive and `FAIL`-row self-tests (T002); RC-02 the
+first post-T018 Linux log confirms the full-history claim check (T018); RC-03 `verify-merge` detects
+a non-PR head from explicit input, never a parent count (T015); RC-04 how a schema tightening treats
+a standing record (T015); RC-05 40-hex source commits passed safely to Git (T015); RC-06
+completeness self-tests for a missing quarantine result and mode-rule violations (T015); RC-07,
+pre-public a merge-commit reminder and squash recovery, is redesigned for squash-only main: no
+merge-method reminder, instead the input digest is reproducible across hosts and checkouts, and a
+stale merge result (main moved after `verify-merge`) is detected before the merge (T015, T018);
+RC-08 the claim check is expected red only on pull-request commits between the flip and the record,
+never on main (T018); RC-09 "not release evidence" wording for local builds; RC-10 Linux `OsVersion`
+is the kernel version; RC-11 teardown removes crontab, user jobs and the account record first
+(T016a); RC-12 the token rule covers teardown (T016a); RC-13 the installed audit digest matches the
+checkout (T016a); RC-14 results-only commits wait for the head run (T016b); RC-15 Markdown inside
+platform-sensitive paths (T016b, T015); RC-16 shorten macOS runs by triggering less often, never by
+shrinking the record (T016b, T018).
 
 ## Checks
 
@@ -134,7 +138,6 @@ body and in this record, the criteria and tasks it closes.
 test), and the first increment (PR-0 and PR-1) passed implementation review in all four lenses
 with low notes only, both in the pre-public history; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: the owner, on porting (inbox), on the macOS CI runner (inbox) and on how `d10`
-evidence merges under squash-only main (inbox)
+**Waiting on**: the owner, on porting (inbox) and on the macOS CI runner (inbox)
 **Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
 close, then 008/T003
