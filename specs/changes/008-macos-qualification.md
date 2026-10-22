@@ -66,8 +66,10 @@ Pull request increments, in order (task IDs as in the pre-public plan):
 - [ ] 008/T003 repository checks (path-API ban, OS-guarded-return ban, workflow lint, bash 3.2
   lint, the `macos-progress` record); 008/T016a runner script and runbook (only if the owner picks
   a self-hosted runner).
-- [ ] 008/T012 `PathRedactor`; 008/T013a OFL-1.1 test fonts; 008/T004 corpus commands and the
-  dispatch-only Linux corpus job.
+- [ ] 008/T012 `PathRedactor`, which also fixes the unanchored Core path pattern that garbles
+  `/private/...` roots and relative store locations with a `tmp`, `var` or similar segment in
+  `STORE_CONFLICT` messages (deferred here from change 006); 008/T013a OFL-1.1 test fonts;
+  008/T004 corpus commands and the dispatch-only Linux corpus job.
 - [ ] 008/T006 `PlatformPaths` and the alias canonicalizer; 008/T007 admit asset inspection (S1).
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).

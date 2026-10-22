@@ -28,7 +28,7 @@ flowchart LR
 
 - [Vector documents](p1-core-engine/vector-documents.md): the document model, canonical
   serialization, validation, lint, layout, patching and the local store (P1.B-01 to P1.B-08,
-  P1.I-01 to P1.I-03).
+  P1.B-26, P1.B-27, P1.I-01 to P1.I-03).
 - [Rendering and export](p1-core-engine/rendering-export.md): SVG export, Skia raster rendering,
   deterministic fonts, symbols, sprite sheets, sub-node export and contact sheets.
 - [Import, paths and tokens](p1-core-engine/import-paths-tokens.md): best-effort SVG import,

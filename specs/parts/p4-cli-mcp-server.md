@@ -29,8 +29,8 @@ bounded steps (R-03, Q-03).
 
 Reads and writes caller-chosen paths without a sandbox
 ([security](../architecture/security.md)); ID-based lookups use the store under
-the current directory, and validation and asset batches create no store (P1.B-08). The asset
-pipeline is CLI-only batch work.
+the current directory, and validation, asset batches and path geometry create no store (P1.B-08,
+P1.B-26). The asset pipeline is CLI-only batch work.
 
 ### agd-mcp server
 
@@ -48,6 +48,11 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
   ingress. Test: `RawCaptureIngressTests`.
 - **P4.B-05 Served references match the repository**: the schema, format reference and agent
   guide resources are the embedded repository files. Test: `ProtocolTests`, `DocumentResourcesTests`.
+- **P4.B-07 Object tool schemas**: every tool input schema, and every nested property, item and
+  composition schema in it, is a JSON object, never a boolean schema (a boolean
+  `additionalProperties` is allowed), because TypeScript MCP SDK clients reject a boolean
+  subschema and drop the whole tool list. Test:
+  `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas`.
 - **P4.I-01 MCP confinement**: every MCP path resolves beneath the working directory; parent
   traversal, outside-root paths and symbolic-link or reparse-point traversal are rejected.
   Enforced by: `PathConfinementTests`.
@@ -64,7 +69,13 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
 
 - Failures return the shared structured error envelope (code, message, optional location);
   busy guards (P1.B-14, P1.B-25) surface as their own codes, never as a queue.
+- A CLI command that fails while it is constructed (a store conflict, denied access, an I/O
+  error) reports that failure's own code with exit 1, never a type-resolution error.
 
 ## Left open
 
 - The layout of human-readable CLI output; the JSON output form is the machine contract.
+- Whether the other file-path commands that never persist (`inspect`, `export`, `list`,
+  `bounds`, `lint`, `sprite`, `import`) move to the store-free engine, or store resolution
+  becomes lazy; today they fail with `STORE_CONFLICT` inside a store tree. Either needs its own
+  architecture review.

@@ -33,6 +33,13 @@
   `LintServiceTests`.
 - **P1.B-08 Store-free validation**: file validation and asset batches do not create a `.agd`
   store in the invoking directory. Test: `ValidateCommandTests`.
+- **P1.B-26 Store-free path geometry**: the path geometry commands (`agd path offset`, `bool`,
+  `union`) run on the store-free engine, so they create no `.agd` store and work inside an
+  existing store tree. Test: `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot`.
+- **P1.B-27 Store conflicts are named**: a store that would sit inside another store, or would
+  contain one, fails with `STORE_CONFLICT` before creating anything; the message names the
+  enclosing store root, or the contained store's location relative to the directory holding the
+  new store. Test: `FileDocumentStoreHardeningTests`, `PathCommandTests`.
 
 ## Invariants
 

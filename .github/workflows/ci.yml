@@ -148,8 +148,10 @@ jobs:
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           pattern: test-results-*
+          # Keep each artifact in its own subdirectory: parallel test jobs can emit
+          # identically named collector copies (same runner host name and start
+          # second), and merging them into one folder races and corrupts the XML.
           path: coverage-results
-          merge-multiple: true
 
       - name: Enforce combined line coverage
         run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- coverage coverage-results 35

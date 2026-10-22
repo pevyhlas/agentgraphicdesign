@@ -86,6 +86,31 @@ public class SubNodeExportTests
         Assert.Equal(EngineErrors.NodeNoBounds, ex.Code);
     }
 
+    [Fact]
+    public async Task ExportNode_ResolvesDocumentTokens()
+    {
+        var target = new RectangleNode
+        {
+            Id = Guid.NewGuid(),
+            Name = "target",
+            Order = "a0",
+            Width = 20,
+            Height = 20,
+            Style = new Style { Fill = new Fill { TokenRef = "{ink}" } }
+        };
+        var document = CreateDocument(100, 100);
+        document.Root.Children = [target];
+        var engine = new DocumentEngine();
+        engine.SetColorToken(document, "ink", "#13579b");
+
+        var whole = Encoding.UTF8.GetString((await engine.ExportAsync(document, new ExportOptions { Format = "svg" })).Data);
+        var node = Encoding.UTF8.GetString((await engine.ExportNodeAsync(document, target.Id, new ExportOptions { Format = "svg" })).Data);
+
+        // The isolated subtree resolves the same token value as the whole document.
+        Assert.Contains("#13579b", whole, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("#13579b", node, StringComparison.OrdinalIgnoreCase);
+    }
+
     private static Document CreateDocument(double width, double height) =>
         new()
         {

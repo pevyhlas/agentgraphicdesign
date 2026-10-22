@@ -25,6 +25,8 @@ public sealed class FileDocumentStore : IDocumentStore
         // reparse points before and after lock acquisition narrows, but cannot eliminate,
         // the residual check-to-use race against an attacker who can rewrite the tree.
         EnsureNoReparsePoints(_basePath);
+        // Reject an enclosing store before creating anything, so a refused store leaves no residue.
+        EnsureNoAncestorStoreMarkers();
         Directory.CreateDirectory(_basePath);
         EnsureNoReparsePoints(_basePath);
 
@@ -262,7 +264,7 @@ public sealed class FileDocumentStore : IDocumentStore
                 else if (string.Equals(Path.GetFileName(entry), ".agd-store.lock", StringComparison.Ordinal) &&
                     !string.Equals(directory, _basePath, PathComparison))
                 {
-                    throw OverlappingStore(entry);
+                    throw ContainedStore(entry);
                 }
                 else if (entry.EndsWith(".agd.json", StringComparison.OrdinalIgnoreCase))
                 {
@@ -295,15 +297,19 @@ public sealed class FileDocumentStore : IDocumentStore
 
     private void EnsureNoOverlappingStoreMarkers()
     {
+        EnsureNoAncestorStoreMarkers();
+        EnsureNoNestedStoreMarkers(CancellationToken.None);
+    }
+
+    private void EnsureNoAncestorStoreMarkers()
+    {
         var parent = Directory.GetParent(_basePath);
         while (parent is not null)
         {
             if (File.Exists(Path.Combine(parent.FullName, ".agd-store.lock")))
-                throw OverlappingStore(parent.FullName);
+                throw EnclosingStore(parent.FullName);
             parent = parent.Parent;
         }
-
-        EnsureNoNestedStoreMarkers(CancellationToken.None);
     }
 
     private void EnsureNoNestedStoreMarkers(CancellationToken cancellationToken)
@@ -327,7 +333,7 @@ public sealed class FileDocumentStore : IDocumentStore
                 else if (string.Equals(Path.GetFileName(entry), ".agd-store.lock", StringComparison.Ordinal) &&
                     !string.Equals(directory, _basePath, PathComparison))
                 {
-                    throw OverlappingStore(entry);
+                    throw ContainedStore(entry);
                 }
             }
         }
@@ -392,8 +398,21 @@ public sealed class FileDocumentStore : IDocumentStore
     private static DocumentEngineException DocumentExists(string target) =>
         new(DocumentStoreErrors.DocumentExists, $"Document target already exists: {target}");
 
-    private static DocumentEngineException OverlappingStore(string path) =>
-        new(EngineErrors.InvalidProperty, $"Nested or overlapping file document stores are not supported: {path}");
+    private static DocumentEngineException EnclosingStore(string storeRoot) =>
+        new(EngineErrors.StoreConflict,
+            "Nested document stores are not supported: this store would be inside another store. " +
+            $"Use file-only commands, or run from a directory outside the existing store rooted at {storeRoot}");
+
+    // Reported relative to the directory that holds this store, so the location survives surface
+    // path sanitization (which keeps only the last segment of absolute paths).
+    private DocumentEngineException ContainedStore(string lockPath)
+    {
+        var holder = Path.GetDirectoryName(_basePath) ?? _basePath;
+        var innerRoot = Path.GetRelativePath(holder, Path.GetDirectoryName(lockPath)!);
+        return new(EngineErrors.StoreConflict,
+            $"Nested document stores are not supported: this store would contain the existing store at '{innerRoot}'. " +
+            "Move or remove that inner store, or run from a directory that does not contain it.");
+    }
 }
 
 internal static class AtomicDocumentFile

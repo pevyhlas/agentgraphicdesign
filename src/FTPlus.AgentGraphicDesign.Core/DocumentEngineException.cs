@@ -30,6 +30,7 @@ public static class EngineErrors
     public const string ExportUnsupported = "EXPORT_UNSUPPORTED";
     public const string RenderUnavailable = "RENDER_UNAVAILABLE";
     public const string StoreUnavailable = "STORE_UNAVAILABLE";
+    public const string StoreConflict = "STORE_CONFLICT";
     public const string ParseError = "PARSE_ERROR";
     public const string InvalidId = "INVALID_ID";
     public const string PathEscape = "PATH_ESCAPE";

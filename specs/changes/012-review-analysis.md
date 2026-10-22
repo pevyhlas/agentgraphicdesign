@@ -63,6 +63,10 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
   replacing the sub-node copy; T033 its tests. PR-2b: T004 references, inspection, the inspected
   font set, the aggregate bound and the colour parser; T005 their tests. PR-2c: T034 the render
   session; T035 its tests.
+- [ ] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
+  `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and
+  surface the probe's bounds diagnostics (such as an unresolved typography token) on sub-node
+  export. Both are pre-existing gaps found in the change 010 review and handed to this change.
 - [ ] PR-3: T006 matrix layout and limits; T007 one compositor; T008 sheet tests. PR-4: T009 CLI
   flags and the MCP cutover; T010 surface tests.
 - [ ] PR-5: T011 contrast table and the analysis frame; T012 analysis fixtures and the work-bound
