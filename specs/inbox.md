@@ -189,15 +189,20 @@ preview, with an "experimental, interfaces may change" promise and proposed exit
 Changes [006](changes/006-agent-tool-usability.md) to [012](changes/012-review-analysis.md)
 under [013](changes/013-brand-workflow-uptake.md) were in flight before this repository started
 from fresh history (designs approved; 006, 010 and the first pieces of 008, 011 and 012
-implemented and reviewed in the pre-public history), so their branches cannot merge here. Their
-approved designs, plans, task lists and review outcomes are now recorded here: decisions
-[D-21 to D-29](architecture/decisions.md) and the change records. What remains to land is code:
+implemented and reviewed in the pre-public history), so their branches cannot merge here. What
+is public here is the binding contracts, decisions [D-21 to D-29](architecture/decisions.md), and
+per change a record with its bounds, task increments, grouped acceptance and review outcomes. The
+full text of each acceptance criterion (008/AC-01 and the like) and task (011/T005 and the like),
+and the review reports, stay in the pre-public history; each porting pull request restates the
+criteria and tasks it closes in its body and its change record. What remains to land is code:
 006, 010, 008's first increment (the platform registry), 011's special-file gate and 012's raw
 RGBA render with its legacy characterization.
 
 1. **Port each change as its own pull request here** (Recommended): reapply its reviewed work
-   onto this tree, rerun CI and the recorded reviews, then continue.
-2. **Re-implement them here from the change records** instead of porting commits.
+   onto this tree with the criteria and tasks it closes restated, rerun CI and the recorded
+   reviews, then continue.
+2. **Re-implement them here** instead of porting commits: needs the criteria and task definitions
+   restated first from the pre-public history, since the change records carry only group labels.
 3. **Drop or restart** some of them; name which.
 
 **If no answer**: port 006 and 010 first, then the rest.

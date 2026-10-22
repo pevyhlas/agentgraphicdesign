@@ -100,12 +100,15 @@ analysis (Q-03); new commands and tools are registered in the surface manifest (
 
 ## Acceptance
 
-Design acceptance criteria 012/AC-01 to 012/AC-25 group as below.
+Design acceptance criteria 012/AC-01 to 012/AC-25 group as below. Only the group labels are public:
+each criterion's full text, and each task's acceptance text, stay in the pre-public history. D-26
+holds the binding contract; the pull request that ports or implements an increment restates, in its
+body and in this record, the criteria and tasks it closes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | J-02 | AC-01 to AC-09, AC-23, AC-25: raw RGBA, references, labelled light and dark, native and zoomed matrix sheets, legacy bytes unchanged, one font load per call | 0 | NOT_RUN |
-| A2 | J-02 | AC-16 to AC-22, AC-24: a regenerable static gallery, hostile-index and concurrency safety, browser evidence | 0 | NOT_RUN |
+| A2 | J-02 | AC-16 to AC-20, AC-22, AC-24: a regenerable static gallery, hostile-index and concurrency safety, browser evidence | 0 | NOT_RUN |
 | A3 | Q-03 | AC-10 to AC-15: contrast, safe zone, topology and widths within their budget, deterministic `incomplete` | 0 | NOT_RUN |
 | A4 | P4.B-01 | AC-21: parity, the object-schema gate and capabilities | 0 | NOT_RUN |
 
@@ -114,6 +117,8 @@ Design acceptance criteria 012/AC-01 to 012/AC-25 group as below.
 **Step**: tasks
 **Review**: design approved at closure pass 1 (architecture, security, test) in the pre-public
 history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
-security, test), with its Linux x64 CI run recorded; ranges are not reproducible here
+security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
+and task text are not public
 **Waiting on**: 010; the owner, on porting (inbox)
-**Next**: port PR-1 as its own pull request, then PR-2a after 010
+**Next**: port PR-1 as its own pull request, restating the criteria and tasks it closes, then
+PR-2a after 010

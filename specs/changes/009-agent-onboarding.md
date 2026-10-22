@@ -89,7 +89,10 @@ passed a probe in exactly its written form.
 
 ## Acceptance
 
-Design acceptance criteria 009/AC-01 to 009/AC-31 group as below.
+Design acceptance criteria 009/AC-01 to 009/AC-31 group as below. Only the group labels are public:
+each criterion's full text, and each task's acceptance text, stay in the pre-public history. D-29
+holds the binding contract; the pull request that ports or implements an increment restates, in its
+body and in this record, the criteria and tasks it closes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
@@ -103,6 +106,7 @@ Design acceptance criteria 009/AC-01 to 009/AC-31 group as below.
 
 **Step**: tasks
 **Review**: design approved at closure pass 1 (architecture, security, operations) in the
-pre-public history; no implementation yet
+pre-public history, whose review reports and criterion and task text are not public; no
+implementation yet
 **Waiting on**: 006 and 008 (009/E1, 009/E2); the owner, on porting (inbox)
-**Next**: A0, once 006 and 008's first increment land
+**Next**: A0, once 006 and 008's first increment land, restating the criteria and tasks it closes

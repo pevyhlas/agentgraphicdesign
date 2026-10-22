@@ -100,22 +100,28 @@ on osx-arm64, including paths under the `/var` alias.
 
 ## Acceptance
 
-Design acceptance criteria 008/AC-01 to 008/AC-34 group as below.
+Design acceptance criteria 008/AC-01 to 008/AC-34 group as below. Only the group labels are public:
+each criterion's full text, and each task's acceptance text, stay in the pre-public history. D-28
+holds the binding contract; the pull request that ports or implements an increment restates, in its
+body and in this record, the criteria and tasks it closes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | Q-05 | AC-26 to AC-30: the four suites in three root modes and the installed tools on Apple silicon macOS 26, in a complete zero-failure qualification record | 0 | NOT_RUN |
 | A2 | P1.I-08 | AC-02, AC-03, AC-14: Intel, older macOS, non-APFS and disabled locking fail closed and change nothing | 0 | NOT_RUN |
 | A3 | P4.B-02 | AC-01, AC-04, AC-32: the platform member per profile tuple, the probe, the claim check | 0 | NOT_RUN |
-| A4 | P1.I-02, Q-04 | AC-10 to AC-23: create, publish, replace and lock on APFS, aliases and stored names, including a path under `/var` | 0 | NOT_RUN |
+| A4 | P1.I-02, Q-04 | AC-10 to AC-13, AC-15 to AC-23: create, publish, replace and lock on APFS, aliases and stored names, including a path under `/var` | 0 | NOT_RUN |
 | A5 | Q-01 | AC-07 to AC-09: the corpus comparison and the raster class wording | 0 | NOT_RUN |
 | A6 | Q-02 | AC-24, AC-25, AC-31, AC-33, AC-34: redaction, the single support matrix, runner and workflow rules | 0 | NOT_RUN |
+| A7 | P1.I-08, P1.I-09 | AC-05, AC-06: asset build and check, lint, artifact preflight and verify, and still import admitted on osx-arm64 with regular files, same exit codes and reports as on linux-x64; FIFO, socket, device, symlink and dangling inputs and outputs fail closed without opening the leaf, and a FIFO never blocks | 0 | NOT_RUN |
 
 ## State
 
 **Step**: tasks
 **Review**: design approved at closure pass 1 (architecture, security, operations, test), and the
 first increment (PR-0 and PR-1) passed implementation review in all four lenses with low notes
-only, both in the pre-public history; ranges are not reproducible here
+only, both in the pre-public history; the ranges, review reports and the criterion and task text
+are not public
 **Waiting on**: the owner, on porting (inbox) and on the macOS CI runner (inbox)
-**Next**: port PR-0 and PR-1 as their own pull request, then 008/T003
+**Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
+close, then 008/T003

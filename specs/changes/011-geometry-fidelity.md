@@ -112,7 +112,10 @@ behaviors and the identifier get tests; CLI and MCP stay registered in the surfa
 
 ## Acceptance
 
-Design acceptance criteria 011/AC-01 to 011/AC-34 group as below.
+Design acceptance criteria 011/AC-01 to 011/AC-34 group as below. Only the group labels are public:
+each criterion's full text, and each task's acceptance text, stay in the pre-public history. D-21,
+with the cross-cutting rules of D-27, holds the binding contract; the pull request that ports or
+implements an increment restates, in its body and in this record, the criteria and tasks it closes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
@@ -132,6 +135,8 @@ Design acceptance criteria 011/AC-01 to 011/AC-34 group as below.
 history; PR 0 (011/T027) passed implementation review round 2 in all four lenses (architecture,
 code, security, test) after one fix round, with low notes only; the security reviewer accepted the
 special-file residuals (check-then-open race, macOS before change 008, font directories, the
-store's reparse-point asymmetry); ranges are not reproducible here
+store's reparse-point asymmetry); the ranges, review reports and the criterion and task text are
+not public
 **Waiting on**: the owner, on porting (inbox) and the glyph-outline platform class (inbox, PR 5 only)
-**Next**: port PR 0 as its own pull request, then PR 1a
+**Next**: port PR 0 as its own pull request, restating the criteria and tasks it closes, then
+PR 1a
