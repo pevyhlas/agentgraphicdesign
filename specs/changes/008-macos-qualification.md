@@ -76,8 +76,14 @@ Pull request increments, in order (task IDs as in the pre-public plan):
 - [ ] 008/T016b the macOS workflow; 008/T016c the owner's one-time runner setup (self-hosted only).
 - [ ] 008/T005 the corpus at one commit with T006, T007 and T011, then the raster class wording;
   008/T017 the support matrix as the single source in the release contract and the linked docs.
-- [ ] 008/T018 final qualification at the pull request head (S3), merged with a merge commit.
+- [ ] 008/T018 final qualification (S3). The pre-public plan qualified the pull request head and
+  merged it with a merge commit; this repository's main ruleset is squash-only with linear history,
+  so how the record's source commit stays reachable is open (D-28, inbox). Recommended: merge the
+  code, qualify the resulting squash commit on main, then add the record and the `d10` entry in a
+  results-only pull request.
 - [ ] Choose the macOS CI runner for the public repository (inbox).
+- [ ] Choose how a `d10` record's source commit stays reachable under squash-only main (inbox);
+  008/T015 builds the claim check for the chosen flow.
 
 Implementation-review checks from design closure, each settled in its task's review:
 008/RC-01 anchored, column-pinned pass patterns plus positive and `FAIL`-row self-tests (T002);
@@ -85,8 +91,10 @@ RC-02 the first post-T018 Linux log confirms the full-history claim check (T018)
 `verify-merge` detects a non-PR head from explicit input, never a parent count (T015); RC-04 how a
 schema tightening treats a standing record (T015); RC-05 40-hex source commits passed safely to Git
 (T015); RC-06 completeness self-tests for a missing quarantine result and mode-rule violations
-(T015); RC-07 a merge-commit reminder and squash recovery (T015, T018); RC-08 the claim check on the
-flip commit is expected red (T018); RC-09 "not release evidence" wording for local builds; RC-10
+(T015); RC-07, pre-public a merge-commit reminder and squash recovery, is redesigned for the
+squash-only main ruleset per the inbox choice (T015, T018); RC-08 the claim check on the flip commit
+is expected red (T018), and under the two-step flow the redesign settles where the registry flip
+lands so main is not left red between the two merges; RC-09 "not release evidence" wording for local builds; RC-10
 Linux `OsVersion` is the kernel version; RC-11 teardown removes crontab, user jobs and the account
 record first (T016a); RC-12 the token rule covers teardown (T016a); RC-13 the installed audit digest
 matches the checkout (T016a); RC-14 results-only commits wait for the head run (T016b); RC-15
@@ -124,6 +132,7 @@ body and in this record, the criteria and tasks it closes.
 test), and the first increment (PR-0 and PR-1) passed implementation review in all four lenses
 with low notes only, both in the pre-public history; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: the owner, on porting (inbox) and on the macOS CI runner (inbox)
+**Waiting on**: the owner, on porting (inbox), on the macOS CI runner (inbox) and on how `d10`
+evidence merges under squash-only main (inbox)
 **Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
 close, then 008/T003
