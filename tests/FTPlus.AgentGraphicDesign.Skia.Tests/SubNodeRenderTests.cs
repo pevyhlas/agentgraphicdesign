@@ -2,6 +2,7 @@ using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
+using SkiaSharp;
 using Xunit;
 
 namespace FTPlus.AgentGraphicDesign.Skia.Tests;
@@ -65,4 +66,51 @@ public class SubNodeRenderTests
 
         Assert.Equal(EngineErrors.NodeNoBounds, ex.Code);
     }
+
+    [Fact]
+    public void RenderNode_ResolvesColorTokens()
+    {
+        var target = new RectangleNode
+        {
+            Id = Guid.NewGuid(),
+            Name = "target",
+            Width = 10,
+            Height = 10,
+            Style = new Style { Fill = new Fill { TokenRef = "{ink}" } }
+        };
+        var document = Scene(target);
+        var engine = new DocumentEngine(renderer: new SkiaRenderer());
+        engine.SetColorToken(document, "ink", "#13579b");
+
+        var result = engine.RenderNode(document, target.Id,
+            new RenderOptions { Format = RenderFormat.Png }, CancellationToken.None);
+
+        using var bitmap = SKBitmap.Decode(result.Data);
+        Assert.Equal(new SKColor(0x13, 0x57, 0x9b), bitmap.GetPixel(5, 5));
+    }
+
+    [Fact]
+    public void RenderNode_TypographyTokenSizesTheCrop()
+    {
+        var text = new TextNode { Id = Guid.NewGuid(), Name = "label", Text = "Hi", TypographyTokenRef = "{display}" };
+        var document = Scene(text);
+        var engine = new DocumentEngine(renderer: new SkiaRenderer(), textMeasurer: new SkiaTextMeasurer());
+        engine.SetTypographyToken(document, "display", new TypographyToken { FontSize = 96 });
+
+        var result = engine.RenderNode(document, text.Id,
+            new RenderOptions { Format = RenderFormat.Png }, CancellationToken.None);
+
+        // The node's own 16px default would give a crop roughly 20px tall; the token's 96px wins.
+        Assert.True(result.Height >= 80, $"crop height {result.Height} ignores the typography token");
+    }
+
+    private static Document Scene(Node node) => new()
+    {
+        Id = Guid.NewGuid(),
+        Name = "sub-node-tokens",
+        Version = 1,
+        Revn = 1,
+        Canvas = new Canvas { Width = 400, Height = 400 },
+        Root = new FrameNode { Id = Guid.NewGuid(), Name = "root", Width = 400, Height = 400, Children = [node] }
+    };
 }

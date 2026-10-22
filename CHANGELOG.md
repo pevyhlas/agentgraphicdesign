@@ -27,6 +27,9 @@ full `agd --version` string when reporting a problem.
 
 ### Fixed
 
+- Sub-node export (`agd export --node`, MCP `export_document` with `nodeId`) now carries
+  the document's design tokens, so token-referenced paint and typography resolve as in the whole
+  document instead of exporting unresolved.
 - Documents and patch subtrees load with a node's `type` discriminator in any property
   position, not only first.
 - `agd validate` on a file no longer creates a `.agd` store in the invoking directory, so it
