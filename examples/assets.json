@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "outputRoot": "out/assets",
+  "assets": [
+    {
+      "source": "pipeline-icon.agd.json",
+      "output": "out/assets/icon.svg",
+      "options": { "profile": "web-icon", "currentColor": "#000000" }
+    },
+    { "source": "wrapped-text.agd.json", "output": "out/assets/card.svg" },
+    { "source": "wrapped-text.agd.json", "output": "out/assets/card.png" }
+  ],
+  "sprites": [
+    {
+      "sources": ["pipeline-icon.agd.json"],
+      "output": "out/assets/icons.svg",
+      "options": { "profile": "web-icon", "currentColor": "#000000" }
+    }
+  ]
+}

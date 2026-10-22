@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "id": "00000000-0000-0000-0000-000000000200",
+  "name": "transforms",
+  "revn": 1,
+  "canvas": {
+    "width": 800,
+    "height": 600
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000201",
+    "order": "a0",
+    "name": "root",
+    "width": 800,
+    "height": 600,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "rectangle",
+        "id": "00000000-0000-0000-0000-000000000202",
+        "order": "a0",
+        "name": "translated",
+        "width": 100,
+        "height": 100,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 150.5,
+          "y": 200.75
+        },
+        "style": {
+          "fill": {
+            "color": "#ff0000"
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "00000000-0000-0000-0000-000000000203",
+        "order": "a1",
+        "name": "rotated",
+        "width": 100,
+        "height": 100,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 300,
+          "y": 200,
+          "rotation": 45
+        },
+        "style": {
+          "fill": {
+            "color": "#00ff00"
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "00000000-0000-0000-0000-000000000204",
+        "order": "a2",
+        "name": "scaled",
+        "width": 100,
+        "height": 100,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 450,
+          "y": 200,
+          "scaleX": 1.5,
+          "scaleY": 0.75
+        },
+        "style": {
+          "fill": {
+            "color": "#0000ff"
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "00000000-0000-0000-0000-000000000205",
+        "order": "a3",
+        "name": "full-transform",
+        "width": 100,
+        "height": 100,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 600.125,
+          "y": 200.875,
+          "rotation": 30.5,
+          "scaleX": 1.25,
+          "scaleY": 1.25
+        },
+        "style": {
+          "fill": {
+            "color": "#ff00ff"
+          },
+          "stroke": {
+            "color": "#000000",
+            "width": 2
+          },
+          "opacity": 0.8
+        }
+      }
+    ]
+  }
+}

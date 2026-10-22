@@ -1,0 +1,3 @@
+source: project-owned vendored tiers.json snapshot (no public upstream; library-ref is the snapshot sha256 prefix, not an upstream commit)
+library-ref: 0856aa639778
+sha256: 0856aa6397780b20c387295243fbedd81e781c04f2b1f21e7cbd80e70f9f2a2c

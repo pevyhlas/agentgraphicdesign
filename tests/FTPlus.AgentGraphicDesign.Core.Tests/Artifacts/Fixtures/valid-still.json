@@ -1,0 +1,24 @@
+{
+  "provenance": {
+    "recipeSnapshotSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "producer": { "version": "1.0\u002bfixture", "id": "fixture-tool" }
+  },
+  "still": {
+    "pivot": { "y": -0.000000, "x": 4.000000 },
+    "fileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "name": "idle"
+  },
+  "files": [
+    {
+      "byteLength": 123,
+      "path": "pixels\/still.png",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "cropOrigin": { "y": 0, "x": 0 },
+  "canvas": { "coordinates": "top-left-pixel-edges-x-right-y-down", "height": 4, "width": 8 },
+  "assetId": "demo-still",
+  "profile": "png8-rgba-srgb-straight-fixed-canvas-v1",
+  "version": 1,
+  "schema": "agd.provided-artifact"
+}

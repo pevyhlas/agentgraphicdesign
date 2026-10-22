@@ -1,0 +1,68 @@
+name: Bug report
+description: The agd CLI, the agd-mcp server or a script did not do what the docs say
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Agent Graphic Design is experimental and has one maintainer, so replies are best effort.
+        Report security vulnerabilities privately as SECURITY.md describes, never here.
+        Include only shareable excerpts: no secrets, private paths or private project data.
+  - type: input
+    id: version
+    attributes:
+      label: AGD version
+      description: The output of `agd --version` (it includes the source commit), or the release or commit you built.
+      placeholder: 0.3.0+<commit>
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: OS and architecture
+      description: For example Ubuntu 24.04 x64, macOS 15 arm64 or Windows 11 x64. The qualified profile is .NET 10 on Linux x64.
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: .NET SDK and runtime
+      description: The output of `dotnet --version`, and the runtime if it differs.
+      placeholder: 10.0.112
+    validations:
+      required: true
+  - type: input
+    id: harness
+    attributes:
+      label: Surface and agent harness
+      description: CLI or MCP; for MCP, the client or agent harness and its version (for example Claude Code, OpenCode or Codex CLI). Write "CLI by hand" if no agent was involved.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The smallest sequence that shows the problem, ideally starting from `agd create` or a minimal `.agd.json`, SVG or manifest you can share.
+      placeholder: |
+        1. agd create repro
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: Error messages, diagnostics or JSON results, as text.
+      render: text

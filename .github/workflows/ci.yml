@@ -1,0 +1,247 @@
+name: CI
+
+# The merge gate. It runs on GitHub-hosted runners for every pull request, forks included,
+# every push to main, a weekly schedule (new vulnerability advisories and the informational
+# macOS job) and manual dispatch. No job needs secrets, every third-party action is pinned by
+# full commit SHA with a version comment, and the workflow token is read-only.
+# `RepoChecks workflows` enforces this policy in the repository-gates job.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  # Locked-restore steps retry because scheduled runs have aborted at process start with
+  # "Internal CLR error. (0x80131506)".
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One run per PR; a newer PR push cancels that PR's in-progress run. Every non-PR run
+# (push to main, schedule, workflow_dispatch) gets its own run-id group and is never
+# cancelled or queued behind another, so every merged commit keeps a complete result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  test:
+    name: Test (${{ matrix.name }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: core
+            project: tests/FTPlus.AgentGraphicDesign.Core.Tests/FTPlus.AgentGraphicDesign.Core.Tests.csproj
+          - name: cli
+            project: tests/FTPlus.AgentGraphicDesign.Cli.Tests/FTPlus.AgentGraphicDesign.Cli.Tests.csproj
+          - name: mcp
+            project: tests/FTPlus.AgentGraphicDesign.Mcp.Tests/FTPlus.AgentGraphicDesign.Mcp.Tests.csproj
+          - name: skia
+            project: tests/FTPlus.AgentGraphicDesign.Skia.Tests/FTPlus.AgentGraphicDesign.Skia.Tests.csproj
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore locked graph
+        run: |
+          for attempt in 1 2 3; do
+            if dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode; then
+              echo "dotnet restore --locked-mode succeeded on attempt ${attempt}/3"
+              exit 0
+            fi
+            if [ "${attempt}" -lt 3 ]; then
+              echo "dotnet restore --locked-mode failed on attempt ${attempt}/3; retrying in 20 s"
+              sleep 20
+            fi
+          done
+          echo "::error::dotnet restore --locked-mode failed on all 3 attempts"
+          exit 1
+
+      - name: Build test project
+        run: dotnet build "${{ matrix.project }}" --configuration Release --no-restore
+
+      - name: Run tests with coverage
+        run: >-
+          dotnet test "${{ matrix.project }}"
+          --configuration Release
+          --no-build
+          --results-directory "TestResults/${{ matrix.name }}"
+          --logger "trx;LogFileName=${{ matrix.name }}.trx"
+          --collect "XPlat Code Coverage"
+
+      - name: Upload unique test results
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: test-results-${{ matrix.name }}
+          path: TestResults/${{ matrix.name }}/**
+          if-no-files-found: error
+          retention-days: 7
+
+  # TODO(platform qualification): macOS is not a qualified authoring profile. Native
+  # pixel storage and the asset-pipeline file probe fail closed off Linux x64, so many
+  # tests fail here today. This informational job is non-required (continue-on-error)
+  # until a platform qualification change qualifies macOS (Q-05 in
+  # specs/product/qualities.md, planned under specs/changes/008-macos-qualification.md). Do not
+  # add it to required status checks before then. It runs only on the weekly schedule
+  # or a manual dispatch, never on PRs or pushes, so it cannot become a required check
+  # by accident.
+  test-macos:
+    name: Test macOS (informational)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    timeout-minutes: 35
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Restore locked graph
+        run: dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode
+
+      - name: Build
+        run: dotnet build FTPlus.AgentGraphicDesign.slnx --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test FTPlus.AgentGraphicDesign.slnx --configuration Release --no-build
+
+  coverage:
+    name: Coverage Gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    needs: test
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          pattern: test-results-*
+          path: coverage-results
+          merge-multiple: true
+
+      - name: Enforce combined line coverage
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- coverage coverage-results 35
+
+  repository-gates:
+    name: Dependency, Security, and Format Gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Check Product-Kit adoption gate
+        run: bash .prdkit/scripts/bash/check-adoption.sh
+
+      # Product-Kit 1.0 doctor replaces the retired 0.x artifact/canon checks: it fails on
+      # malformed or duplicate IDs, malformed records, installation drift and agent/tier-map
+      # findings. It stays non-strict while maintainer questions in specs/inbox.md are open
+      # (open inbox lines are advisories that --strict would turn into failures).
+      - name: Check Product-Kit spec and installation (doctor)
+        run: bash .prdkit/scripts/bash/doctor.sh
+
+      - name: Check exact dependency approvals and notices
+        run: bash scripts/check-dependencies.sh
+
+      - name: Parse structured NuGet vulnerability audit
+        run: bash scripts/check-vulnerabilities.sh
+
+      - name: Run repository checker self-tests
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- self-test
+
+      - name: Check CI workflow policy
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- workflows .
+
+      - name: Test opt-in telemetry launcher (fake CLI, nothing exported)
+        run: bash scripts/test-claude-with-telemetry.sh
+
+      - name: Restore before formatting
+        run: |
+          for attempt in 1 2 3; do
+            if dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode; then
+              echo "dotnet restore --locked-mode succeeded on attempt ${attempt}/3"
+              exit 0
+            fi
+            if [ "${attempt}" -lt 3 ]; then
+              echo "dotnet restore --locked-mode failed on attempt ${attempt}/3; retrying in 20 s"
+              sleep 20
+            fi
+          done
+          echo "::error::dotnet restore --locked-mode failed on all 3 attempts"
+          exit 1
+
+      - name: Verify formatting
+        run: dotnet format FTPlus.AgentGraphicDesign.slnx --verify-no-changes --no-restore
+
+  package-smoke:
+    name: Local Tool Package Smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - run: bash scripts/package-smoke.sh
+
+  readiness:
+    name: Readiness Artifacts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - run: bash scripts/check-readiness.sh

@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FTPlus.AgentGraphicDesign.Cli</RootNamespace>
+    <AssemblyName>agd</AssemblyName>
+
+    <!-- .NET Tool packaging -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>agd</ToolCommandName>
+    <PackageId>FTPlus.AgentGraphicDesign.Cli</PackageId>
+    <Description>Agent Graphic Design CLI (experimental) - agent-first vector and pixel graphics tooling</Description>
+    <Authors>FT Plus</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES-SKIASHARP.txt" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Spectre.Console.Cli" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
+    <ProjectReference Include="..\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
+  </ItemGroup>
+
+</Project>

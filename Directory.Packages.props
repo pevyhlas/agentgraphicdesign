@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <!-- Runtime packages -->
+  <ItemGroup>
+    <PackageVersion Include="Clipper2" Version="2.0.0" />
+    <PackageVersion Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
+    <PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux" Version="14.2.0" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.55.0" />
+    <PackageVersion Include="ModelContextProtocol" Version="1.4.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
+    <PackageVersion Include="SkiaSharp" Version="4.148.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.148.0" />
+  </ItemGroup>
+  <!-- Test packages -->
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+  </ItemGroup>
+</Project>

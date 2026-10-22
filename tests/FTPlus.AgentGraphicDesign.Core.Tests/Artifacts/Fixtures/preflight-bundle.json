@@ -1,0 +1,24 @@
+{
+  "schema": "agd.provided-artifact",
+  "version": 1,
+  "profile": "png8-rgba-srgb-straight-fixed-canvas-v1",
+  "assetId": "preflight-fixture",
+  "canvas": {
+    "width": 1,
+    "height": 1,
+    "coordinates": "top-left-pixel-edges-x-right-y-down"
+  },
+  "cropOrigin": { "x": 0, "y": 0 },
+  "files": [
+    {
+      "sha256": "18f4fa5bba0f3aee92c9c6c7b85367a2247e976a9ff46056a06338685487cfc1",
+      "path": "image.png",
+      "byteLength": 73
+    }
+  ],
+  "still": {
+    "name": "red",
+    "fileSha256": "18f4fa5bba0f3aee92c9c6c7b85367a2247e976a9ff46056a06338685487cfc1",
+    "pivot": { "x": 0, "y": 0 }
+  }
+}

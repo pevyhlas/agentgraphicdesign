@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>FTPlus.AgentGraphicDesign.Mcp.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
+    <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Mcp\FTPlus.AgentGraphicDesign.Mcp.csproj" />
+    <Compile Include="../FTPlus.AgentGraphicDesign.Core.Tests/Pixels/StillImportFixture.cs" Link="Fixtures/StillImportFixture.cs" />
+  </ItemGroup>
+
+</Project>

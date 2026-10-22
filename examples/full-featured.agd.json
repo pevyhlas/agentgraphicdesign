@@ -1,0 +1,520 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "version": 1,
+  "id": "f0f1f2f3-f4f5-f6f7-f8f9-fafbfcfdfeff",
+  "name": "full-featured",
+  "revn": 1,
+  "canvas": {
+    "width": 1200,
+    "height": 800,
+    "background": "#fafafa"
+  },
+  "tokens": {
+    "colors": {
+      "primary": "#3b82f6",
+      "secondary": "#10b981",
+      "accent": "#f59e0b",
+      "danger": "#ef4444",
+      "text-dark": "#1f2937",
+      "text-light": "#9ca3af"
+    },
+    "typography": {
+      "heading": {
+        "fontFamily": "Inter",
+        "fontSize": 32,
+        "fontWeight": 700,
+        "lineHeight": 1.2
+      },
+      "body": {
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": 400,
+        "lineHeight": 1.5
+      },
+      "caption": {
+        "fontFamily": "Inter",
+        "fontSize": 12,
+        "fontWeight": 400,
+        "lineHeight": 1.4
+      }
+    }
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000001",
+    "order": "a0",
+    "name": "root",
+    "width": 1200,
+    "height": 800,
+    "clipContent": true,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "rectangle",
+        "id": "10000000-0000-0000-0000-000000000001",
+        "order": "a0",
+        "name": "primary-rect",
+        "width": 200,
+        "height": 120,
+        "cornerRadius": 12,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 50,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "primary"
+          },
+          "stroke": {
+            "color": "#2563eb",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "ellipse",
+        "id": "20000000-0000-0000-0000-000000000001",
+        "order": "a1",
+        "name": "secondary-ellipse",
+        "width": 100,
+        "height": 100,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 300,
+          "y": 60,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "secondary"
+          },
+          "opacity": 0.9
+        }
+      },
+      {
+        "type": "text",
+        "id": "30000000-0000-0000-0000-000000000001",
+        "order": "a2",
+        "name": "heading-text",
+        "text": "Full-Featured Example",
+        "fontFamily": "Inter",
+        "fontSize": 32,
+        "fontWeight": 700,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 450,
+          "y": 60,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "text-dark"
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "text",
+        "id": "30000000-0000-0000-0000-000000000002",
+        "order": "a3",
+        "name": "body-text",
+        "text": "This example demonstrates all node types, design tokens, and tokenRef usage.",
+        "fontFamily": "Inter",
+        "fontSize": 16,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 450,
+          "y": 110,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "text-light"
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "path",
+        "id": "40000000-0000-0000-0000-000000000001",
+        "order": "a4",
+        "name": "star-path",
+        "d": "M 50 0 L 61 35 L 98 35 L 68 57 L 79 91 L 50 70 L 21 91 L 32 57 L 2 35 L 39 35 Z",
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 220,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "accent"
+          },
+          "stroke": {
+            "color": "#d97706",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "path",
+        "id": "40000000-0000-0000-0000-000000000002",
+        "order": "a5",
+        "name": "arrow-path",
+        "d": "M 0 25 L 40 25 L 40 10 L 70 30 L 40 50 L 40 35 L 0 35 Z",
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 200,
+          "y": 250,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "tokenRef": "danger"
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "line",
+        "id": "50000000-0000-0000-0000-000000000001",
+        "order": "a6",
+        "name": "divider-line",
+        "x1": 50,
+        "y1": 380,
+        "x2": 1150,
+        "y2": 380,
+        "visible": true,
+        "locked": false,
+        "style": {
+          "stroke": {
+            "color": "#e5e7eb",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "60000000-0000-0000-0000-000000000001",
+        "order": "a7",
+        "name": "triangle",
+        "closed": true,
+        "points": [
+          { "x": 50, "y": 0 },
+          { "x": 100, "y": 100 },
+          { "x": 0, "y": 100 }
+        ],
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 350,
+          "y": 220,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "color": "#8b5cf6"
+          },
+          "stroke": {
+            "color": "#7c3aed",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "60000000-0000-0000-0000-000000000002",
+        "order": "a8",
+        "name": "hexagon",
+        "closed": true,
+        "points": [
+          { "x": 50, "y": 0 },
+          { "x": 93, "y": 25 },
+          { "x": 93, "y": 75 },
+          { "x": 50, "y": 100 },
+          { "x": 7, "y": 75 },
+          { "x": 7, "y": 25 }
+        ],
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 500,
+          "y": 220,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "gradient": {
+              "type": "linear",
+              "x1": 0,
+              "y1": 0,
+              "x2": 1,
+              "y2": 1,
+              "stops": [
+                { "offset": 0, "color": "#ec4899" },
+                { "offset": 1, "color": "#8b5cf6" }
+              ]
+            }
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "group",
+        "id": "70000000-0000-0000-0000-000000000001",
+        "order": "a9",
+        "name": "button-group",
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 420,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "children": [
+          {
+            "type": "rectangle",
+            "id": "71000000-0000-0000-0000-000000000001",
+            "order": "a0",
+            "name": "button-bg",
+            "width": 160,
+            "height": 48,
+            "cornerRadius": 8,
+            "visible": true,
+            "locked": false,
+            "style": {
+              "fill": {
+                "tokenRef": "primary"
+              },
+              "opacity": 1
+            }
+          },
+          {
+            "type": "text",
+            "id": "71000000-0000-0000-0000-000000000002",
+            "order": "a1",
+            "name": "button-label",
+            "text": "Click Me",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": 600,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 45,
+              "y": 14,
+              "rotation": 0,
+              "scaleX": 1,
+              "scaleY": 1
+            },
+            "style": {
+              "fill": {
+                "color": "#ffffff"
+              },
+              "opacity": 1
+            }
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "id": "70000000-0000-0000-0000-000000000002",
+        "order": "aa",
+        "name": "card-group",
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 250,
+          "y": 420,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "children": [
+          {
+            "type": "rectangle",
+            "id": "72000000-0000-0000-0000-000000000001",
+            "order": "a0",
+            "name": "card-bg",
+            "width": 280,
+            "height": 160,
+            "cornerRadius": 12,
+            "visible": true,
+            "locked": false,
+            "style": {
+              "fill": {
+                "color": "#ffffff"
+              },
+              "stroke": {
+                "color": "#e5e7eb",
+                "width": 1
+              },
+              "opacity": 1
+            }
+          },
+          {
+            "type": "text",
+            "id": "72000000-0000-0000-0000-000000000002",
+            "order": "a1",
+            "name": "card-title",
+            "text": "Card Title",
+            "fontFamily": "Inter",
+            "fontSize": 20,
+            "fontWeight": 600,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 16,
+              "y": 16,
+              "rotation": 0,
+              "scaleX": 1,
+              "scaleY": 1
+            },
+            "style": {
+              "fill": {
+                "tokenRef": "text-dark"
+              },
+              "opacity": 1
+            }
+          },
+          {
+            "type": "text",
+            "id": "72000000-0000-0000-0000-000000000003",
+            "order": "a2",
+            "name": "card-body",
+            "text": "This is a card component with nested elements inside a group.",
+            "fontFamily": "Inter",
+            "fontSize": 14,
+            "fontWeight": 400,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 16,
+              "y": 50,
+              "rotation": 0,
+              "scaleX": 1,
+              "scaleY": 1
+            },
+            "style": {
+              "fill": {
+                "tokenRef": "text-light"
+              },
+              "opacity": 1
+            }
+          },
+          {
+            "type": "ellipse",
+            "id": "72000000-0000-0000-0000-000000000004",
+            "order": "a3",
+            "name": "card-icon",
+            "width": 40,
+            "height": 40,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 16,
+              "y": 100,
+              "rotation": 0,
+              "scaleX": 1,
+              "scaleY": 1
+            },
+            "style": {
+              "fill": {
+                "tokenRef": "secondary"
+              },
+              "opacity": 1
+            }
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "id": "80000000-0000-0000-0000-000000000001",
+        "order": "ab",
+        "name": "placeholder-image",
+        "src": "images/placeholder.png",
+        "width": 200,
+        "height": 150,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 580,
+          "y": 420,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "90000000-0000-0000-0000-000000000001",
+        "order": "ac",
+        "name": "gradient-rect",
+        "width": 200,
+        "height": 150,
+        "cornerRadius": 8,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 830,
+          "y": 420,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        "style": {
+          "fill": {
+            "gradient": {
+              "type": "radial",
+              "cx": 0.3,
+              "cy": 0.3,
+              "r": 0.8,
+              "stops": [
+                { "offset": 0, "color": "#fef3c7", "opacity": 1 },
+                { "offset": 0.5, "color": "#fbbf24" },
+                { "offset": 1, "color": "#d97706" }
+              ]
+            }
+          },
+          "stroke": {
+            "color": "#b45309",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      }
+    ]
+  }
+}

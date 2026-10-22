@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "id": "00000000-0000-0000-0000-000000000100",
+  "name": "nested-groups",
+  "revn": 1,
+  "canvas": {
+    "width": 800,
+    "height": 600
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000101",
+    "order": "a0",
+    "name": "root",
+    "width": 800,
+    "height": 600,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "group",
+        "id": "00000000-0000-0000-0000-000000000102",
+        "order": "a0",
+        "name": "outer-group",
+        "visible": true,
+        "locked": false,
+        "children": [
+          {
+            "type": "group",
+            "id": "00000000-0000-0000-0000-000000000103",
+            "order": "a0",
+            "name": "inner-group-1",
+            "visible": true,
+            "locked": false,
+            "children": [
+              {
+                "type": "rectangle",
+                "id": "00000000-0000-0000-0000-000000000104",
+                "order": "a0",
+                "name": "deep-rect",
+                "width": 50,
+                "height": 50,
+                "visible": true,
+                "locked": false,
+                "style": {
+                  "fill": {
+                    "color": "#ff0000"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "group",
+            "id": "00000000-0000-0000-0000-000000000105",
+            "order": "a1",
+            "name": "inner-group-2",
+            "visible": true,
+            "locked": false,
+            "children": [
+              {
+                "type": "ellipse",
+                "id": "00000000-0000-0000-0000-000000000106",
+                "order": "a0",
+                "name": "deep-ellipse",
+                "width": 40,
+                "height": 40,
+                "visible": true,
+                "locked": false,
+                "style": {
+                  "fill": {
+                    "color": "#00ff00"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FTPlus.AgentGraphicDesign.Core/FTPlus.AgentGraphicDesign.Core.csproj" />
+    <Project Path="src/FTPlus.AgentGraphicDesign.Cli/FTPlus.AgentGraphicDesign.Cli.csproj" />
+    <Project Path="src/FTPlus.AgentGraphicDesign.Mcp/FTPlus.AgentGraphicDesign.Mcp.csproj" />
+    <Project Path="src/FTPlus.AgentGraphicDesign.Skia/FTPlus.AgentGraphicDesign.Skia.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FTPlus.AgentGraphicDesign.Core.Tests/FTPlus.AgentGraphicDesign.Core.Tests.csproj" />
+    <Project Path="tests/FTPlus.AgentGraphicDesign.Cli.Tests/FTPlus.AgentGraphicDesign.Cli.Tests.csproj" />
+    <Project Path="tests/FTPlus.AgentGraphicDesign.Mcp.Tests/FTPlus.AgentGraphicDesign.Mcp.Tests.csproj" />
+    <Project Path="tests/FTPlus.AgentGraphicDesign.Skia.Tests/FTPlus.AgentGraphicDesign.Skia.Tests.csproj" />
+  </Folder>
+</Solution>

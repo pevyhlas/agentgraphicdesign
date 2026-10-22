@@ -1,0 +1,40 @@
+{
+  "version": 0,
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "",
+  "revn": 0,
+  "canvas": {
+    "width": -100,
+    "height": 0
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000000",
+    "order": "",
+    "name": "root",
+    "width": 800,
+    "height": 600,
+    "clipContent": true,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "rectangle",
+        "id": "00000000-0000-0000-0000-000000000000",
+        "order": "a0",
+        "name": "bad-rect",
+        "width": -50,
+        "height": 100,
+        "cornerRadius": -5,
+        "visible": true,
+        "locked": false,
+        "style": {
+          "fill": {
+            "color": "not-a-color"
+          },
+          "opacity": 5
+        }
+      }
+    ]
+  }
+}

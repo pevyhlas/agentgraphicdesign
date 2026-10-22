@@ -1,0 +1,9 @@
+# Weekly updates for the SHA-pinned GitHub Actions in .github/workflows. NuGet is left out:
+# each package change needs the D-01 license approval in .config/dependencies.json and a
+# locked-restore refresh (see CONTRIBUTING.md).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

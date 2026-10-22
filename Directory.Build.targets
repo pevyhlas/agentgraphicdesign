@@ -1,0 +1,30 @@
+<Project>
+
+  <!--
+    Trim native debug symbols from packaged .NET tools.
+
+    The SkiaSharp / HarfBuzzSharp native-asset packages ship Windows and macOS `.pdb`
+    debug-symbol files under `runtimes/<rid>/native/`. They are never needed at runtime
+    (they are symbols for the native libraries, not managed code) yet they dominate the
+    packed tool: ~335 MB uncompressed, over half of the ~185 MB package. Drop every
+    `.pdb` under `runtimes/` from the publish set that `dotnet pack` bundles into the
+    tool; the native libraries themselves (`.dll`/`.so`/`.dylib`) are kept, so every
+    currently-shipped runtime still works. This changes package contents only, not
+    behavior, and keeps all runtime identifiers (platform/RID scope is a separate
+    decision tracked with non-Linux-x64 qualification).
+
+    Scoped to the PackAsTool projects (agd, agd-mcp) via the condition.
+  -->
+  <Target Name="TrimNativeDebugSymbolsFromTool"
+          AfterTargets="ComputeFilesToPublish"
+          Condition="'$(PackAsTool)' == 'true'">
+    <ItemGroup>
+      <_NativePdbToTrim Include="@(ResolvedFileToPublish)"
+        Condition="'%(ResolvedFileToPublish.Extension)' == '.pdb' And $([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Replace('\', '/').StartsWith('runtimes/'))" />
+      <ResolvedFileToPublish Remove="@(_NativePdbToTrim)" />
+    </ItemGroup>
+    <Message Importance="high"
+             Text="TrimNativeDebugSymbolsFromTool: removed @(_NativePdbToTrim->Count()) native runtimes/*.pdb file(s) from $(MSBuildProjectName) publish set" />
+  </Target>
+
+</Project>

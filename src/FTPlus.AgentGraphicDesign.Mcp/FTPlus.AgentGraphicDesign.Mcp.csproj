@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>FTPlus.AgentGraphicDesign.Mcp</RootNamespace>
+    <AssemblyName>agd-mcp</AssemblyName>
+
+    <!-- .NET Tool packaging -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>agd-mcp</ToolCommandName>
+    <PackageId>FTPlus.AgentGraphicDesign.Mcp</PackageId>
+    <Description>Agent Graphic Design MCP Server (experimental) - Model Context Protocol server for vector and pixel graphics authoring</Description>
+    <Authors>FT Plus</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES-SKIASHARP.txt" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <!-- Read-only MCP resources (agd://schema, agd://format, agd://agent-guide). The repository
+       files stay the single source of truth; they are linked here so the installed tool can
+       serve them without a checkout. Keep in sync with Resources/DocumentResources.cs. -->
+  <ItemGroup>
+    <EmbeddedResource Include="../../schemas/agd-document.schema.json" LogicalName="FTPlus.AgentGraphicDesign.Mcp.Resources.agd-document.schema.json" Link="Resources/agd-document.schema.json" />
+    <EmbeddedResource Include="../../docs/format.md" LogicalName="FTPlus.AgentGraphicDesign.Mcp.Resources.format.md" Link="Resources/format.md" />
+    <EmbeddedResource Include="../../docs/agent-guide.md" LogicalName="FTPlus.AgentGraphicDesign.Mcp.Resources.agent-guide.md" Link="Resources/agent-guide.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
+    <ProjectReference Include="..\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
+  </ItemGroup>
+
+</Project>

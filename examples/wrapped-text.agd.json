@@ -1,0 +1,135 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "version": 1,
+  "id": "00000000-0000-0000-0000-000000000500",
+  "name": "wrapped-text",
+  "revn": 1,
+  "canvas": {
+    "width": 480,
+    "height": 320,
+    "background": "#f4f4f5"
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000501",
+    "order": "a0",
+    "name": "root",
+    "width": 480,
+    "height": 320,
+    "clipContent": true,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "frame",
+        "id": "00000000-0000-0000-0000-000000000502",
+        "order": "a0",
+        "name": "card",
+        "width": 400,
+        "height": 240,
+        "clipContent": true,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 40,
+          "y": 40
+        },
+        "children": [
+          {
+            "type": "rectangle",
+            "id": "00000000-0000-0000-0000-000000000506",
+            "order": "a0",
+            "name": "card-background",
+            "width": 400,
+            "height": 240,
+            "visible": true,
+            "locked": false,
+            "style": {
+              "fill": {
+                "color": "#ffffff"
+              },
+              "stroke": {
+                "color": "#d4d4d8",
+                "width": 1
+              }
+            }
+          },
+          {
+            "type": "text",
+            "id": "00000000-0000-0000-0000-000000000503",
+            "order": "a1",
+            "name": "title",
+            "text": "Wrapped paragraphs",
+            "fontSize": 28,
+            "fontWeight": 700,
+            "textAlign": "center",
+            "letterSpacing": 0.5,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 200,
+              "y": 24
+            },
+            "style": {
+              "fill": {
+                "color": "#18181b"
+              }
+            }
+          },
+          {
+            "type": "text",
+            "id": "00000000-0000-0000-0000-000000000504",
+            "order": "a2",
+            "name": "body",
+            "text": "A text node can now wrap at a maximum width, stack lines at a chosen line height, and align each line to its anchor.\nExplicit line breaks start a new paragraph.",
+            "typographyTokenRef": "body",
+            "maxWidth": 352,
+            "lineHeight": 1.5,
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 24,
+              "y": 80
+            },
+            "style": {
+              "fill": {
+                "color": "#3f3f46"
+              }
+            }
+          },
+          {
+            "type": "text",
+            "id": "00000000-0000-0000-0000-000000000505",
+            "order": "a3",
+            "name": "footer",
+            "text": "end-aligned, bottom-anchored",
+            "fontSize": 12,
+            "fontWeight": 400,
+            "textAlign": "end",
+            "verticalAlign": "bottom",
+            "visible": true,
+            "locked": false,
+            "transform": {
+              "x": 376,
+              "y": 224
+            },
+            "style": {
+              "fill": {
+                "color": "#71717a"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "tokens": {
+    "typography": {
+      "body": {
+        "fontSize": 16,
+        "fontWeight": 400,
+        "lineHeight": 1.35
+      }
+    }
+  }
+}

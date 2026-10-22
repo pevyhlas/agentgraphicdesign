@@ -1,0 +1,80 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "HarfBuzzSharp.NativeAssets.Linux": {
+        "type": "Direct",
+        "requested": "[14.2.0, )",
+        "resolved": "14.2.0",
+        "contentHash": "KgdkGoqCoRPAdekskR9asBbY5tzfqRcYQ0/+hz8rvPMAmbQqX1g57xr6rbGUyIVY5j5ioExZWUZ10QocUVpgwQ=="
+      },
+      "SkiaSharp": {
+        "type": "Direct",
+        "requested": "[4.148.0, )",
+        "resolved": "4.148.0",
+        "contentHash": "t+oZDnzvi0en060BFDTmJ16C0zjsiXRrtOe70luIuIi/exVZtl1obrYh8D+IoHlGtp7bqzEBVncafbAl0ttmPQ==",
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "4.148.0",
+          "SkiaSharp.NativeAssets.macOS": "4.148.0"
+        }
+      },
+      "SkiaSharp.HarfBuzz": {
+        "type": "Direct",
+        "requested": "[4.148.0, )",
+        "resolved": "4.148.0",
+        "contentHash": "KQwX/UVLNEVNYpfCM9wz6Mi6joM2kozKq8ymJIZv5ob3WjQRgQCjk9jTbVzmwkH+FwJvUgYU8KAlC/TUfAfBwQ==",
+        "dependencies": {
+          "HarfBuzzSharp": "14.2.0",
+          "SkiaSharp": "4.148.0"
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux.NoDependencies": {
+        "type": "Direct",
+        "requested": "[4.148.0, )",
+        "resolved": "4.148.0",
+        "contentHash": "his6BWV/9ye7QualS4zNCm1oTyUPxzKdzfEWKL+iAQ6UNhDwYOYly+jlzND9On88VDJKChDpkvekYdxiVIkhnQ=="
+      },
+      "HarfBuzzSharp": {
+        "type": "Transitive",
+        "resolved": "14.2.0",
+        "contentHash": "B9zczdZELTKyJoNZXJLTgq+Ho2Z6H8oFcFbelvmHixkA8/2sH9acE589KvOa951g1aN262pOU5ThhZxw33bGSg==",
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Win32": "14.2.0",
+          "HarfBuzzSharp.NativeAssets.macOS": "14.2.0"
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "14.2.0",
+        "contentHash": "v2AfGa0Q0aNRz7glbRTvkrR8w2pipUpyRHDNjOCPXnnHE3pjY0ycTY0L7dL/AByd53aQ0AGPwIEP1H9hZPPywg=="
+      },
+      "HarfBuzzSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "14.2.0",
+        "contentHash": "NCqaG3bJDl66JdmHeyOpRUf4eiGVwu8OSxGv6ukofBiukVyUpWj01btr/telMQLQ+XuQ83iDpi6NRDFoRIcojA=="
+      },
+      "SkiaSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "4.148.0",
+        "contentHash": "1iESVxlqNNbQUiFODuyQJ/5dYUNYwGzZBUyaKNU3pJRM8zPFUkdMW0UZcZPvd6xwrjn53HYklJyKvetXC6ri+A=="
+      },
+      "SkiaSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "4.148.0",
+        "contentHash": "LegvQ9zAi9Tmot2YOLv8mcK+g3wbEYfCWUoC5JtyHaN8QrxsaMvfJ8pFPvnEOVuY8qXxs8vVqrO/x42/YaFDRA=="
+      },
+      "ftplus.agentgraphicdesign.core": {
+        "type": "Project",
+        "dependencies": {
+          "Clipper2": "[2.0.0, )"
+        }
+      },
+      "Clipper2": {
+        "type": "CentralTransitive",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "2X23RZxJrjRjOSZc20aqXY9jpmHLekDRy4PIMfrsi2LPNzxFYlnuqzX/nLdk77fbURHUeX+gMhUn2a1z9/wMTQ=="
+      }
+    }
+  }
+}

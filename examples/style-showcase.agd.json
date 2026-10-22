@@ -1,0 +1,250 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "id": "f5a2e3c4-b1d0-4a5e-9c7f-2d8e6b4a1f0c",
+  "name": "style-showcase",
+  "version": 1,
+  "revn": 1,
+  "canvas": {
+    "width": 800,
+    "height": 600,
+    "background": "#f8f9fa"
+  },
+  "root": {
+    "type": "frame",
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "root",
+    "order": "a0",
+    "width": 800,
+    "height": 600,
+    "clipContent": true,
+    "children": [
+      {
+        "type": "rectangle",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "name": "linear-gradient-rect",
+        "order": "a0",
+        "width": 150,
+        "height": 100,
+        "transform": { "x": 50, "y": 50 },
+        "style": {
+          "fill": {
+            "gradient": {
+              "type": "linear",
+              "x1": 0,
+              "y1": 0,
+              "x2": 1,
+              "y2": 0,
+              "stops": [
+                { "offset": 0, "color": "#667eea" },
+                { "offset": 1, "color": "#764ba2" }
+              ]
+            }
+          },
+          "stroke": {
+            "color": "#4c566a",
+            "width": 2
+          }
+        }
+      },
+      {
+        "type": "ellipse",
+        "id": "22222222-2222-2222-2222-222222222222",
+        "name": "radial-gradient-circle",
+        "order": "a1",
+        "width": 120,
+        "height": 120,
+        "transform": { "x": 250, "y": 50 },
+        "style": {
+          "fill": {
+            "gradient": {
+              "type": "radial",
+              "cx": 0.3,
+              "cy": 0.3,
+              "r": 0.7,
+              "stops": [
+                { "offset": 0, "color": "#ffffff", "opacity": 1 },
+                { "offset": 0.5, "color": "#ff6b6b" },
+                { "offset": 1, "color": "#c92a2a" }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "33333333-3333-3333-3333-333333333333",
+        "name": "dashed-stroke-rect",
+        "order": "a2",
+        "width": 150,
+        "height": 100,
+        "transform": { "x": 420, "y": 50 },
+        "style": {
+          "fill": { "color": "#e9ecef" },
+          "stroke": {
+            "color": "#495057",
+            "width": 3,
+            "cap": "round",
+            "join": "round",
+            "dashArray": [10, 5, 3, 5],
+            "dashOffset": 0
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "44444444-4444-4444-4444-444444444444",
+        "name": "rounded-corners-miter",
+        "order": "a3",
+        "width": 150,
+        "height": 100,
+        "cornerRadius": 15,
+        "transform": { "x": 620, "y": 50 },
+        "style": {
+          "fill": { "color": "#40c057" },
+          "stroke": {
+            "color": "#2f9e44",
+            "width": 4,
+            "join": "miter",
+            "miterLimit": 10
+          }
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "55555555-5555-5555-5555-555555555555",
+        "name": "multiply-blend",
+        "order": "a4",
+        "width": 120,
+        "height": 120,
+        "transform": { "x": 50, "y": 200 },
+        "style": {
+          "fill": { "color": "#ff0000" },
+          "opacity": 0.7,
+          "blendMode": "multiply"
+        }
+      },
+      {
+        "type": "rectangle",
+        "id": "66666666-6666-6666-6666-666666666666",
+        "name": "screen-blend",
+        "order": "a5",
+        "width": 120,
+        "height": 120,
+        "transform": { "x": 110, "y": 260 },
+        "style": {
+          "fill": { "color": "#0000ff" },
+          "opacity": 0.7,
+          "blendMode": "screen"
+        }
+      },
+      {
+        "type": "line",
+        "id": "77777777-7777-7777-7777-777777777777",
+        "name": "rounded-cap-line",
+        "order": "a6",
+        "x1": 300,
+        "y1": 200,
+        "x2": 500,
+        "y2": 200,
+        "style": {
+          "stroke": {
+            "color": "#339af0",
+            "width": 8,
+            "cap": "round"
+          }
+        }
+      },
+      {
+        "type": "line",
+        "id": "88888888-8888-8888-8888-888888888888",
+        "name": "square-cap-line",
+        "order": "a7",
+        "x1": 300,
+        "y1": 250,
+        "x2": 500,
+        "y2": 250,
+        "style": {
+          "stroke": {
+            "color": "#f06595",
+            "width": 8,
+            "cap": "square"
+          }
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "99999999-9999-9999-9999-999999999999",
+        "name": "gradient-polygon",
+        "order": "a8",
+        "closed": true,
+        "points": [
+          { "x": 600, "y": 200 },
+          { "x": 700, "y": 250 },
+          { "x": 680, "y": 350 },
+          { "x": 620, "y": 350 },
+          { "x": 550, "y": 280 }
+        ],
+        "style": {
+          "fill": {
+            "gradient": {
+              "type": "linear",
+              "x1": 0,
+              "y1": 0,
+              "x2": 0,
+              "y2": 1,
+              "stops": [
+                { "offset": 0, "color": "#ffd43b" },
+                { "offset": 1, "color": "#ff922b" }
+              ]
+            }
+          },
+          "stroke": {
+            "color": "#e67700",
+            "width": 2,
+            "join": "bevel"
+          }
+        }
+      },
+      {
+        "type": "text",
+        "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "name": "title",
+        "order": "a9",
+        "text": "AGD Style Showcase",
+        "fontFamily": "sans-serif",
+        "fontSize": 24,
+        "fontWeight": 700,
+        "transform": { "x": 50, "y": 450 },
+        "style": {
+          "fill": { "color": "#212529" }
+        }
+      },
+      {
+        "type": "text",
+        "id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+        "name": "subtitle",
+        "order": "aa",
+        "text": "Gradients, stroke caps/joins/dashes, blend modes, fill rules",
+        "fontFamily": "sans-serif",
+        "fontSize": 14,
+        "fontWeight": 400,
+        "transform": { "x": 50, "y": 480 },
+        "style": {
+          "fill": { "color": "#868e96" }
+        }
+      },
+      {
+        "type": "path",
+        "id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        "name": "evenodd-ring",
+        "order": "ab",
+        "d": "M0,0 L100,0 L100,100 L0,100 Z M25,25 L75,25 L75,75 L25,75 Z",
+        "transform": { "x": 650, "y": 420 },
+        "style": {
+          "fill": { "color": "#228be6" },
+          "fillRule": "evenodd"
+        }
+      }
+    ]
+  }
+}

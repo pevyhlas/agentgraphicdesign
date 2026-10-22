@@ -1,0 +1,33 @@
+{
+  "schema": "agd.provided-artifact",
+  "version": 1,
+  "profile": "png8-rgba-srgb-straight-fixed-canvas-v1",
+  "assetId": "demo-clip",
+  "canvas": { "width": 16, "height": 16, "coordinates": "top-left-pixel-edges-x-right-y-down" },
+  "cropOrigin": { "x": 0, "y": 0 },
+  "files": [
+    {
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "path": "pixels/frame-b.png",
+      "byteLength": 201
+    },
+    {
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "path": "pixels/frame-a.png",
+      "byteLength": 200
+    }
+  ],
+  "clip": {
+    "id": "idle",
+    "viewId": "front",
+    "variantId": "default",
+    "ticksPerSecond": 30000,
+    "playback": "forward-once-hold",
+    "frames": [
+      { "name": "idle-0", "fileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "durationTicks": 1001, "pivot": { "x": 8.125000, "y": 16 } },
+      { "name": "idle-1", "fileSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "durationTicks": 1001, "pivot": { "x": -0, "y": 16 } },
+      { "name": "idle-2", "fileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "durationTicks": 1001, "pivot": { "x": -1.000001, "y": 1000000 } }
+    ]
+  },
+  "provenance": { "recipeSnapshotSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" }
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "new-primitives",
+  "version": 1,
+  "revn": 1,
+  "canvas": {
+    "width": 800,
+    "height": 600,
+    "background": "#f5f5f5"
+  },
+  "root": {
+    "type": "frame",
+    "id": "f1a2b3c4-d5e6-7890-abcd-ef1234567891",
+    "order": "a0",
+    "name": "root",
+    "width": 800,
+    "height": 600,
+    "clipContent": false,
+    "children": [
+      {
+        "type": "line",
+        "id": "11111111-1111-1111-1111-111111111111",
+        "order": "a0",
+        "name": "diagonal-line",
+        "x1": 50,
+        "y1": 50,
+        "x2": 200,
+        "y2": 150,
+        "style": {
+          "stroke": {
+            "color": "#2563eb",
+            "width": 3
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "line",
+        "id": "11111111-1111-1111-1111-111111111112",
+        "order": "a1",
+        "name": "horizontal-line",
+        "x1": 250,
+        "y1": 100,
+        "x2": 400,
+        "y2": 100,
+        "style": {
+          "stroke": {
+            "color": "#dc2626",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "22222222-2222-2222-2222-222222222221",
+        "order": "a2",
+        "name": "triangle",
+        "closed": true,
+        "points": [
+          { "x": 100, "y": 200 },
+          { "x": 200, "y": 350 },
+          { "x": 0, "y": 350 }
+        ],
+        "style": {
+          "fill": {
+            "color": "#10b981"
+          },
+          "stroke": {
+            "color": "#059669",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "22222222-2222-2222-2222-222222222222",
+        "order": "a3",
+        "name": "pentagon",
+        "closed": true,
+        "points": [
+          { "x": 350, "y": 200 },
+          { "x": 420, "y": 250 },
+          { "x": 395, "y": 330 },
+          { "x": 305, "y": 330 },
+          { "x": 280, "y": 250 }
+        ],
+        "style": {
+          "fill": {
+            "color": "#8b5cf6"
+          },
+          "stroke": {
+            "color": "#7c3aed",
+            "width": 2
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "polygon",
+        "id": "22222222-2222-2222-2222-222222222223",
+        "order": "a4",
+        "name": "open-polyline",
+        "closed": false,
+        "points": [
+          { "x": 500, "y": 200 },
+          { "x": 550, "y": 250 },
+          { "x": 600, "y": 220 },
+          { "x": 650, "y": 280 },
+          { "x": 700, "y": 240 }
+        ],
+        "style": {
+          "stroke": {
+            "color": "#f59e0b",
+            "width": 3
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "image",
+        "id": "33333333-3333-3333-3333-333333333331",
+        "order": "a5",
+        "name": "placeholder-image",
+        "src": "https://via.placeholder.com/150",
+        "width": 150,
+        "height": 150,
+        "transform": {
+          "x": 550,
+          "y": 400,
+          "rotation": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      }
+    ]
+  }
+}

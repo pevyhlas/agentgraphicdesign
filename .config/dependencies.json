@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Exact, machine-checked dependency approvals for the resolved solution graph",
+  "version": "2.0.0",
+  "lastVerified": "2026-09-08",
+  "policy": {
+    "allowedLicenses": ["MIT", "Apache-2.0", "BSD-3-Clause", "BSL-1.0", "FTL", "IJG", "Libpng", "Zlib", "Unicode-3.0", "OFL-1.1", "MIT-Khronos-old", "MIT-Modern-Variant", "LicenseRef-Adobe-DNG-SDK"],
+    "prohibitedLicenses": ["GPL-2.0", "GPL-3.0", "LGPL-2.1", "LGPL-3.0", "AGPL-3.0", "MPL-2.0"],
+    "noticeFile": "THIRD-PARTY-NOTICES.txt",
+    "scopeDefinitions": {
+      "runtime": "Resolved by a project under src/ and shipped or used at runtime",
+      "test": "Resolved only by, or transitively through, a project under tests/"
+    }
+  },
+  "approvedPackages": [
+    { "id": "Clipper2", "version": "2.0.0", "license": "BSL-1.0", "scopes": ["runtime", "test"] },
+    { "id": "coverlet.collector", "version": "10.0.1", "license": "MIT", "scopes": ["test"] },
+    { "id": "HarfBuzzSharp", "version": "14.2.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "HarfBuzzSharp.NativeAssets.Linux", "version": "14.2.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "HarfBuzzSharp.NativeAssets.macOS", "version": "14.2.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "HarfBuzzSharp.NativeAssets.Win32", "version": "14.2.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.CodeCoverage", "version": "17.14.1", "license": "MIT", "scopes": ["test"] },
+    { "id": "Microsoft.Extensions.AI.Abstractions", "version": "10.5.2", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Caching.Abstractions", "version": "10.0.7", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.Binder", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.CommandLine", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.EnvironmentVariables", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.FileExtensions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.Json", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Configuration.UserSecrets", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.DependencyInjection", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.DependencyInjection.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Diagnostics", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Diagnostics.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.FileProviders.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.FileProviders.Physical", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.FileSystemGlobbing", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Hosting", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Hosting.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.Abstractions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.Configuration", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.Console", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.Debug", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.EventLog", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Logging.EventSource", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Options", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Options.ConfigurationExtensions", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.Extensions.Primitives", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Microsoft.NET.Test.Sdk", "version": "17.14.1", "license": "MIT", "scopes": ["test"] },
+    { "id": "Microsoft.TestPlatform.ObjectModel", "version": "17.14.1", "license": "MIT", "scopes": ["test"] },
+    { "id": "Microsoft.TestPlatform.TestHost", "version": "17.14.1", "license": "MIT", "scopes": ["test"] },
+    { "id": "ModelContextProtocol", "version": "1.4.0", "license": "Apache-2.0", "scopes": ["runtime", "test"], "noticeMarker": "ModelContextProtocol, ModelContextProtocol.Core (Apache-2.0 and MIT)" },
+    { "id": "ModelContextProtocol.Core", "version": "1.4.0", "license": "Apache-2.0", "scopes": ["runtime", "test"], "noticeMarker": "ModelContextProtocol, ModelContextProtocol.Core (Apache-2.0 and MIT)" },
+    { "id": "Newtonsoft.Json", "version": "13.0.3", "license": "MIT", "scopes": ["test"] },
+    { "id": "SkiaSharp", "version": "4.148.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "SkiaSharp.HarfBuzz", "version": "4.148.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "SkiaSharp.NativeAssets.Linux.NoDependencies", "version": "4.148.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "SkiaSharp.NativeAssets.macOS", "version": "4.148.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "SkiaSharp.NativeAssets.Win32", "version": "4.148.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Spectre.Console", "version": "0.55.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Spectre.Console.Ansi", "version": "0.55.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "Spectre.Console.Cli", "version": "0.55.0", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "System.Diagnostics.EventLog", "version": "10.0.9", "license": "MIT", "scopes": ["runtime", "test"] },
+    { "id": "xunit", "version": "2.9.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.abstractions", "version": "2.0.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.analyzers", "version": "1.18.0", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.assert", "version": "2.9.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.core", "version": "2.9.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.extensibility.core", "version": "2.9.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.extensibility.execution", "version": "2.9.3", "license": "Apache-2.0", "scopes": ["test"] },
+    { "id": "xunit.runner.visualstudio", "version": "2.8.2", "license": "Apache-2.0", "scopes": ["test"] }
+  ],
+  "upstreamNotices": [
+    {
+      "id": "skiasharp-native-assets",
+      "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt",
+      "packageFile": "THIRD-PARTY-NOTICES.txt",
+      "sha256": "21504c46c4c58aa64c1055bd2dcbc5f9a136b4b8c412ed3cc6740e22c5b127f5",
+      "packages": [
+        "HarfBuzzSharp.NativeAssets.Linux",
+        "HarfBuzzSharp.NativeAssets.macOS",
+        "HarfBuzzSharp.NativeAssets.Win32",
+        "SkiaSharp.NativeAssets.Linux.NoDependencies",
+        "SkiaSharp.NativeAssets.macOS",
+        "SkiaSharp.NativeAssets.Win32"
+      ]
+    }
+  ],
+  "requiredNotices": [
+    { "id": "skia", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# skia", "licenses": ["BSD-3-Clause"] },
+    { "id": "harfbuzz", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# HarfBuzz", "licenses": ["MIT-Modern-Variant"] },
+    { "id": "freetype", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# freetype", "licenses": ["FTL"] },
+    { "id": "libpng", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# libpng", "licenses": ["Libpng"] },
+    { "id": "zlib", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# zlib", "licenses": ["Zlib"] },
+    { "id": "libjpeg-turbo", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# libjpeg-turbo", "licenses": ["BSD-3-Clause", "IJG", "Zlib"] },
+    { "id": "libwebp", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# libwebp", "licenses": ["BSD-3-Clause"] },
+    { "id": "expat", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# expat", "licenses": ["MIT"] },
+    { "id": "piex", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# piex", "licenses": ["Apache-2.0"] },
+    { "id": "dng-sdk", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# DNG SDK", "licenses": ["LicenseRef-Adobe-DNG-SDK"] },
+    { "id": "spirv-headers", "file": "THIRD-PARTY-NOTICES-SKIASHARP.txt", "marker": "# SPIR-V Headers", "licenses": ["MIT-Khronos-old"] },
+    { "id": "wuffs", "marker": "Wuffs (Apache-2.0)", "licenses": ["Apache-2.0"] },
+    { "id": "spirv-cross", "marker": "SPIRV-Cross (Apache-2.0 OR MIT, used under Apache-2.0)", "licenses": ["Apache-2.0"] },
+    { "id": "vulkan-headers", "marker": "Vulkan Headers (Apache-2.0)", "licenses": ["Apache-2.0"] },
+    { "id": "vulkan-memory-allocator", "marker": "Vulkan Memory Allocator (MIT)", "licenses": ["MIT"] },
+    { "id": "d3d12-memory-allocator", "marker": "D3D12 Memory Allocator (MIT)", "licenses": ["MIT"] },
+    { "id": "chromium-zlib", "marker": "Chromium zlib optimizations (BSD-3-Clause)", "licenses": ["BSD-3-Clause"] },
+    { "id": "unicode-ucd", "marker": "Unicode Character Database (Unicode-3.0)", "licenses": ["Unicode-3.0"] },
+    { "id": "tailwind-colors", "marker": "Tailwind CSS Colors (MIT)", "licenses": ["MIT"] },
+    { "id": "material-colors", "marker": "Material Design Color System (Apache-2.0)", "licenses": ["Apache-2.0"] },
+    { "id": "colorbrewer", "marker": "This product includes color specifications and designs developed by", "licenses": ["Apache-2.0"] },
+    { "id": "inter", "marker": "Inter (SIL Open Font License 1.1)", "licenses": ["OFL-1.1"] }
+  ],
+  "bundledAssets": [
+    {
+      "id": "Inter",
+      "version": "4.1",
+      "license": "OFL-1.1",
+      "scopes": ["runtime"],
+      "purpose": "Default text family embedded in FTPlus.AgentGraphicDesign.Skia so raster text does not depend on host fonts",
+      "source": "https://github.com/rsms/inter/releases/tag/v4.1",
+      "archive": { "file": "Inter-4.1.zip", "sha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e" },
+      "files": [
+        {
+          "path": "src/FTPlus.AgentGraphicDesign.Skia/Fonts/Inter-Regular.ttf",
+          "upstreamPath": "extras/ttf/Inter-Regular.ttf",
+          "sha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82"
+        },
+        {
+          "path": "src/FTPlus.AgentGraphicDesign.Skia/Fonts/Inter-Bold.ttf",
+          "upstreamPath": "extras/ttf/Inter-Bold.ttf",
+          "sha256": "288316099b1e0a47a4716d159098005eef7c0066921f34e3200393dbdb01947f"
+        }
+      ],
+      "noticeMarker": "Inter (SIL Open Font License 1.1)"
+    }
+  ],
+  "deferred": [
+    { "id": "YogaSharp", "license": "MIT", "reason": "Adopt only if auto-layout enters scope" },
+    { "id": "VL.Yoga", "license": "MIT", "reason": "Adopt only if auto-layout enters scope" }
+  ],
+  "rejected": [
+    { "id": "SixLabors.ImageSharp", "license": "Split License", "reason": "Commercial terms are outside the dependency policy" },
+    { "id": "penpot-source", "license": "MPL-2.0", "reason": "Copyleft is prohibited" }
+  ]
+}

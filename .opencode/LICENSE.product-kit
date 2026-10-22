@@ -1,0 +1,39 @@
+Vendored Product-Kit 1.1.0 content in this repository is licensed under the upstream MIT
+notice below, reproduced verbatim: the kit scripts, workflows, templates and agent library
+under .prdkit/ (the files listed in .prdkit/.manifest and the rest of .prdkit/scripts/,
+.prdkit/workflows/, .prdkit/templates/, .prdkit/agent-library/ and the agent definitions
+rendered into .prdkit/agents/), and the command copies in .claude/commands/prdkit*.md and
+.opencode/commands/prdkit*.md. Project-owned policy and records under .prdkit/memory/ are
+AGD's own MIT-licensed content (see LICENSE).
+Source: Product-Kit release v1.1.0 (https://github.com/pevyhlas/product-kit), vendored as
+copies; this repository does not track the kit source.
+
+MIT License
+
+Copyright (c) 2026 Petr Vyhlas
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Third-party notices
+
+Portions of this project (helper scripts and templates) are derived from
+Spec Kit (https://github.com/github/spec-kit), Copyright (c) GitHub, Inc.,
+used under the MIT License.

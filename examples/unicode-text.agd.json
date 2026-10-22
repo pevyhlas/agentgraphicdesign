@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "id": "00000000-0000-0000-0000-000000000300",
+  "name": "unicode-text-日本語",
+  "revn": 1,
+  "canvas": {
+    "width": 800,
+    "height": 600
+  },
+  "root": {
+    "type": "frame",
+    "id": "00000000-0000-0000-0000-000000000301",
+    "order": "a0",
+    "name": "root-根",
+    "width": 800,
+    "height": 600,
+    "visible": true,
+    "locked": false,
+    "children": [
+      {
+        "type": "text",
+        "id": "00000000-0000-0000-0000-000000000302",
+        "order": "a0",
+        "name": "japanese-text",
+        "text": "こんにちは世界",
+        "fontFamily": "Noto Sans JP",
+        "fontSize": 24,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 50
+        }
+      },
+      {
+        "type": "text",
+        "id": "00000000-0000-0000-0000-000000000303",
+        "order": "a1",
+        "name": "chinese-text",
+        "text": "你好世界",
+        "fontFamily": "Noto Sans SC",
+        "fontSize": 24,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 100
+        }
+      },
+      {
+        "type": "text",
+        "id": "00000000-0000-0000-0000-000000000304",
+        "order": "a2",
+        "name": "emoji-text",
+        "text": "Hello 🌍🌎🌏 World! 👋",
+        "fontFamily": "Arial",
+        "fontSize": 24,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 150
+        }
+      },
+      {
+        "type": "text",
+        "id": "00000000-0000-0000-0000-000000000305",
+        "order": "a3",
+        "name": "arabic-text",
+        "text": "مرحبا بالعالم",
+        "fontFamily": "Noto Sans Arabic",
+        "fontSize": 24,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 200
+        }
+      },
+      {
+        "type": "text",
+        "id": "00000000-0000-0000-0000-000000000306",
+        "order": "a4",
+        "name": "special-chars",
+        "text": "Special: <>&\"'\\n\\t",
+        "fontFamily": "Arial",
+        "fontSize": 18,
+        "fontWeight": 400,
+        "visible": true,
+        "locked": false,
+        "transform": {
+          "x": 50,
+          "y": 250
+        }
+      }
+    ]
+  }
+}
