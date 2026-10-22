@@ -26,6 +26,10 @@ transient-document builder takes over this token copy), S06 and S08 of change 01
 Copy the document's tokens into both transient documents (the bounds probe and the export); the
 raster path shares it.
 
+Out of scope: two pre-existing gaps in the same builder, found in review, move to change 012's
+shared transient-document builder: the bounds probe ignores the render font policy, and its
+bounds diagnostics are not surfaced on sub-node export.
+
 ## Tasks
 
 - [x] Port the fix and its regression tests from the pre-public history, where they were
