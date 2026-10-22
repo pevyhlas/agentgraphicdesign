@@ -60,7 +60,9 @@ Pull request increments, in order (task IDs as in the pre-public plan):
 - [ ] PR-1, 008/T001 and 008/T002: `Core/Platform` exactly as D-28, stage S0 values,
   `get_capabilities.platform`, golden fixtures per tuple, gate-agreement and entry-point refusal
   tests, the evidence file with the claim check's linux-x64 entries (implemented and reviewed
-  pre-public: port it).
+  pre-public: port it). Merge evidence (D-28 phase P0): Linux CI, plus a local macOS run of the
+  008/T002 test classes on the pull request head in `private-tmp` mode, and those classes pass; no
+  `macos-progress` record, which 008/T003 builds later.
 - [ ] 008/T003 repository checks (path-API ban, OS-guarded-return ban, workflow lint, bash 3.2
   lint, the `macos-progress` record); 008/T016a runner script and runbook (only if the owner picks
   a self-hosted runner).
@@ -118,10 +120,10 @@ body and in this record, the criteria and tasks it closes.
 ## State
 
 **Step**: tasks
-**Review**: design approved at closure pass 1 (architecture, security, operations, test), and the
-first increment (PR-0 and PR-1) passed implementation review in all four lenses with low notes
-only, both in the pre-public history; the ranges, review reports and the criterion and task text
-are not public
+**Pre-public review**: design approved at closure pass 1 (architecture, security, operations,
+test), and the first increment (PR-0 and PR-1) passed implementation review in all four lenses
+with low notes only, both in the pre-public history; the ranges, review reports and the criterion
+and task text are not public
 **Waiting on**: the owner, on porting (inbox) and on the macOS CI runner (inbox)
 **Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
 close, then 008/T003

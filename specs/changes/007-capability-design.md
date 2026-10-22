@@ -92,7 +92,11 @@ lists live in D-22 to D-25 until those slices open as changes.
 ## State
 
 **Step**: closing
-**Review**: design rounds 1 to 4 and closure passes 1 and 2 in the pre-public history; closure
-pass 2 approved in all four lenses; the review ranges are not reproducible in this repository
-**Waiting on**: the owner, on the glyph-outline platform class (inbox; gates only 011's increment 5)
-**Next**: close (log line, then delete this record) in a follow-up pull request
+**Pre-public review**: design rounds 1 to 4 and closure passes 1 and 2 in the pre-public
+history; closure pass 2 approved in all four lenses; the review ranges are not reproducible in
+this repository
+**Waiting on**: the owner, on the glyph-outline platform class (inbox; gates only 011's increment
+5), and on closing: tier T3 needs the owner's verdict line (reviewer `owner`) over a range in this
+repository, or an owner close, because the pre-public review ranges cannot be recorded here
+**Next**: close (log line, then delete this record) in a follow-up pull request, after the owner's
+verdict or with an owner close

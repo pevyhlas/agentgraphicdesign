@@ -131,8 +131,8 @@ implements an increment restates, in its body and in this record, the criteria a
 ## State
 
 **Step**: tasks
-**Review**: design approved at closure pass 1 (architecture, code, test) in the pre-public
-history; PR 0 (011/T027) passed implementation review round 2 in all four lenses (architecture,
+**Pre-public review**: design approved at closure pass 1 (architecture, code, test) in the
+pre-public history; PR 0 (011/T027) passed implementation review round 2 in all four lenses (architecture,
 code, security, test) after one fix round, with low notes only; the security reviewer accepted the
 special-file residuals (check-then-open race, macOS before change 008, font directories, the
 store's reparse-point asymmetry); the ranges, review reports and the criterion and task text are

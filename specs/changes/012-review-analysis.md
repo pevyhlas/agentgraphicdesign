@@ -115,8 +115,8 @@ body and in this record, the criteria and tasks it closes.
 ## State
 
 **Step**: tasks
-**Review**: design approved at closure pass 1 (architecture, security, test) in the pre-public
-history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
+**Pre-public review**: design approved at closure pass 1 (architecture, security, test) in the
+pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
 **Waiting on**: 010; the owner, on porting (inbox)

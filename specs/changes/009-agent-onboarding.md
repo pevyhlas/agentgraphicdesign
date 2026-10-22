@@ -105,8 +105,8 @@ body and in this record, the criteria and tasks it closes.
 ## State
 
 **Step**: tasks
-**Review**: design approved at closure pass 1 (architecture, security, operations) in the
-pre-public history, whose review reports and criterion and task text are not public; no
+**Pre-public review**: design approved at closure pass 1 (architecture, security, operations) in
+the pre-public history, whose review reports and criterion and task text are not public; no
 implementation yet
 **Waiting on**: 006 and 008 (009/E1, 009/E2); the owner, on porting (inbox)
 **Next**: A0, once 006 and 008's first increment land, restating the criteria and tasks it closes
