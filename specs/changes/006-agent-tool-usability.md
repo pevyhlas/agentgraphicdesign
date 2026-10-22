@@ -75,12 +75,15 @@ started, at full rigor:
   directory.
 - Round 2: code, tests and architecture PASS, low advisories only; the advisories on the
   changelog section, the parity rows, the schema rule's wording and the package verification
-  filter were applied.
+  filter were applied, and the rest are listed under accepted advisories.
 - Round 3, a delta review of those advisory commits (code, tests, operations): PASS, one low
   wording advisory, applied in P4.B-07.
 - Accepted advisories: no MCP-level `STORE_CONFLICT` test (the code path is the shared
   `ToolResult` mapping); the read-only directory test returns early under a root runner, so its
-  behavioral evidence is a non-root run; the `IOException` unwrap branch has no dedicated test.
+  behavioral evidence is a non-root run; the `IOException` unwrap branch has no dedicated test;
+  the contained-store message carries no MCP-specific anchor wording; the guide does not name
+  the MCP remedy for a store conflict; the contained case does not assert that no lock file is
+  created.
 
 This port applies the reviewed source and tests unchanged; only the changelog placement and the
 spec text differ.
@@ -90,7 +93,15 @@ spec text differ.
 - [x] Port the schema, store-free and store-conflict fixes with their tests from the pre-public
   history, where they were reviewed.
 - [x] Fold the spec text into P1, P4, interfaces and J-05; carry the sanitizer deferral to 008.
-- [ ] Verify on Linux CI at the pull request head, and record the acceptance results.
+- [ ] Verify on Linux CI at the pull request head, and record the acceptance results. macOS
+  verification is the local non-root arm64 run, which is also the behavioral evidence for the
+  read-only directory test. The live `tools/list` probe of the source plan is replaced by the
+  protocol test, which asserts the tool count against the surface manifest.
+- [x] Fix the Coverage Gate download race found on the first CI run: parallel test jobs
+  uploaded identically named collector copies (same runner host name and start second), and
+  `merge-multiple` wrote them into one path concurrently, corrupting one XML file. Each
+  artifact now downloads into its own subdirectory; the gate's merge is a union over source
+  lines, so the duplicate copies do not change the result.
 - [ ] Independent review of the port in this repository.
 
 ## Checks
