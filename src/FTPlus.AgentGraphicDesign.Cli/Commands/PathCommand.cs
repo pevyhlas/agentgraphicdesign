@@ -3,6 +3,7 @@ using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.PathOperations;
+using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
 namespace FTPlus.AgentGraphicDesign.Cli.Commands;
@@ -14,7 +15,8 @@ public sealed class PathBooleanCommand : Command<PathBooleanCommand.Settings>
 {
     private readonly IDocumentEngine _engine;
 
-    public PathBooleanCommand(IDocumentEngine engine)
+    // Pure geometry: the file-only engine never creates or scans a .agd document store.
+    public PathBooleanCommand([FromKeyedServices(Program.FileEngineServiceKey)] IDocumentEngine engine)
     {
         _engine = engine;
     }
@@ -116,7 +118,7 @@ public sealed class PathOffsetCommand : Command<PathOffsetCommand.Settings>
 {
     private readonly IDocumentEngine _engine;
 
-    public PathOffsetCommand(IDocumentEngine engine)
+    public PathOffsetCommand([FromKeyedServices(Program.FileEngineServiceKey)] IDocumentEngine engine)
     {
         _engine = engine;
     }
@@ -262,7 +264,7 @@ public sealed class PathUnionCommand : Command<PathUnionCommand.Settings>
 {
     private readonly IDocumentEngine _engine;
 
-    public PathUnionCommand(IDocumentEngine engine)
+    public PathUnionCommand([FromKeyedServices(Program.FileEngineServiceKey)] IDocumentEngine engine)
     {
         _engine = engine;
     }

@@ -14,7 +14,7 @@
 |-----------------|----------|----|---------------|
 | Project filesystem | every source, output, lock and cache | P1 | operations fail closed with structured errors; nothing partial is published |
 | Git, run by the user | project history, review and restore | users | AGD does not depend on it; after a restore, sources are reloaded and validated |
-| MCP clients | starting `agd-mcp` over stdio and calling tools | agents | a client that rejects one tool schema hides every tool; today `import_pixel_layer` advertises a boolean parameter schema that the TypeScript MCP SDK rejects, until change 006 lands (J-05) |
+| MCP clients | starting `agd-mcp` over stdio and calling tools | agents | a client that rejects one tool schema hides every tool; every tool schema is therefore a JSON object with no boolean subschema, which the TypeScript MCP SDK accepts (P4.B-07, J-05) |
 | GitHub Releases | distributing release bundles | users installing | install from source instead; checksums guard every download |
 | The external Blender producer (AgentBlender) | PNG stills, sidecars and reproducibility evidence | P1 preflight, verify and import | its outputs are untrusted input; checks report findings, never admission |
 | NuGet | restoring pinned packages at build time only | CI, contributors | locked restore fails the build; runtime never contacts it |

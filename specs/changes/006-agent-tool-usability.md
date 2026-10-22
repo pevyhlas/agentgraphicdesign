@@ -10,51 +10,108 @@ hiding all tools; and the pure path geometry commands created and failed on a do
 After this change any spec-conformant MCP client gets every tool, path geometry runs anywhere,
 and a real store conflict names the other store. Slice S01 of change 013.
 
+Inbox: this change ports one in-flight branch as its own pull request, the recommended option
+of "How in-flight pre-public work lands here"; that item stays open for the other changes.
+
 ## Spec edits
 
 | Level | ID | Edit | Note |
 |-------|----|------|------|
-| L2 | P4 (new B-) | add: every MCP tool input schema and nested schema is an object (boolean `additionalProperties` allowed) | test over all tools |
-| L2 | P1 (new B-) | add: path geometry commands are store-free | |
-| L2 | P1 (new B-) | add: overlapping stores fail with `STORE_CONFLICT`, naming the other store, creating nothing | declared error-code cutover from `INVALID_PROPERTY` |
+| L2 | P4.B-07 | add: every MCP tool input schema and nested schema is an object (boolean `additionalProperties` allowed) | test over all tools |
+| L2 | P1.B-26 | add: path geometry commands are store-free | |
+| L2 | P1.B-27 | add: overlapping stores fail with `STORE_CONFLICT`, naming the other store, creating nothing | declared error-code cutover from `INVALID_PROPERTY` |
+| L2 | P4 failure semantics | add: a CLI command that fails while it is constructed reports its own code with exit 1 | declared exit-code cutover from 4 |
+| L2 | P4 left open | add: whether the other non-persisting file commands move to the store-free engine | review finding, not in scope |
 | L0 | J-05 | remove the variation "An MCP client rejects one tool's schema" | lands with the schema fix |
 | L1 | interfaces | MCP clients row: drop the `import_pixel_layer` case; keep the general failure mode | lands with the schema fix |
 
 ## Bounds
 
 - C-04: holds: fixes stay in the adapters and shared engine composition.
-- C-09: holds: the error-code change is a declared cutover in the changelog.
+- C-09: holds: the error-code and exit-code changes are declared cutovers in the changelog.
+- Q-05: holds: no platform claim changes; macOS store paths stay with change 008.
 - Others in scope: hold.
 
 ## Approach
 
-Describe both `import_pixel_layer` parameters so the SDK emits object schemas; a protocol test
-walks every tool's schemas; the three path commands use the file-only engine; a distinct
-`STORE_CONFLICT` code; the CLI unwraps engine, access and I/O errors raised while a command is
-constructed.
+- **Schema**: `[Description]` on both `import_pixel_layer` parameters, so the C# SDK emits
+  `{"description": ...}` instead of `true` for the `JsonElement` request (as `edit_pixel_asset`
+  already did). Closed request objects stay validated by Core; typing tool arguments beyond
+  schema objects was deferred.
+- **Schema test**: a standalone protocol test walks every tool's `properties`, `$defs`,
+  `definitions`, `patternProperties`, `anyOf`, `oneOf`, `allOf`, `prefixItems`, `items`, `not`,
+  `if`/`then`/`else`, `contains`, `propertyNames` and object-valued `additionalProperties`; a
+  boolean `additionalProperties` stays legal. It asserts the tool count against
+  `docs/surface-manifest.json` and pins `import_pixel_layer.request` as an object, so it cannot
+  pass vacuously; a walker self-test proves the detector fires. The installed-package
+  verification (`scripts/verify-packages.sh`) also runs it.
+- **Path commands**: inject the keyed file-only engine (`Program.FileEngineServiceKey`), the
+  composition `validate` and the asset pipeline already use. MCP `path_*` tools keep the
+  server's store-backed engine, which does no store access in the operation; the parity table
+  says so.
+- **Store conflict**: a distinct `STORE_CONFLICT` code instead of `INVALID_PROPERTY`. The
+  enclosing case names the enclosing root at the end of the message; the contained case names
+  the inner store's directory relative to the directory holding the new store, so it survives
+  surface path sanitization. The ancestor check runs before the store directory is created, so
+  a refused store leaves no `./.agd`.
+- **CLI construction errors**: `HandleException` unwraps a `DocumentEngineException`,
+  `UnauthorizedAccessException` or `IOException` from Spectre's `CommandRuntimeException`, so
+  such failures report their own code with exit 1, not `INVALID_ARGUMENTS: Could not resolve
+  type` with exit 4.
+- **Deferred**: the unanchored Core path pattern in `ErrorSanitizer` garbles `/private/...`
+  roots and relative locations containing `tmp`, `var` and similar segments; it moves to change
+  008's error-path redactor. Moving the other non-persisting file commands to the store-free
+  engine is left open in P4.
+
+### Pre-public review
+
+The work was implemented and reviewed in the pre-public history before this repository
+started, at full rigor:
+
+- Round 1: code FAIL (one medium: a contained store was reported by its lock-file name) and
+  tests FAIL (two medium: the schema check sat behind platform-gated assertions and could pass
+  vacuously; the conflict location and the contain direction were untested). All were fixed,
+  with the low findings on residue, exit-code pinning, walker coverage and the read-only
+  directory.
+- Round 2: code, tests and architecture PASS, low advisories only; the advisories on the
+  changelog section, the parity rows, the schema rule's wording and the package verification
+  filter were applied.
+- Round 3, a delta review of those advisory commits (code, tests, operations): PASS, one low
+  wording advisory, applied in P4.B-07.
+- Accepted advisories: no MCP-level `STORE_CONFLICT` test (the code path is the shared
+  `ToolResult` mapping); the read-only directory test returns early under a root runner, so its
+  behavioral evidence is a non-root run; the `IOException` unwrap branch has no dedicated test.
+
+This port applies the reviewed source and tests unchanged; only the changelog placement and the
+spec text differ.
 
 ## Tasks
 
-- [ ] Port the schema, store-free and store-conflict fixes with their tests from the pre-public
+- [x] Port the schema, store-free and store-conflict fixes with their tests from the pre-public
   history, where they were reviewed.
-- [ ] Verify on Linux CI and macOS, and record the acceptance results.
+- [x] Fold the spec text into P1, P4, interfaces and J-05; carry the sanitizer deferral to 008.
+- [ ] Verify on Linux CI at the pull request head, and record the acceptance results.
+- [ ] Independent review of the port in this repository.
 
 ## Checks
 
 Each new behavior passes the line test: a real client hid every tool over one boolean schema,
 and a pure command that created a store broke path geometry. The new P4 and P1 behaviors
-get the tests in Acceptance; the error-code change is declared in the changelog (C-09).
+get the tests in Acceptance; the error-code and exit-code changes are declared in the
+changelog (C-09).
 
 ## Acceptance
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P4: object tool schemas (new) | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and the walker self-test | 0 | NOT_RUN |
-| A2 | P1: store-free path commands (new) | CLI test: path commands inside an existing store root create no store | 0 | NOT_RUN |
-| A3 | P1: `STORE_CONFLICT` (new) | CLI and Core store-conflict tests | 0 | NOT_RUN |
+| A1 | P4.B-07 | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and `BooleanSubschemaWalker_RejectsNestedBooleanSchemas` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
+| A2 | P1.B-26 | CLI `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
+| A3 | P1.B-27, P4 failure semantics | CLI `PathCommandTests.StoreBackedCommand_*` and Core `FileDocumentStoreHardeningTests.Constructor_{RejectsNestedStoreRoot, RejectsStoreContainingAnExistingStore, RejectedNestedStore_LeavesNoDirectory}` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
 
 ## State
 
-**Step**: tasks
-**Waiting on**: the owner, on how the in-flight branches land here (inbox)
-**Next**: port the reviewed fixes, then verify
+**Step**: verify
+**Waiting on**: Linux CI on the pull request head; a review of the port
+**Branch**: `fix/006-mcp-schema-and-path-commands`
+**Authority**: the lead merges once CI and review pass
+**Next**: record the CI result per acceptance item, then close with the log line

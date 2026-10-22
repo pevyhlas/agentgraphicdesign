@@ -440,6 +440,7 @@ The codes agents hit most, and what to do:
 | `NODE_NOT_FOUND` / `PARENT_NOT_FOUND` / `PARENT_NOT_CONTAINER` | Bad node or parent id in add/update/move. | Copy ids from `agd list -f json` or `list_nodes`; parents must be `root`, a frame, or a group. |
 | `REVISION_CONFLICT` | `expectedRevn` is stale. | Reload, read the current `revn`, and retry the mutation. |
 | `PATH_ESCAPE` | A path left the MCP working directory. | Use relative paths inside the working directory. |
+| `STORE_CONFLICT` | A store-backed command's store (`./.agd` for the CLI, the working directory for MCP) would sit inside another store, or would contain one (another `.agd-store.lock` below it). | Inside another store: run from outside the reported store root, or use file-only commands (`agd path ...`, `validate`, `assets`). Containing one: move or remove the reported inner store, or start from a directory that does not contain it. |
 | `DOCUMENT_NOT_FOUND` | Unknown id or path. | `list_documents` / `agd list-documents` to see what exists. |
 | `ARTIFACT_VERIFY_BUSY` | Another verification is active in this host. | Wait for it to finish before making another call; there is no server queue. |
 | `ARTIFACT_PNG_INVALID` | Invalid PNG structure or, for verification, compressed stream/samples. | Correct the supplied PNG and matching descriptor claims; preflight alone cannot establish decodability. |

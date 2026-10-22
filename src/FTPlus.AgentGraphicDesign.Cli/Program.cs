@@ -266,6 +266,11 @@ public static class Program
     private static int HandleException(Exception exception, string[] args)
     {
         var format = RequestedFormat(args);
+        // Command construction failures (an overlapping .agd store, an unwritable directory) arrive
+        // wrapped as "Could not resolve type"; report the underlying failure instead.
+        if (exception is CommandRuntimeException && FindConstructionFailure(exception) is { } inner)
+            exception = inner;
+
         var (code, exitCode, message) = exception switch
         {
             CommandParseException => ("INVALID_ARGUMENTS", ExitCodes.InvalidArguments, exception.Message),
@@ -284,6 +289,17 @@ public static class Program
 
         AgentOutput.WriteError(code, message, format);
         return exitCode;
+    }
+
+    private static Exception? FindConstructionFailure(Exception exception)
+    {
+        for (var current = exception.InnerException; current is not null; current = current.InnerException)
+        {
+            if (current is DocumentEngineException or UnauthorizedAccessException or IOException)
+                return current;
+        }
+
+        return null;
     }
 
     private static OutputFormat RequestedFormat(IReadOnlyList<string> args)

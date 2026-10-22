@@ -148,5 +148,99 @@ public class PathCommandTests : CommandTestBase
         Assert.Contains("Arc flag must be '0' or '1'", error.GetProperty("message").GetString());
     }
 
+    [Fact]
+    public void PathCommands_AreStoreFree_InsideAnExistingStoreRoot()
+    {
+        // The invocation directory is itself a store root, so a store-backed engine would
+        // reject ./.agd as an overlapping store before the geometry ran.
+        File.WriteAllText(Path.Combine(TestDir, ".agd-store.lock"), string.Empty);
+
+        Assert.Equal(0, RunCommand("path", "offset", InnerSquare, "2", "-f", "json").ExitCode);
+        Assert.Equal(0, RunCommand("path", "bool", "difference", OuterSquare, InnerSquare, "-f", "json").ExitCode);
+        Assert.Equal(0, RunCommand("path", "union", OuterSquare, InnerSquare, "-f", "json").ExitCode);
+        Assert.False(Directory.Exists(Path.Combine(TestDir, ".agd")));
+    }
+
+    [Fact]
+    public void StoreBackedCommand_InsideAnExistingStoreRoot_ReportsStoreConflictWithPath()
+    {
+        File.WriteAllText(Path.Combine(TestDir, ".agd-store.lock"), string.Empty);
+
+        var (exitCode, output, _) = RunCommand("list-documents", "-f", "json");
+
+        Assert.Equal(1, exitCode);
+        var error = JsonDocument.Parse(output).RootElement.GetProperty("error");
+        Assert.Equal("STORE_CONFLICT", error.GetProperty("code").GetString());
+        // Surface errors keep only the last path segment: the enclosing store root's name is
+        // reported, not the refused ./.agd.
+        var message = error.GetProperty("message").GetString()!;
+        Assert.Contains(Path.GetFileName(TestDir), message);
+        Assert.DoesNotContain(".agd", message);
+        Assert.False(Directory.Exists(Path.Combine(TestDir, ".agd")));
+    }
+
+    [Fact]
+    public void StoreBackedCommand_BelowAnExistingStoreRoot_ReportsStoreConflict()
+    {
+        File.WriteAllText(Path.Combine(TestDir, ".agd-store.lock"), string.Empty);
+        var subdirectory = Directory.CreateDirectory(Path.Combine(TestDir, "work")).FullName;
+
+        var (exitCode, output, _) = RunCommandIn(subdirectory, "list-documents", "-f", "json");
+
+        Assert.Equal(1, exitCode);
+        Assert.Equal("STORE_CONFLICT", JsonDocument.Parse(output).RootElement.GetProperty("error").GetProperty("code").GetString());
+        Assert.False(Directory.Exists(Path.Combine(subdirectory, ".agd")));
+    }
+
+    [Fact]
+    public void StoreBackedCommand_ContainingAnExistingStore_ReportsItsRelativeLocation()
+    {
+        var inner = Directory.CreateDirectory(Path.Combine(TestDir, ".agd", "inner")).FullName;
+        File.WriteAllText(Path.Combine(inner, ".agd-store.lock"), string.Empty);
+
+        var (exitCode, output, _) = RunCommand("list-documents", "-f", "json");
+
+        Assert.Equal(1, exitCode);
+        var error = JsonDocument.Parse(output).RootElement.GetProperty("error");
+        Assert.Equal("STORE_CONFLICT", error.GetProperty("code").GetString());
+        Assert.Contains($"'{Path.Combine(".agd", "inner")}'", error.GetProperty("message").GetString());
+    }
+
+    [Fact]
+    public void StoreBackedCommand_InUnwritableDirectory_ReportsAccessDenied()
+    {
+        if (OperatingSystem.IsWindows())
+            return;
+        var readOnly = Directory.CreateDirectory(Path.Combine(TestDir, "read-only")).FullName;
+        File.SetUnixFileMode(readOnly, UnixFileMode.UserRead | UnixFileMode.UserExecute);
+        try
+        {
+            if (CanCreateDirectory(readOnly))
+                return; // Privileged runners ignore the mode; the scenario cannot be expressed.
+
+            var (exitCode, output, _) = RunCommandIn(readOnly, "list-documents", "-f", "json");
+
+            Assert.Equal(1, exitCode);
+            Assert.Equal("ACCESS_DENIED", JsonDocument.Parse(output).RootElement.GetProperty("error").GetProperty("code").GetString());
+        }
+        finally
+        {
+            File.SetUnixFileMode(readOnly, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        }
+    }
+
+    private static bool CanCreateDirectory(string parent)
+    {
+        try
+        {
+            Directory.Delete(Directory.CreateDirectory(Path.Combine(parent, "probe")).FullName);
+            return true;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
+        }
+    }
+
     private static int CountSubpaths(string pathData) => pathData.Count(c => c == 'M');
 }
