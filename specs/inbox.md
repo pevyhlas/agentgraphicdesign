@@ -189,7 +189,11 @@ preview, with an "experimental, interfaces may change" promise and proposed exit
 Changes [006](changes/006-agent-tool-usability.md) to [012](changes/012-review-analysis.md)
 under [013](changes/013-brand-workflow-uptake.md) were in flight before this repository started
 from fresh history (designs approved; 006, 010 and the first pieces of 008, 011 and 012
-implemented and reviewed in the pre-public history), so their branches cannot merge here.
+implemented and reviewed in the pre-public history), so their branches cannot merge here. Their
+approved designs, plans, task lists and review outcomes are now recorded here: decisions
+[D-21 to D-29](architecture/decisions.md) and the change records. What remains to land is code:
+006, 010, 008's first increment (the platform registry), 011's special-file gate and 012's raw
+RGBA render with its legacy characterization.
 
 1. **Port each change as its own pull request here** (Recommended): reapply its reviewed work
    onto this tree, rerun CI and the recorded reviews, then continue.
@@ -203,11 +207,17 @@ implemented and reviewed in the pre-public history), so their branches cannot me
 *2026-10-22 · agent · open*
 
 The macOS qualification lane ([change 008](changes/008-macos-qualification.md)) needs a CI
-runner; this repository's workflows use GitHub-hosted runners only.
+runner; this repository's workflows use GitHub-hosted runners only. Before going public the
+choice was a self-hosted runner under a separate, audited, unprivileged account, designed to be
+disabled or fork-approval-gated once the repository became public ([D-28](decisions/D-28.md)).
 
 1. **A GitHub-hosted Apple silicon runner** (Recommended): no machine to secure; the qualified
    macOS version depends on the runner images offered.
-2. **Keep the informational scheduled job** until qualification needs more.
+2. **Keep the informational scheduled job** until qualification needs more; macOS evidence then
+   comes from lead-run qualification records.
+3. **The self-hosted runner as designed**, with approval required for every fork workflow run:
+   the qualified macOS version is under your control; you run the one-time setup and keep the
+   machine maintained.
 
 **If no answer**: keep the informational scheduled job.
 
@@ -217,7 +227,7 @@ runner; this repository's workflows use GitHub-hosted runners only.
 
 Text-to-outline results come from the platform's font scaler and may differ in the last digit
 between hosts; only the text-outline increment of [change 011](changes/011-geometry-fidelity.md)
-waits on this.
+waits on this ([D-21](decisions/D-21.md), Determinism).
 
 1. **Declare a per-platform class for text outline results** (Recommended): no new parser; an
    honest flag; converted outlines are ordinary cross-platform paths afterwards.

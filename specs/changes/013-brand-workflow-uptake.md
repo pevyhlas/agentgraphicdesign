@@ -42,13 +42,13 @@ Slices, each its own change and independently mergeable:
 | S00 | 007-capability-design | one reviewed design for geometry, outlines, families, targets, kits and review | none |
 | S01 | 006-agent-tool-usability | MCP schema client compatibility, store-free geometry commands | none |
 | S02 | 008-macos-qualification | Apple silicon macOS qualification (Q-05) | none |
-| S03 | 009-agent-onboarding | `agd doctor`, `agd mcp install`, discovery and guidance | S01, S02 |
+| S03 | 009-agent-onboarding | `agd doctor`, `agd mcp install`, discovery and guidance | S01, S02 (its registry first; its probe before B5) |
 | S04 | 011-geometry-fidelity | curve-preserving path operations, transform, fit, split, text outlines | S00 |
 | S05 | 012-review-analysis | comparison sheets, static gallery, legibility analysis | S00, 010 |
-| S06 | pending | export targets: mixed SVG and PNG, ICO, ICNS, iOS catalog, web icons, hicolor | S00, S02, S05 |
-| S07 | pending | stroke-to-outline with knockout (format change) | S00, S04 |
-| S08 | pending | variant families with optical sizes and baked placements (format change, R-13) | S00, S05, S06 |
-| S09 | pending | kit build, check and pack (R-13) | S00, S02, S03, S06, S08 |
+| S06 | pending | export targets: mixed SVG and PNG, ICO, ICNS, iOS catalog, web icons, hicolor (D-24) | S00, S02, S05a, 010 |
+| S07 | pending | stroke-to-outline with knockout (format change, D-22) | S00, S04 |
+| S08 | pending | variant families with optical sizes and baked placements (format change, R-13, D-23) | S00, S05, S06, S07 for derivation-aware checks, 010, the SVG presentation fix |
+| S09 | pending | kit build, check and pack (R-13, D-25) | S00, S02, S03, S06, S08 |
 | S11 | pending | integrated run on Apple silicon macOS | S01 to S09 |
 
 The sub-node token fix (010) lands before S05, whose shared transient-document builder takes over
@@ -57,7 +57,9 @@ its token copy, and so before S06 and S08.
 ## Tasks
 
 - [ ] Land S00 to S05 from changes 006 to 012 (see the inbox on porting their branches).
-- [ ] Open S06 to S09 and S11 as changes, each with its design review.
+- [ ] Open S06 to S09 and S11 as changes. Their accepted designs and verification lists are D-22
+  to D-25 under the rules of D-27; each slice plan cites them, and S07 and S08 still pass the
+  document-format review before building.
 - [ ] S11: a fresh agent on Apple silicon macOS reproduces a logo family and platform kit from
   committed sources using only `agd` and `agd-mcp`.
 

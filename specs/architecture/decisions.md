@@ -143,11 +143,12 @@ MIT-compatible permissive, approved by exact id and version, pinned, audited and
 
 ## D-14 Clipper2
 
-**Decided by**: research validation · **Date**: 0.1 line · **Cited by**: R-08
+**Decided by**: research validation · **Date**: 0.1 line · **Cited by**: R-08, D-21
 - **Decision** (accepted): Clipper2 (BSL-1.0, pure C#) for boolean and offset path operations;
-  its triangulation module is not used.
+  its triangulation module is not used. When change 011 lands, Clipper2 serves booleans only and
+  offsets move to the AGD stroker (D-21).
 - **Alternatives**: in-house polygon clipping.
-- **Revisit when**: curve-preserving geometry needs more than polygon clipping (change 011).
+- **Revisit when**: a curve-native boolean engine becomes qualifiable (D-21).
 
 ## D-15 Spectre.Console.Cli
 
@@ -200,3 +201,41 @@ MIT-compatible permissive, approved by exact id and version, pinned, audited and
 - **Alternatives**: Svg.Skia (not needed: a dependency for parsing the in-box XML APIs already
   cover).
 - **Revisit when**: import needs SVG semantics the in-box parser cannot reach.
+
+## Capability and onboarding decisions
+
+Accepted in the design reviews of changes 007 to 012 (pre-public history); none is built yet.
+Each file holds the binding contract its implementing change cites.
+
+[D-21 Curve-preserving geometry with a measured, reported tolerance](../decisions/D-21.md)
+(accepted; the glyph platform class waits on the owner): Clipper2 for booleans only, normative
+sliver prevention, a libm-free stroker, magnitude bounds and path transform, fit, split and
+outlines; change 011.
+
+[D-22 Stroke outlines and knockouts as baked derivations in format 1](../decisions/D-22.md)
+(accepted): an additive `path.derivation` with pure staleness hashes; slice S07 of change 013.
+
+[D-23 Asset families: optical masters, variant axes and baked placements](../decisions/D-23.md)
+(accepted): a family manifest and an additive `group.placement` with drift detection; slice S08.
+
+[D-24 Asset manifest v2 and platform target adapters](../decisions/D-24.md) (accepted): new
+spellings only, a shared transient-document builder and closed pure target adapters; slice S06.
+
+[D-25 Versioned, immutable, producer-stamped asset kits](../decisions/D-25.md) (accepted):
+no-replace publication of write-once versions with pin-based consumer trust; slice S09.
+
+[D-26 Review sheets, static gallery and legibility analysis](../decisions/D-26.md) (accepted):
+a condition matrix, raw RGBA renders, Core analysis with a counted budget and a server-free
+gallery; change 012.
+
+[D-27 Cross-cutting rules for the capability design](../decisions/D-27.md) (accepted): format
+versions, references, severities, determinism classes, limits, security controls, parity,
+verification layers and exit codes for D-21 to D-26.
+
+[D-28 Platform registry and per-capability qualification](../decisions/D-28.md) (accepted): a
+three-valued registry, Darwin file backends, one canonical-path entry point and hash-bound
+qualification evidence; change 008.
+
+[D-29 Agent onboarding: truthful identity, discovery and narrow client setup](../decisions/D-29.md)
+(accepted, owner decisions): producer stamps, a task catalog, executable recipes, doctor, a
+broad-root refusal and project-only client install; change 009.
