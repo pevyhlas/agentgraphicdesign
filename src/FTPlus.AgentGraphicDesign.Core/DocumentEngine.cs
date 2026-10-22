@@ -932,7 +932,7 @@ public sealed class DocumentEngine : IDocumentEngine
     /// cropped to that subtree's own bounds and shifted so its top-left maps to (0,0). The node
     /// is placed under a fresh, non-clipping root, so neither ancestor transforms nor ancestor
     /// clipping affect the exported asset — a sub-node export reflects the node in isolation
-    /// (D-10). Throws <see cref="EngineErrors.NodeNotFound"/> when the id is absent and
+    /// (D-10). Document design tokens are carried over so token references resolve. Throws <see cref="EngineErrors.NodeNotFound"/> when the id is absent and
     /// <see cref="EngineErrors.NodeNoBounds"/> when the subtree has no visible extent.
     /// </summary>
     private Document BuildSubtreeDocument(Document document, Guid nodeId, CancellationToken cancellationToken)
@@ -954,6 +954,7 @@ public sealed class DocumentEngine : IDocumentEngine
             Id = Guid.NewGuid(),
             Name = copy.Name,
             Canvas = new Canvas { Width = copy.Canvas.Width, Height = copy.Canvas.Height },
+            Tokens = copy.Tokens,
             Root = new FrameNode { ClipContent = false, Width = copy.Canvas.Width, Height = copy.Canvas.Height, Children = { node } }
         };
         var world = GetBounds(probe, node.Id, cancellationToken).FirstOrDefault(b => b.Id == node.Id)?.World;
@@ -970,6 +971,9 @@ public sealed class DocumentEngine : IDocumentEngine
             Id = Guid.NewGuid(),
             Name = copy.Name,
             Canvas = new Canvas { Width = box.Width, Height = box.Height },
+            // Design tokens are document-wide: token-referenced paint and typography in the
+            // subtree must resolve exactly as they do in the whole document.
+            Tokens = copy.Tokens,
             Root = new FrameNode
             {
                 ClipContent = false,

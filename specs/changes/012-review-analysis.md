@@ -41,6 +41,10 @@ not admitted, sheets and analysis keep today's read paths as a tracked deviation
   documentation and smoke.
 - [ ] S05b: an operation counter, supersampled widths and topology, budgets, documentation and
   macOS runs.
+- [ ] Shared transient-document builder: thread the render font policy (`--font-dir`,
+  `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and
+  surface the probe's bounds diagnostics (such as an unresolved typography token) on sub-node
+  export. Both are pre-existing gaps found in the change 010 review and handed to this change.
 
 ## Checks
 

@@ -20,7 +20,8 @@ Format reference: [docs/format.md](../../../docs/format.md).
 ## Behaviors
 
 - **P1.B-15 Isolated sub-node export**: exporting one node draws its subtree alone, cropped to
-  its own bounds, without ancestor transforms or clipping; a node with no visible bounds fails
+  its own bounds, without ancestor transforms or clipping, and resolves token references in
+  paint and typography exactly as the whole document does; a node with no visible bounds fails
   with `NODE_NO_BOUNDS`. Test: `SubNodeExportTests`, `SubNodeRenderTests`, `ExportCommandSubNodeTests`.
 - **P1.B-16 Deterministic fonts**: raster text resolves font directories, then bundled Inter,
   then host fonts when allowed; an unresolved family is substituted with bundled Inter and
