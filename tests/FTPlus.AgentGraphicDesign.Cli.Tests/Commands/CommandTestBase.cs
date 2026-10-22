@@ -18,7 +18,13 @@ public abstract class CommandTestBase : IDisposable
     protected (int ExitCode, string Output, string Error) RunCommand(params string[] args) =>
         RunCommandWithInput(standardInput: null, args);
 
-    protected (int ExitCode, string Output, string Error) RunCommandWithInput(string? standardInput, params string[] args)
+    protected (int ExitCode, string Output, string Error) RunCommandWithInput(string? standardInput, params string[] args) =>
+        RunCommandCore(TestDir, standardInput, args);
+
+    protected (int ExitCode, string Output, string Error) RunCommandIn(string workingDirectory, params string[] args) =>
+        RunCommandCore(workingDirectory, standardInput: null, args);
+
+    private (int ExitCode, string Output, string Error) RunCommandCore(string workingDirectory, string? standardInput, string[] args)
     {
         var packagedCli = Environment.GetEnvironmentVariable("AGD_TEST_CLI_EXECUTABLE");
         if (packagedCli is not null && (!Path.IsPathFullyQualified(packagedCli) || !File.Exists(packagedCli)))
@@ -26,7 +32,7 @@ public abstract class CommandTestBase : IDisposable
         var psi = new ProcessStartInfo
         {
             FileName = packagedCli ?? "dotnet",
-            WorkingDirectory = TestDir,
+            WorkingDirectory = workingDirectory,
             RedirectStandardInput = standardInput is not null,
             RedirectStandardOutput = true,
             RedirectStandardError = true,

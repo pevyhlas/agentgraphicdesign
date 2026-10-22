@@ -50,7 +50,9 @@ arm64 and Windows pixel backends.
 - [ ] Repository checks, OFL test fonts and the output corpus commands.
 - [ ] Canonical paths for the vector store and the shared probe, the Darwin file probe and
   pixel backends with their fixtures, the stored-name gate for writer locks and the error-path
-  redactor.
+  redactor; the redactor also fixes the unanchored Core path pattern that garbles `/private/...`
+  roots and relative store locations with a `tmp`, `var` or similar segment in `STORE_CONFLICT`
+  messages (deferred here from change 006).
 - [ ] Portable tests and scripts, the qualification command and record, the macOS CI job, the
   support matrix and the live availability probe.
 - [ ] Choose the macOS CI runner for the public repository (inbox).

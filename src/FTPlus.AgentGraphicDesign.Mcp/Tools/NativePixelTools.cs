@@ -39,7 +39,9 @@ public sealed class NativePixelTools(NativePixelService service, PathConfinement
 
     [McpServerTool(Name = "import_pixel_layer", Title = "Import Pixel Layer", ReadOnly = false)]
     [Description("Append one independent provided PNG still layer under a complete expected snapshot. Preserves original input; same-size canvas; not admission or provenance approval.")]
-    public Task<CallToolResult> ImportPixelLayer(string assetDirectory, JsonElement request,
+    public Task<CallToolResult> ImportPixelLayer(
+        [Description("Asset directory within the working directory")] string assetDirectory,
+        [Description("Closed import request object {descriptorPath, expectedSnapshot, layerName}")] JsonElement request,
         RequestContext<CallToolRequestParams> context, CancellationToken cancellationToken = default) => Guarded(async () =>
     {
         var items = context.JsonRpcRequest?.Context?.Items;

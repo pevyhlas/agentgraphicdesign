@@ -28,9 +28,6 @@ has only what its MCP client or shell gives it.
   import and native pixel storage) fail closed, except on Windows, which the shared file probe
   lets through unqualified (Q-05, P1.I-09); vector document editing still runs, unqualified
   (C-11, Q-05).
-- **An MCP client rejects one tool's schema**: the client shows no AGD tools; today the
-  TypeScript MCP SDK does so over `import_pixel_layer`, so the agent uses the CLI until change
-  006 lands.
 
 ## Success
 

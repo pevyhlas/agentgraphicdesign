@@ -104,6 +104,36 @@ public partial class ProtocolTests : IDisposable
     }
 
     [Fact]
+    public async Task ToolsList_AllInputSchemas_HaveNoBooleanSubschemas()
+    {
+        // The TypeScript MCP SDK (OpenCode, others) rejects boolean subschemas and then drops every
+        // tool; a single untyped JsonElement parameter once hid the whole surface from those clients.
+        await StartServerAsync();
+        await InitializeAsync();
+
+        var tools = (await SendRequestAsync("tools/list", new { })).RootElement.GetProperty("result").GetProperty("tools")
+            .EnumerateArray().ToDictionary(tool => tool.GetProperty("name").GetString()!);
+
+        using var inventory = JsonDocument.Parse(await File.ReadAllTextAsync(Path.Combine(RepositoryPaths.Root, "docs", "surface-manifest.json")));
+        Assert.Equal(inventory.RootElement.GetProperty("mcpTools").GetArrayLength(), tools.Count);
+        foreach (var (name, tool) in tools)
+            AssertNoBooleanSubschemas(tool.GetProperty("inputSchema"), $"{name}.inputSchema");
+        Assert.Equal(JsonValueKind.Object, tools["import_pixel_layer"].GetProperty("inputSchema")
+            .GetProperty("properties").GetProperty("request").ValueKind);
+    }
+
+    [Theory]
+    [InlineData("""{"properties":{"x":true}}""")]
+    [InlineData("""{"properties":{"x":{"anyOf":[{"type":"string"},false]}}}""")]
+    [InlineData("""{"properties":{"x":{"type":"array","items":true}}}""")]
+    [InlineData("""{"properties":{"x":{"type":"object","additionalProperties":{"not":true}}}}""")]
+    public void BooleanSubschemaWalker_RejectsNestedBooleanSchemas(string schema)
+    {
+        using var document = JsonDocument.Parse(schema);
+        Assert.ThrowsAny<Xunit.Sdk.XunitException>(() => AssertNoBooleanSubschemas(document.RootElement, "synthetic"));
+    }
+
+    [Fact]
     public async Task ToolsList_ReturnsAllRegisteredTools()
     {
         await StartServerAsync();
@@ -1634,6 +1664,39 @@ public partial class ProtocolTests : IDisposable
     {
         Assert.True(toolResult.GetProperty("isError").GetBoolean());
         Assert.Equal(expectedCode, NativeEnvelope(toolResult).GetProperty("error").GetProperty("code").GetString());
+    }
+
+    private static void AssertNoBooleanSubschemas(JsonElement schema, string location)
+    {
+        Assert.True(schema.ValueKind == JsonValueKind.Object, $"{location} must be a schema object, not {schema.ValueKind}");
+        foreach (var keyword in new[] { "properties", "$defs", "definitions", "patternProperties" })
+        {
+            if (schema.TryGetProperty(keyword, out var map) && map.ValueKind == JsonValueKind.Object)
+            {
+                foreach (var property in map.EnumerateObject())
+                    AssertNoBooleanSubschemas(property.Value, $"{location}.{keyword}.{property.Name}");
+            }
+        }
+
+        foreach (var keyword in new[] { "anyOf", "oneOf", "allOf", "prefixItems" })
+        {
+            if (schema.TryGetProperty(keyword, out var list) && list.ValueKind == JsonValueKind.Array)
+            {
+                var index = 0;
+                foreach (var item in list.EnumerateArray())
+                    AssertNoBooleanSubschemas(item, $"{location}.{keyword}[{index++}]");
+            }
+        }
+
+        foreach (var keyword in new[] { "items", "not", "if", "then", "else", "contains", "propertyNames" })
+        {
+            if (schema.TryGetProperty(keyword, out var subschema))
+                AssertNoBooleanSubschemas(subschema, $"{location}.{keyword}");
+        }
+
+        // `additionalProperties: false` is the conventional closed-object form and clients accept it.
+        if (schema.TryGetProperty("additionalProperties", out var additional) && additional.ValueKind == JsonValueKind.Object)
+            AssertNoBooleanSubschemas(additional, $"{location}.additionalProperties");
     }
 
     private static bool? ReadOnlyHint(JsonElement tool) =>

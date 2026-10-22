@@ -288,7 +288,31 @@ public sealed class FileDocumentStoreHardeningTests : IDisposable
 
         var exception = Assert.Throws<DocumentEngineException>(() => new FileDocumentStore(nested));
 
-        Assert.Equal(EngineErrors.InvalidProperty, exception.Code);
+        Assert.Equal(EngineErrors.StoreConflict, exception.Code);
+        Assert.EndsWith(_testDir, exception.Message);
+    }
+
+    [Fact]
+    public void Constructor_RejectsStoreContainingAnExistingStore()
+    {
+        var inner = Path.Combine(_testDir, "inner");
+        _ = new FileDocumentStore(inner);
+
+        var exception = Assert.Throws<DocumentEngineException>(() => new FileDocumentStore(_testDir));
+
+        Assert.Equal(EngineErrors.StoreConflict, exception.Code);
+        Assert.Contains($"contain the existing store at '{Path.Combine(Path.GetFileName(_testDir), "inner")}'", exception.Message);
+    }
+
+    [Fact]
+    public void Constructor_RejectedNestedStore_LeavesNoDirectory()
+    {
+        _ = new FileDocumentStore(_testDir);
+        var nested = Path.Combine(_testDir, "nested-store");
+
+        Assert.Throws<DocumentEngineException>(() => new FileDocumentStore(nested));
+
+        Assert.False(Directory.Exists(nested));
     }
 
     [Fact]

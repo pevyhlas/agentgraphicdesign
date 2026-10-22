@@ -37,9 +37,20 @@ full `agd --version` string when reporting a problem.
 - Export and preview size options (`--scale`, `--width`, `--height` and the MCP `scale`,
   `width`, `height` arguments) now describe what they do: a uniform scale, and a logical
   viewport size before scale that crops or pads rather than fitting the geometry.
+- MCP `import_pixel_layer` declared its `request` parameter as a boolean JSON Schema
+  (`true`), which TypeScript MCP SDK clients (e.g. OpenCode) reject, hiding every AGD tool.
+  It is now a described schema object; a protocol test rejects boolean subschemas on all tools.
+- `agd path offset|bool|union` no longer resolve the store-backed engine: they run on plain
+  input without creating `./.agd` or failing inside an existing store tree.
 
 ### Changed
 
+- **Error-code cutover:** nested/overlapping document stores now fail with `STORE_CONFLICT`
+  (was `INVALID_PROPERTY`), naming the enclosing store root or the contained store's relative
+  location; a refused store no longer leaves an empty `./.agd` behind.
+- **Exit-code cutover:** failures while a CLI command is constructed (store conflict, access
+  denied, I/O) report their own code with exit 1 instead of `INVALID_ARGUMENTS: Could not
+  resolve type '...Command'` with exit 4.
 - **First public release (fresh history).** The repository is published with a single
   initial commit; earlier development history, pull requests and CI runs belong to the
   pre-public history and are not linked here.
