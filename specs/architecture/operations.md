@@ -5,7 +5,8 @@
   There is no deployment target and no public package feed (N-06).
 - **CI** (`.github/workflows/ci.yml`): locked restore, build, the Core, CLI, MCP and Skia test
   suites, the combined coverage floor, the Product-Kit adoption and doctor checks, dependency,
-  vulnerability, repository-checker self-test and format gates, package smoke and readiness
+  vulnerability, repository-checker self-test and format gates, the redacting developer-only
+  `scripts/check-public-repo.py` text/file/link guard, package smoke and readiness
   artifacts, on GitHub-hosted runners with the SDK pinned in `global.json` and every action
   pinned by commit. `RepoChecks workflows` fails CI if a workflow leaves GitHub-hosted runners,
   uses `pull_request_target`, drops the top-level `permissions` block or uses an action that is
@@ -25,6 +26,8 @@
   `THIRD-PARTY-NOTICES.txt` and the verbatim upstream `THIRD-PARTY-NOTICES-SKIASHARP.txt`. Code:
   `scripts/RepoChecks/`.
 - **Readiness**: `scripts/check-readiness.sh` regenerates and checks the readiness artifacts.
+- **Product-Kit**: public v1.1.1 vendored in copy mode, with the upstream revision and manifest
+  hash in `.prdkit/memory/config.md`; no kit checkout is needed to build or run CI.
 - **Local tooling**: `scripts/install-local.sh` and `scripts/uninstall-local.sh` install or remove
   the tools from a local build; `scripts/validate-local.sh` runs the CI gates locally.
 - **Contributor telemetry**: `scripts/claude-with-telemetry.sh` is an opt-in launcher for a

@@ -71,7 +71,7 @@ curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --jsonfile global.js
 export DOTNET_ROOT="$HOME/.dotnet" PATH="$HOME/.dotnet:$PATH"
 ```
 
-The README [Requirements](README.md#requirements) cover Windows and the *compatible .NET SDK was
+The [SDK reference](REFERENCE.md#requirements) covers Windows and the *compatible .NET SDK was
 not found* error. Changing the pin is a pull request of its own that reruns CI, the locked
 restore and `scripts/release-bundle.sh --check`. The everyday loop:
 

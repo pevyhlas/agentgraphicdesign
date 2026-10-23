@@ -57,3 +57,4 @@ specs/**/reviews/**/round-*/
 specs/**/traces/
 *.patch
 .prdkit/cache/
+.prdkit/retrospective/

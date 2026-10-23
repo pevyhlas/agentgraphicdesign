@@ -28,7 +28,7 @@ body:
     attributes:
       label: .NET SDK and runtime
       description: The output of `dotnet --version`, and the runtime if it differs.
-      placeholder: 10.0.112
+      placeholder: 10.0.113
     validations:
       required: true
   - type: input
