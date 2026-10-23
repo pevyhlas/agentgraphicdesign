@@ -16,7 +16,9 @@ is not a published binary release, a completed full editor, or proof of macOS qu
 
 The baseline main run passed the required Linux checks:
 [GitHub Actions](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/39885425381).
-It predates this maintenance; the maintenance PR carries its own exact-head evidence.
+It predates this maintenance and does not qualify it. Maintenance exact-head CI is **pending**:
+the current GitHub App credential cannot push to this repository (403). No PR or release is
+claimed; restore repository access, publish the branch and run every required Linux check.
 
 ## What “ready” means next
 

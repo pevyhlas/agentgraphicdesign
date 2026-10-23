@@ -39,6 +39,8 @@ packages/
 logs/
 
 # Temporary files
+__pycache__/
+*.pyc
 *.tmp
 *.temp
 *.bak

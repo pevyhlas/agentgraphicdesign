@@ -64,10 +64,19 @@ self-tests, package smoke, adoption/doctor and exact-head hosted CI.
 ## State
 
 **Step**: build
-**Waiting on**: nothing
-**Next**: finish hygiene checks, verify and review.
+**Waiting on**: repository write access for the automation credential (push 403); then exact-head CI.
+**Next**: complete local verification and re-review guard tests, evidence and publishing-status corrections.
 **Authority**: constitution permits commits, branch push/PR and green-reviewed merge;
 release/tag/assets remain owner-gated. No history rewrite or remote branch deletion.
 **Branch**: 015-public-readiness; base 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e.
+**Delivery**: LOCAL_ONLY; remote main is the base above; no remote feature branch or PR exists.
+**Attempts**: first review found guard-test/evidence gaps and overstated PR evidence; fix round 1
+adds isolated negative tests, bytecode ignores and accurate blocked status. The claimed broken
+Contributing anchor is not reproduced: both the exact committed README and the guard use
+CONTRIBUTING.md, not a fragment. Full initial validation is retained, not assumed complete.
+**Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-code-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/code-review.jsonl
+**Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-security-reviewer · FAIL · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/security-review.jsonl (upstream access only)
+**Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-test-reviewer · FAIL · 0 critical, 0 high, 3 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/test-review.jsonl
+**Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-ops-reviewer · FAIL · 0 critical, 0 high, 1 medium, 1 low · .prdkit/cache/evidence/015-public-readiness/ops-review.jsonl
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
