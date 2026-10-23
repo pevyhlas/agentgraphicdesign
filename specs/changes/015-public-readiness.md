@@ -60,13 +60,14 @@ self-tests, package smoke, adoption/doctor and exact-head hosted CI.
 | A1 | J-05 | documentation links/examples and independent code read | 1 | PASS locally |
 | A2 | C-01 | adoption, doctor (existing advisories) and licence review | 1 | PASS |
 | A3 | C-10 | bounded public audit and extended guard regression checks | 1 | PASS within stated limits |
-| A4 | Q-06 | local validation, package smoke, bundle --check and exact-head CI | 2 | LOCAL PARTIAL; hosted CI BLOCKED |
+| A4 | Q-06 | local validation, package smoke, bundle --check and exact-head CI | 2 | LOCAL PASS at recorded revisions; hosted CI BLOCKED |
 
 ## State
 
 **Step**: verify
 **Waiting on**: repository write access for the automation credential (push 403); then exact-head CI.
-**Next**: finish package verification and test/ops re-review, then publish once access is restored.
+**Next**: restore repository write access, publish this branch and run all required exact-head
+hosted checks; resolve the tests review's remaining qualification finding before any merge.
 **Authority**: constitution permits commits, branch push/PR and green-reviewed merge;
 release/tag/assets remain owner-gated. No history rewrite or remote branch deletion.
 **Branch**: 015-public-readiness; base 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e.
@@ -77,12 +78,24 @@ Contributing anchor is not reproduced: both the exact committed README and the g
 CONTRIBUTING.md, not a fragment (reviewer withdrew that finding). Full initial validation
 passes build, all 3312 tests, 73.78% coverage, adoption/doctor, repository checker self-tests,
 workflow, telemetry, dependency/security audit and readiness generation. It then fails package
-smoke because source edits/bytecode were not committed at its cleanliness check. A clean
-eeb427e package smoke is in progress, not presumed passed. Final fixture canonicalization
+smoke because source edits/bytecode were not committed at its cleanliness check. The clean
+eeb427e archive subsequently passes all tests, both package contracts, isolated installs and
+exact installed-package verification, including 56 CLI and 37 MCP package-proof tests. Final fixture canonicalization
 (fix round 2, one line) passes self-tests even with a symlinked temporary-directory ancestor.
 **Evidence**: `.prdkit/cache/evidence/015-public-readiness/` contains the original validation,
 package/format/bundle checks, eight-commit/531-blob bounded public scan, upstream proof/CI
 metadata and all review transcripts. Baseline review is not exact-head hosted CI.
+**Final local evidence**: package provenance names eeb427e435f51de9cb4d4d55254b150151cdecac
+and SDK 10.0.113. CLI hash fbd898c30c5589231de750e1ee567d471b6e5312916f1ba0bbcea43f3cf46a3e;
+MCP hash 37c8edb172d8f7952ef76b4b3cec39baee49fccab500c56236b3263ff4efe67a.
+The wrapper's final line rereads a later HEAD because the branch advanced during its isolated
+archive run; use provenance, not that line, for package identity. Format check passes; bundle
+input check passes at 7c34776230360c553b066fede86de7a4936ac1a4. This is not packaged proof
+of the final metadata head. Later source delta is the reviewed developer-only fixture root.
+**Remaining review blocker**: the tests review closed the implementation/guard and upstream-kit
+behavior gaps, but retained qualification as medium. Its earlier incomplete local logs are
+now complete; required hosted CI is still absent. No waiver or independent final acceptance
+is inferred. The review gate correctly fails until that review is resolved.
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-code-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/code-review.jsonl
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-security-reviewer · FAIL · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/security-review.jsonl (upstream access only)
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-test-reviewer · FAIL · 0 critical, 0 high, 3 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/test-review.jsonl
