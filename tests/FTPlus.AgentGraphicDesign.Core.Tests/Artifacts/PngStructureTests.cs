@@ -474,10 +474,19 @@ public sealed class PngStructureTests
         Assert.InRange(GC.GetAllocatedBytesForCurrentThread() - before, 0L, 1024L);
         AssertError(png, EngineErrors.ResourceLimit);
 
+        // checkBudget runs at every cancellation checkpoint, right after the token check. Checkpoints
+        // 1-5 are the entry, IHDR (chunk, one CRC block, post-CRC) and the IDAT chunk; the IDAT CRC
+        // then checks before each of its 1024 64 KiB blocks. Cancelling at the checkpoint before
+        // block 512 must throw at the very next one, before block 513, after 32 MiB of CRC. Without
+        // the per-block check the whole walk has only 7 checkpoints, so nothing would be cancelled.
+        const int cancelAt = 5 + 512;
         using var cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromMilliseconds(1));
-        var cancelled = Assert.Throws<OperationCanceledException>(() => Validate(png.AsSpan(0, MaxBytes), 1, 1, ct: cts.Token));
+        var checkpoints = 0;
+        var cancelled = Assert.Throws<OperationCanceledException>(() => PngStructure.ValidateBounded(
+            png.AsSpan(0, MaxBytes), 1, 1, cts.Token,
+            checkBudget: () => { if (++checkpoints == cancelAt) cts.Cancel(); }, maxBytes: MaxBytes));
         Assert.Equal(cts.Token, cancelled.CancellationToken);
+        Assert.Equal(cancelAt, checkpoints);
 
         // Mutation beyond several 64 KiB blocks must still affect the final CRC.
         png[MaxBytes - 17] ^= 0x80;
