@@ -22,5 +22,5 @@ DirectoryBuildPropsPath="$POISON_ROOT/poison.targets" DirectoryBuildTargetsPath=
 
 # release-bundle captures an immutable archive. HEAD may move while that archive is tested;
 # the provenance, not the checkout at completion, identifies the bytes just qualified.
-QUALIFIED_SOURCE="$(jq -er '.sourceCommit | select(test("^[0-9a-f]{40}$"))' "$ROOT_DIR/artifacts/release-bundle/provenance.json")"
+QUALIFIED_SOURCE="$(jq -er '.sourceCommit | select(test("^([0-9a-f]{40}|[0-9a-f]{64})$"))' "$ROOT_DIR/artifacts/release-bundle/provenance.json")"
 printf '%s\n' "Package smoke passed for $CLI_ID and $MCP_ID at exact source $QUALIFIED_SOURCE."
