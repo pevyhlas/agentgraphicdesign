@@ -1,4 +1,5 @@
 using System.Globalization;
+using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Layout;
@@ -724,6 +725,9 @@ public sealed class SkiaRenderer : IRenderer
 
     private static SKColor ParseColor(string color)
     {
+        // Document hex literals are CSS RGBA, while Skia's hex parser expects ARGB.
+        if (ColorLiteral.TryParse(color, out var rgbaColor))
+            return new SKColor(rgbaColor.R, rgbaColor.G, rgbaColor.B, rgbaColor.A);
         if (SKColor.TryParse(color, out var parsedColor))
             return parsedColor;
         if ((color.StartsWith("rgba(", StringComparison.OrdinalIgnoreCase)

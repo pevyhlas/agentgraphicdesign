@@ -20,4 +20,7 @@ DirectoryBuildPropsPath="$POISON_ROOT/poison.targets" DirectoryBuildTargetsPath=
     DOTNET_STARTUP_HOOKS="$POISON_ROOT/nonexistent-hook.dll" DOTNET_ADDITIONAL_DEPS="$POISON_ROOT/nonexistent-deps" \
     bash "$SCRIPT_DIR/release-bundle.sh"
 
-printf '%s\n' "Package smoke passed for $CLI_ID and $MCP_ID at exact source $(git -C "$ROOT_DIR" rev-parse HEAD)."
+# release-bundle captures an immutable archive. HEAD may move while that archive is tested;
+# the provenance, not the checkout at completion, identifies the bytes just qualified.
+QUALIFIED_SOURCE="$(jq -er '.sourceCommit | select(test("^[0-9a-f]{40}$"))' "$ROOT_DIR/artifacts/release-bundle/provenance.json")"
+printf '%s\n' "Package smoke passed for $CLI_ID and $MCP_ID at exact source $QUALIFIED_SOURCE."

@@ -33,6 +33,10 @@ Format reference: [docs/format.md](../../../docs/format.md).
 
 ## Interface guarantees
 
+- Raster document colors use Core's CSS RGBA parser, including `#rgba` and `#rrggbbaa`;
+  Skia's ARGB hex interpretation never overrides document semantics. Regression:
+  `SkiaRendererTests.CssAlphaHexMatchesRgbaAcrossPaintAndBackground`.
+
 - SVG export preserves supported semantics and documents lossy conversions (Q-02); token
   references resolve during export. Scene JSON is not embedded in SVG, so a round trip needs
   the original document.
