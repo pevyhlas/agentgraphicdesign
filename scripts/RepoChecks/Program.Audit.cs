@@ -117,7 +117,7 @@ internal static partial class Program
         }
         using var result = JsonDocument.Parse(output, new JsonDocumentOptions { AllowDuplicateProperties = false });
         var properties = result.RootElement.GetProperty("Properties");
-        if (RequiredString(properties, "NETCoreSdkVersion") != "10.0.112" ||
+        if (RequiredString(properties, "NETCoreSdkVersion") != "10.0.113" ||
             RequiredString(properties, "RestoreProjectCount") != "1" ||
             RequiredString(properties, "RestoreSkippedCount") != "0" ||
             RequiredString(properties, "RestoreProjectsAuditedCount") != "1")
@@ -178,7 +178,7 @@ internal static partial class Program
             ["RestoreProjectCount"] = "1",
             ["RestoreSkippedCount"] = "0",
             ["RestoreProjectsAuditedCount"] = "1",
-            ["NETCoreSdkVersion"] = "10.0.112"
+            ["NETCoreSdkVersion"] = "10.0.113"
         };
         foreach (var (name, value) in ReviewedRestoreProperties) properties[name] = value;
         var summary = new JsonObject { ["Properties"] = properties };

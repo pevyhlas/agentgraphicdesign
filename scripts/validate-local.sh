@@ -19,6 +19,8 @@ dotnet test "$ROOT_DIR/tests/FTPlus.AgentGraphicDesign.Skia.Tests/FTPlus.AgentGr
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- coverage "$RESULTS_DIR" 35
 bash "$ROOT_DIR/.prdkit/scripts/bash/check-adoption.sh"
 bash "$ROOT_DIR/.prdkit/scripts/bash/doctor.sh"
+python3 "$SCRIPT_DIR/check-public-repo.py" --self-test
+python3 "$SCRIPT_DIR/check-public-repo.py"
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- self-test
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- workflows "$ROOT_DIR"
 bash "$SCRIPT_DIR/test-claude-with-telemetry.sh"

@@ -11,6 +11,10 @@ full `agd --version` string when reporting a problem.
 
 ### Added
 
+- A concise public README, retained complete usage reference, and release-readiness checklist.
+- A developer-only, standard-library Python CI guard for common credential signatures,
+  non-example home paths, tracked runtime/credential files and public entry-page links.
+  Matching values are withheld; this is limited regression protection, not a complete PII audit.
 - **Preserved still import** (development source; not in the 0.3.0 packages): CLI
   `agd pixels import` and `agd pixels import-layer`, and MCP `import_pixel_asset` and
   `import_pixel_layer`, import one untimed provided-artifact v1 PNG still into a new native
@@ -27,6 +31,10 @@ full `agd --version` string when reporting a problem.
 
 ### Fixed
 
+- The exact SDK and restore-audit pins move together from 10.0.112 to the 10.0.113 patch.
+  Install that SDK before running repository commands; no runtime package or format changes.
+- Vendored Product-Kit moves to public 1.1.1 with manifest integrity, helper fixes, ignored
+  retrospective data and complete upstream/Spec Kit MIT notices. No kit submodule is required.
 - Sub-node export (`agd export --node`, MCP `export_document` with `nodeId`) now carries
   the document's design tokens, so token-referenced paint and typography resolve as in the whole
   document instead of exporting unresolved.

@@ -8,7 +8,7 @@ external event delivery lives in task-ledger.md.
 
 - retrospective: off
 - agent-optimization: off
-- adoption-manifest-sha256: 0ecd8b5cdf14c87d2d8ecdcc7fa35267b6038bab193416af62fed04f9f273918
+- adoption-manifest-sha256: a41208266390fd950993444948932b6e9b5e9ff0f9a922bdc326df161c799d99
 
 ## Meaning
 
@@ -23,3 +23,8 @@ one-line CI step that verifies the reviewed adoption contract): `adoption-pin` r
 the expected kit submodule commit (full 40-hex), `adoption-manifest-sha256` the expected
 manifest hash, and `adoption-source` the kit source path when it is not `.product-kit`.
 Add them to the Configuration section above and update them together on every kit bump.
+
+Product-Kit v1.1.1 (source commit `6ca57908ac5c161e8b1c178a688475f96e8ec216`) is
+vendored in copy mode. There is no gitlink or `adoption-pin`; clones and CI need no kit
+checkout. Upgrade from the public tag with `init.sh --upgrade --copy`, preserve project
+policy, and update the manifest hash and third-party notices in the same change.

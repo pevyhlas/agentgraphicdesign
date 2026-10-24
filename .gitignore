@@ -39,6 +39,8 @@ packages/
 logs/
 
 # Temporary files
+__pycache__/
+*.pyc
 *.tmp
 *.temp
 *.bak
@@ -57,3 +59,4 @@ specs/**/reviews/**/round-*/
 specs/**/traces/
 *.patch
 .prdkit/cache/
+.prdkit/retrospective/
