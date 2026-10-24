@@ -42,7 +42,7 @@ internal static class LegacyContactSheetFixture
     public const string FontDirectoryName = "fonts";
     public const string GoldenPlatform = "linux-x64";
 
-    /// <summary>When set to a directory, the characterization tests write their actual values there instead of comparing.</summary>
+    /// <summary>When set, also write actual values to this directory; golden comparison still runs.</summary>
     public const string RecordDirectoryVariable = "AGD_RECORD_CHARACTERIZATION_DIR";
 
     /// <summary>Legacy grids over the fixture documents, including the D3 wide-aspect stretch cases.</summary>
@@ -100,13 +100,13 @@ internal static class LegacyContactSheetFixture
 
     /// <summary>
     /// Writes <paramref name="actual"/> to the record directory when <see cref="RecordDirectoryVariable"/>
-    /// is set and returns true; the caller then skips its comparison.
+    /// is set. Recording never disables the golden comparison.
     /// </summary>
-    public static bool TryRecord(string surface, JsonObject actual)
+    public static void RecordIfRequested(string surface, JsonObject actual)
     {
         var directory = Environment.GetEnvironmentVariable(RecordDirectoryVariable);
         if (string.IsNullOrEmpty(directory))
-            return false;
+            return;
         Directory.CreateDirectory(directory);
         var document = new JsonObject
         {
@@ -116,7 +116,6 @@ internal static class LegacyContactSheetFixture
         };
         File.WriteAllText(Path.Combine(directory, surface + ".golden.json"),
             document.ToJsonString(new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping }) + "\n");
-        return true;
     }
 
     /// <summary>

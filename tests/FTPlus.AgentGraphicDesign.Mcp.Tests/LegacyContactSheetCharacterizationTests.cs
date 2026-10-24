@@ -63,8 +63,7 @@ public sealed class LegacyContactSheetCharacterizationTests : IDisposable
             Enumerable.Range(0, LegacyContactSheetFixture.OverCapReferenceCount).Select(i => $"d{i:D3}.agd.json"));
         actual["refs-257"] = Describe(_tools.RenderContactSheet(overCap));
 
-        if (LegacyContactSheetFixture.TryRecord(Surface, actual))
-            return;
+        LegacyContactSheetFixture.RecordIfRequested(Surface, actual);
 
         var golden = LegacyContactSheetFixture.LoadGolden(Surface);
         foreach (var (name, value) in actual)

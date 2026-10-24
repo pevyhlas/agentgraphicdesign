@@ -42,8 +42,7 @@ public sealed class LegacyContactSheetCharacterizationTests : IDisposable
         foreach (var sheet in LegacyContactSheetFixture.Cases)
             actual[sheet.Name] = Describe(Render(sheet));
 
-        if (LegacyContactSheetFixture.TryRecord(Surface, actual))
-            return;
+        LegacyContactSheetFixture.RecordIfRequested(Surface, actual);
 
         var golden = LegacyContactSheetFixture.LoadGolden(Surface);
         foreach (var sheet in LegacyContactSheetFixture.Cases)

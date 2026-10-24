@@ -127,6 +127,44 @@ public sealed class Rgba8RenderTests
     }
 
     [Theory]
+    [InlineData(1, 1)]
+    [InlineData(3, 5)]
+    [InlineData(1, 7)]
+    [InlineData(7, 1)]
+    [InlineData(8192, 1)]
+    [InlineData(1, 8192)]
+    public void Rgba8_OddThinAndBoundarySidesHaveNoPadding(int width, int height)
+    {
+        var document = Fixture();
+        document.Canvas = new Canvas { Width = width, Height = height };
+        document.Root.Width = width;
+        document.Root.Height = height;
+        document.Root.Children.Clear();
+        var marker = Rect("0c5e1201-0000-4000-8000-000000000001", "a0", width - 1, 1, 1, "#e07020", 1);
+        marker.Transform = new Transform { X = width - 1, Y = height - 1 };
+        document.Root.Children.Add(marker);
+        var options = new RenderOptions { Format = RenderFormat.Rgba8, Background = "#2563eb" };
+
+        var raw = _renderer.Render(document, options);
+        var image = RgbaImage.FromRender(raw);
+        Assert.Equal((width, height), (image.Width, image.Height));
+        Assert.Equal(width * height * 4, raw.Data.Length);
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                var expected = x == width - 1 && y == height - 1
+                    ? new RgbaPixel(0xe0, 0x70, 0x20, 255)
+                    : new RgbaPixel(0x25, 0x63, 0xeb, 255);
+                Assert.Equal(expected, image.Pixel(x, y));
+            }
+        }
+
+        var png = _renderer.Render(document, options with { Format = RenderFormat.Png });
+        Assert.Equal(PngRgbaVerifier.DecodeOwned(png.Data, width, height, static () => { }, static _ => { }).Rgba, raw.Data);
+    }
+
+    [Theory]
     [InlineData(0, 1)]
     [InlineData(1, 0)]
     [InlineData(8193, 1)]

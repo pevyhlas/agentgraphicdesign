@@ -27,8 +27,7 @@ public sealed class LegacyContactSheetCharacterizationTests : CommandTestBase
             actual[sheet.Name] = Run(sheet);
         actual["refs-257"] = RunOverCap();
 
-        if (LegacyContactSheetFixture.TryRecord(Surface, actual))
-            return;
+        LegacyContactSheetFixture.RecordIfRequested(Surface, actual);
 
         var golden = LegacyContactSheetFixture.LoadGolden(Surface);
         foreach (var (name, value) in actual)

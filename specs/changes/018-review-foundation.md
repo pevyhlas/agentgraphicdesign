@@ -56,8 +56,8 @@ Encoded PNG/JPEG/WebP paths use explicit cases and cannot silently encode the ra
 
 Run the recovered characterization against public-main sources before the renderer edit and
 against the port. Run full source tests, format, policy gates and installed-package smoke through
-current CI. Code, security, tests and architecture reviews are required. Operations review is
-not applicable: no CI, package, dependency or supported-platform change.
+current CI. Code, security, tests, architecture and operations reviews are required; round-1
+test finding M1 adds the new CLI sheet/refusal cases to exact installed-package verification.
 
 Restated criteria: **012/AC-01** requires `width*height*4` straight RGBA bytes for opaque and
 half-transparent rectangles, exact at alpha 0/255 and channels fixed by the characterized rule,
@@ -87,7 +87,13 @@ authorizes feature commits, push/PR and merge after exact-head CI/reviews. Relea
 **Evidence**: `.prdkit/cache/evidence/018-review-foundation/`; pre-public design closure and four
 implementation verdicts recovered from archived revision `95c678808019fb30b61858fbfbc957da8397fdcf`.
 **Attempts**: A1–A3 1 PASS; A4 attempt 1 stopped before tests on a CLR startup fault (exit 134),
-attempt 2 running with worker reuse disabled and serial project scheduling. Failed log retained
-as `tests.log`; retry output `tests-attempt-2.log`. No public-port review round yet; no holds.
+attempt 2 PASS with worker reuse disabled and serial project scheduling: 3,357 tests, zero
+failures/skips; format also PASS. Failed log retained as `tests.log`; retry output
+`tests-attempt-2.log`. Review fix round 1 adds installed sheet/refusal coverage (M1), recording
+without bypassing golden comparison (L1/L01), and odd/thin/boundary renders (L2). No holds.
+**Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-code-reviewer.md
+**Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-security-reviewer.md
+**Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 2 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-test-reviewer.md
+**Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-architecture-reviewer.md
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
