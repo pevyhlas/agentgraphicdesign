@@ -51,6 +51,14 @@ HEAD during the wrapped invocation and verifies the message still identifies the
 **Next**: finish local qualification record, refresh app credential, publish and run exact-head CI.
 **Authority**: standing commit/feature push/PR/green-reviewed merge; no release/tag/assets upload.
 **Base**: 14e0b1d (stacked on 015-public-readiness, public ancestry only).
+**Local qualification**: `scripts/validate-local.sh` completed successfully, zero-warning build,
+3,316 source tests and 73.84% coverage, dependency/audit/workflow/readiness/adoption/doctor,
+public hygiene, identity fixture and formatting gates. Captured archive 3296b8e passed all
+3,316 tests again plus 56 installed CLI and 37 installed MCP tests. Package provenance pins
+3296b8ea6c74779bd7cb2de88bdec0310463bb32 and SDK 10.0.113; the corrected wrapper reports that
+same SHA despite subsequent documentation commits. Evidence: `.prdkit/cache/evidence/016-render-fidelity/validate.log`;
+copied package provenance/checksums accompany it. Expected negative installer diagnostics are
+in the successful package smoke transcript. No package was published.
 **Review policy**: native AGD reviewers are unavailable in this harness; fresh independent
 general sessions applied the named `.prdkit/agents/agd-*-reviewer.md` rubrics, read-only.
 Architecture lens not applicable: shared parser repair adds no format, schema or engine API.

@@ -129,7 +129,6 @@ macOS was skipped. Code is already delivered; do not port it again. Locate the i
 public-port review evidence before closing the remaining review task.
 
 **Step**: verify
-**Waiting on**: Linux CI on the pull request head; a review of the port
-**Branch**: `fix/006-mcp-schema-and-path-commands`
-**Authority**: the lead merges once CI and review pass
-**Next**: record the CI result per acceptance item, then close with the log line
+**Waiting on**: the public-port independent review record, not CI or code implementation.
+**Delivered**: public PR #5; its source branch has already merged.
+**Next**: recover the remaining review evidence, then close with the log line.
