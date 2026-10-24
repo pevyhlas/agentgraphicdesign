@@ -47,9 +47,9 @@ checker and fixtures. No runtime package change or claim of comprehensive PII de
 - [x] Polish README and retain advanced reference.
 - [x] Upgrade kit/notices and SDK/audit pin.
 - [x] Finish bounded public-text/history audit and repeatable regression protection.
-- [ ] Verify and obtain independent code/security/test/ops reviews plus exact-head CI.
+- [x] Verify and obtain independent code/security/test/ops reviews plus exact-head CI.
 - [x] Recheck stale PRs (none open) and report release blockers.
-- [ ] Integrate only after repository access and exact-head CI are restored.
+- [ ] Merge the closure head once its required CI passes.
 
 ## Checks
 
@@ -64,27 +64,26 @@ self-tests, package smoke, adoption/doctor and exact-head hosted CI.
 | A1 | J-05 | documentation links/examples and independent code read | 1 | PASS locally |
 | A2 | C-01 | adoption, doctor (existing advisories) and licence review | 1 | PASS |
 | A3 | C-10 | bounded public audit and extended guard regression checks | 1 | PASS within stated limits |
-| A4 | Q-06 | local validation, package smoke, bundle --check and exact-head CI | 2 | LOCAL PASS at recorded revisions; hosted CI BLOCKED |
+| A4 | Q-06 | local validation, package smoke, bundle --check and exact-head CI | 2 local; 1 hosted | PASS: [run 40114647638](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40114647638), head 4e825067a629f3d33c1be26b42cb455b54ed1a86 |
 
 ## State
 
-**Step**: verify
-**Resume**: 2026-10-24 owner reports app access added, but current credential still returns
-push 403. No remote branch/PR exists. Product-Kit v1.1.1 remains the latest public release.
-**Access diagnosis**: on the owner's renewed continuation request, one branch push returned 403.
-The existing token service then refreshed successfully. The fresh installation token still lists
-the archived counterpart but omits this public repository. The account installation uses selected
-repositories and already has contents, pull-request and workflow write permissions. Repository
-selection, not a stale token or missing write permission type, is the remaining blocker. Remote
-refs still contain only the unchanged public main. No implementation or qualification was rerun.
-**Waiting on**: the owner adding this public repository to the app installation's selected
-repositories; then credential refresh and exact-head CI.
-**Next**: confirm the public repository appears in the refreshed installation scope, publish this branch and run all required exact-head
-hosted checks; resolve the tests review's remaining qualification finding before any merge.
+**Step**: close
+**Resume**: 2026-10-24 owner: “it was not saved, added now - please continue”. Refreshed app
+scope includes the public repository and publication succeeded. Earlier 403 attempts remain in
+git history and retained evidence. All eight required hosted jobs passed on published head
+4e825067a629f3d33c1be26b42cb455b54ed1a86; independent tests review closes its qualification finding.
+**Waiting on**: required CI for the record/log-only closure commit.
+**Next**: close the record, verify the review gate and exact remote head, then squash-merge PR #8.
 **Authority**: constitution permits commits, branch push/PR and green-reviewed merge;
 release/tag/assets remain owner-gated. No history rewrite or remote branch deletion.
 **Branch**: 015-public-readiness; base 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e.
-**Delivery**: LOCAL_ONLY; remote main is the base above; no remote feature branch or PR exists.
+**Delivery**: REMOTE_READY; [PR #8](https://github.com/pevyhlas/agentgraphicdesign/pull/8).
+**Public evidence**: [original reports](https://github.com/pevyhlas/agentgraphicdesign/pull/8#issuecomment-6387116379)
+and [qualification closure](https://github.com/pevyhlas/agentgraphicdesign/pull/8#issuecomment-6387232718).
+Hosted source and archive tests: 3312; installed CLI/MCP: 56/37; coverage: 73.77%.
+Hosted packages identify synthetic merge 8014e1d6c706900f153fcfe7e03efc816a1c6142, whose tree
+matches the branch head. Historical local package hashes below are not hosted package hashes.
 **Attempts**: first review found guard-test/evidence gaps and overstated PR evidence; fix round 1
 adds isolated negative tests, bytecode ignores and accurate blocked status. The claimed broken
 Contributing anchor is not reproduced: both the exact committed README and the guard use
@@ -105,10 +104,8 @@ The wrapper's final line rereads a later HEAD because the branch advanced during
 archive run; use provenance, not that line, for package identity. Format check passes; bundle
 input check passes at 7c34776230360c553b066fede86de7a4936ac1a4. This is not packaged proof
 of the final metadata head. Later source delta is the reviewed developer-only fixture root.
-**Remaining review blocker**: the tests review closed the implementation/guard and upstream-kit
-behavior gaps, but retained qualification as medium. Its earlier incomplete local logs are
-now complete; required hosted CI is still absent. No waiver or independent final acceptance
-is inferred. The review gate correctly fails until that review is resolved.
+**Review closure**: the tests review independently verified the new hosted results and identical
+merge/head trees. Its former medium qualification finding is resolved; no waiver was used.
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-code-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/code-review.jsonl
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-security-reviewer · FAIL · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/security-review.jsonl (upstream access only)
 **Review**: round 1 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..ce60737c938294226f93675eeb2a92f8ece5250d · agd-test-reviewer · FAIL · 0 critical, 0 high, 3 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/test-review.jsonl
@@ -121,6 +118,7 @@ is inferred. The review gate correctly fails until that review is resolved.
 **Review**: round 4 · d511465192c6e0499d22f75ff97c5a5acb4437b5..14e0b1df2d9d5406146231ef64dca28e036eb124 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/concise-readme-review.md
 **README follow-up**: owner-requested T0 shortening reviewed independently; source install,
 SDK, MCP discovery, links and limits remain accurate. No additional implementation fix round.
-The existing tests qualification and exact-head hosted CI blocker remain unwaived.
+The historical qualification blocker was subsequently resolved by the evidence review below.
+**Review**: round 5 · d511465192c6e0499d22f75ff97c5a5acb4437b5..4e825067a629f3d33c1be26b42cb455b54ed1a86 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/8#issuecomment-6387232718
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
