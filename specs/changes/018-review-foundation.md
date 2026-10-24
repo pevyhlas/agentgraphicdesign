@@ -50,7 +50,7 @@ Encoded PNG/JPEG/WebP paths use explicit cases and cannot silently encode the ra
 - [x] T003: characterize all 32,896 valid premultiplied alpha/channel pairs against PNG decode
   and the closed-form candidate; record the matching conversion rule and apply D-26's fallback
   if they differ. Test hand-derived pixels, format dispatch and refusals with no output writes.
-- [ ] Rerun baseline/current checks, independent reviews, hosted CI and authorized delivery.
+- [x] Rerun baseline/current checks, independent reviews, hosted CI and publish PR #11.
 
 ## Checks
 
@@ -74,14 +74,14 @@ acceptance remains open in 012.
 | A1 | Q-01, Q-02; 012/AC-09, AC-25 baseline | Public-main versus port legacy sheets, CLI and MCP fixtures | 1 | PASS on Linux x64: `baseline-tests.log`, `focused-tests.log` in evidence cache |
 | A2 | P1, Q-03; 012/AC-01 | Raw buffer contract, hand-derived pixels, exhaustive conversion characterization | 1 | PASS on Linux x64: 32,896 pairs, zero rule/PNG mismatches; `characterization.log` and `current/rgba8-unpremultiply.json` |
 | A3 | P4; 012/AC-02 | Explicit encoder cases and CLI/MCP/manifest raw refusals | 1 | PASS: 42 focused cases across four assemblies, `focused-tests.log` |
-| A4 | Q-01, Q-02 | Full suite, format/policy/package gates and exact-head CI | 2 | RUNNING; build, adoption, doctor and dependencies pass |
+| A4 | Q-01, Q-02 | Full suite, format/policy/package gates and exact-head CI | 2 | PASS at 0b9e797: clean-archive 3,363 tests, installed CLI64/MCP37, all eight Linux CI jobs; [run](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40139749849) |
 
 ## State
 
-**Step**: implementation
+**Step**: ready to close
 **Waiting on**: nothing
-**Next**: independent reviews and exact-head CI; full local suite still running.
-**Branch**: `018-review-foundation`; PR pending.
+**Next**: close record, rerun exact final-head CI/review gate and merge PR #11.
+**Branch**: `018-review-foundation`; [PR #11](https://github.com/pevyhlas/agentgraphicdesign/pull/11).
 **Authority**: owner requested “please continue on next capabilities” (2026-10-25); constitution
 authorizes feature commits, push/PR and merge after exact-head CI/reviews. Release remains owner-only.
 **Evidence**: `.prdkit/cache/evidence/018-review-foundation/`; pre-public design closure and four
@@ -95,5 +95,10 @@ without bypassing golden comparison (L1/L01), and odd/thin/boundary renders (L2)
 **Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-security-reviewer.md
 **Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 2 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-test-reviewer.md
 **Review**: round 1 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..e32d096782cf54bc85bc6e94b958a99b5ce8530d · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-1/agd-architecture-reviewer.md
+**Review**: round 2 · e32d096782cf54bc85bc6e94b958a99b5ce8530d..0b9e797ba13452d672cc2eae2b5a51c72719612f · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-2/agd-code-reviewer.md
+**Review**: round 2 · e32d096782cf54bc85bc6e94b958a99b5ce8530d..0b9e797ba13452d672cc2eae2b5a51c72719612f · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-2/agd-security-reviewer.md
+**Review**: round 2 · e32d096782cf54bc85bc6e94b958a99b5ce8530d..0b9e797ba13452d672cc2eae2b5a51c72719612f · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-2/agd-test-reviewer.md
+**Review**: round 2 · e32d096782cf54bc85bc6e94b958a99b5ce8530d..0b9e797ba13452d672cc2eae2b5a51c72719612f · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-2/agd-architecture-reviewer.md
+**Review**: round 2 · 8d5cf0e91c1bde74e9c560a65b8f749a696213cc..0b9e797ba13452d672cc2eae2b5a51c72719612f · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/018-review-foundation/reviews/round-2/agd-ops-reviewer.md
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
