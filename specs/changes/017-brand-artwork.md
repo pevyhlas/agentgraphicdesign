@@ -30,8 +30,8 @@ whether the proposal becomes the permanent identity.
 
 ## State
 
-**Step**: verify
-**Waiting on**: metadata-delta review and closure-head CI; prerequisite PR #9 must merge first.
+**Step**: close
+**Waiting on**: closure-head CI; prerequisite PR #9 must merge first.
 **Next**: close this proposal-authoring record, retarget [PR #10](https://github.com/pevyhlas/agentgraphicdesign/pull/10)
 after #9, and merge once exact-head CI/review gates pass. Permanent identity selection remains
 an owner decision outside this completed proposal-authoring scope.
@@ -49,3 +49,4 @@ all six SVG/PNG re-exports match committed bytes. No substantive review fix roun
 **Review**: round 1 · 3296b8ea6c74779bd7cb2de88bdec0310463bb32..d552510e585f5eaa32c1871d6ff693d98a660e48 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/017-brand-artwork/reviews-summary.md
 **Review**: round 1 · 3296b8ea6c74779bd7cb2de88bdec0310463bb32..d552510e585f5eaa32c1871d6ff693d98a660e48 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 2 low · .prdkit/cache/evidence/017-brand-artwork/reviews-summary.md
 **Review**: round 1 · 3296b8ea6c74779bd7cb2de88bdec0310463bb32..d552510e585f5eaa32c1871d6ff693d98a660e48 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/017-brand-artwork/reviews-summary.md
+**Review**: round 2 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..e4457e2936b940bbad3ad0a67e8c09219495dd9d · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/10#issuecomment-6387281531
