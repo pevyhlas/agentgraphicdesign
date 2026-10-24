@@ -31,9 +31,13 @@ whether the proposal becomes the permanent identity.
 ## State
 
 **Step**: verify
-**Waiting on**: public pushes blocked by existing App credential; identity selection is owner acceptance.
-**Next**: refresh app credential and publish the stacked branch; exact-head CI and owner
-identity selection remain separate. Local proposal and evidence are complete.
+**Waiting on**: metadata-delta review and closure-head CI; prerequisite PR #9 must merge first.
+**Next**: close this proposal-authoring record, retarget [PR #10](https://github.com/pevyhlas/agentgraphicdesign/pull/10)
+after #9, and merge once exact-head CI/review gates pass. Permanent identity selection remains
+an owner decision outside this completed proposal-authoring scope.
+**Hosted evidence**: [run 40114877993](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40114877993)
+passed all eight required Linux jobs on 16daf2acfce1986269594b123243a4a5164ac3f7;
+informational macOS skipped. Subsequent changes close parent records and record evidence only.
 **Authority**: owner artwork request and standing feature commit/push/PR policy; no release.
 **Base**: 4c08bd3, stacked on 016-render-fidelity.
 **Evidence**: `.prdkit/cache/evidence/017-brand-artwork/`; public artwork and provenance in
