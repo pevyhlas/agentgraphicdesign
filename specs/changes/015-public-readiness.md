@@ -71,8 +71,15 @@ self-tests, package smoke, adoption/doctor and exact-head hosted CI.
 **Step**: verify
 **Resume**: 2026-10-24 owner reports app access added, but current credential still returns
 push 403. No remote branch/PR exists. Product-Kit v1.1.1 remains the latest public release.
-**Waiting on**: repository write access for the automation credential (push 403); then exact-head CI.
-**Next**: restore repository write access, publish this branch and run all required exact-head
+**Access diagnosis**: on the owner's renewed continuation request, one branch push returned 403.
+The existing token service then refreshed successfully. The fresh installation token still lists
+the archived counterpart but omits this public repository. The account installation uses selected
+repositories and already has contents, pull-request and workflow write permissions. Repository
+selection, not a stale token or missing write permission type, is the remaining blocker. Remote
+refs still contain only the unchanged public main. No implementation or qualification was rerun.
+**Waiting on**: the owner adding this public repository to the app installation's selected
+repositories; then credential refresh and exact-head CI.
+**Next**: confirm the public repository appears in the refreshed installation scope, publish this branch and run all required exact-head
 hosted checks; resolve the tests review's remaining qualification finding before any merge.
 **Authority**: constitution permits commits, branch push/PR and green-reviewed merge;
 release/tag/assets remain owner-gated. No history rewrite or remote branch deletion.
@@ -111,5 +118,9 @@ is inferred. The review gate correctly fails until that review is resolved.
 **Review**: round 3 · eeb427e435f51de9cb4d4d55254b150151cdecac..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/code-review-round-3.jsonl
 **Review**: round 3 · ce60737c938294226f93675eeb2a92f8ece5250d..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/ops-review-final.jsonl
 **Review**: round 3 · ce60737c938294226f93675eeb2a92f8ece5250d..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/test-review-final.jsonl (qualification only, changed-source findings closed)
+**Review**: round 4 · d511465192c6e0499d22f75ff97c5a5acb4437b5..14e0b1df2d9d5406146231ef64dca28e036eb124 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/concise-readme-review.md
+**README follow-up**: owner-requested T0 shortening reviewed independently; source install,
+SDK, MCP discovery, links and limits remain accurate. No additional implementation fix round.
+The existing tests qualification and exact-head hosted CI blocker remain unwaived.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
