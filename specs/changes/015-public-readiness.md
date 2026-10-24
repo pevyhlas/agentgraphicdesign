@@ -111,5 +111,9 @@ is inferred. The review gate correctly fails until that review is resolved.
 **Review**: round 3 · eeb427e435f51de9cb4d4d55254b150151cdecac..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/code-review-round-3.jsonl
 **Review**: round 3 · ce60737c938294226f93675eeb2a92f8ece5250d..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/ops-review-final.jsonl
 **Review**: round 3 · ce60737c938294226f93675eeb2a92f8ece5250d..d511465192c6e0499d22f75ff97c5a5acb4437b5 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/test-review-final.jsonl (qualification only, changed-source findings closed)
+**Review**: round 4 · d511465192c6e0499d22f75ff97c5a5acb4437b5..14e0b1df2d9d5406146231ef64dca28e036eb124 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/015-public-readiness/concise-readme-review.md
+**README follow-up**: owner-requested T0 shortening reviewed independently; source install,
+SDK, MCP discovery, links and limits remain accurate. No additional implementation fix round.
+The existing tests qualification and exact-head hosted CI blocker remain unwaived.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
