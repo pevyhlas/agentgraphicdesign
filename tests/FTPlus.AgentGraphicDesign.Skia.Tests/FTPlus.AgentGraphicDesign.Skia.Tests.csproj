@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
+    <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
   </ItemGroup>
 
 </Project>

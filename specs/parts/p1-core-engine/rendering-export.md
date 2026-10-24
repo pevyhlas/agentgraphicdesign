@@ -33,6 +33,17 @@ Format reference: [docs/format.md](../../../docs/format.md).
 
 ## Interface guarantees
 
+- `RenderFormat.Rgba8` is an in-process buffer, never an export format: straight sRGB RGBA,
+  8 bits per channel, top-down row-major without padding, `width*height*4` bytes and MIME marker
+  `application/vnd.agd.rgba8`. Core `RgbaImage` checks 1–8192 pixels per side, at most
+  64,000,000 pixels and exact byte length; it wraps caller-owned memory without copying.
+  Skia readback defines unpremultiplication; exhaustive alpha/channel characterization pins it
+  against the managed PNG decoder. Encoders reject the raw member and undefined enum values.
+  Tests: `Rgba8RenderTests`, `Rgba8UnpremultiplyCharacterizationTests`, `RenderFormatContractTests`.
+- Legacy contact sheets retain their pre-refactor grid, cell-map and surface-output baselines;
+  PNG hashes are Linux x64-specific, while cell maps and refusal messages are platform-neutral.
+  Tests: `LegacyContactSheetCharacterizationTests` on Skia, CLI and MCP.
+
 - Raster document colors use Core's CSS RGBA parser, including `#rgba` and `#rrggbbaa`;
   Skia's ARGB hex interpretation never overrides document semantics. Regression:
   `SkiaRendererTests.CssAlphaHexMatchesRgbaAcrossPaintAndBackground`.

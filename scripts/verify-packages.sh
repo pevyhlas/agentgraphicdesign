@@ -121,7 +121,7 @@ run_cli assets check "$VERIFY_DIR/manifest/assets.json" -f json
 agd_clean_run /usr/bin/env AGD_TEST_CLI_EXECUTABLE="$CLI_TOOLS_DIR/agd" "$AGD_DOTNET_HOST" test \
     "$ROOT_DIR/tests/FTPlus.AgentGraphicDesign.Cli.Tests/FTPlus.AgentGraphicDesign.Cli.Tests.csproj" \
     --configuration Release --no-build --no-restore \
-    --filter "FullyQualifiedName~AssetsPreflightCommandTests|FullyQualifiedName~AssetsVerifyCommandTests|FullyQualifiedName~PixelsCommandTests.Export_ThenCheck_MatchesWithExitZero|FullyQualifiedName~PixelsCommandTests.Edit_AppliesGuardedBatchAndAdvancesRevision|FullyQualifiedName~StillImport" \
+    --filter "FullyQualifiedName~AssetsPreflightCommandTests|FullyQualifiedName~AssetsVerifyCommandTests|FullyQualifiedName~PixelsCommandTests.Export_ThenCheck_MatchesWithExitZero|FullyQualifiedName~PixelsCommandTests.Edit_AppliesGuardedBatchAndAdvancesRevision|FullyQualifiedName~StillImport|FullyQualifiedName~LegacyContactSheetCharacterizationTests|FullyQualifiedName~RawRgbaRefusalCommandTests" \
     -- RunConfiguration.TreatNoTestsAsError=true
 agd_clean_run /usr/bin/env AGD_TEST_MCP_EXECUTABLE="$MCP_TOOLS_DIR/agd-mcp" "$AGD_DOTNET_HOST" test \
     "$ROOT_DIR/tests/FTPlus.AgentGraphicDesign.Mcp.Tests/FTPlus.AgentGraphicDesign.Mcp.Tests.csproj" \

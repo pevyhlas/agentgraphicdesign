@@ -194,9 +194,9 @@ is public here is the binding contracts, decisions [D-21 to D-29](architecture/d
 per change a record with its bounds, task increments, grouped acceptance and review outcomes. The
 full text of each acceptance criterion (008/AC-01 and the like) and task (011/T005 and the like),
 and the review reports, stay in the pre-public history; each porting pull request restates the
-criteria and tasks it closes in its body and its change record. What remains to land is code:
-006, 010, 008's first increment (the platform registry), 011's special-file gate and 012's raw
-RGBA render with its legacy characterization.
+criteria and tasks it closes in its body and its change record. Changes 006 and 010 already
+landed publicly (PRs #5 and #4). Remaining source ports include 008's first increment (the
+platform registry), 011's special-file gate and 012's raw RGBA/legacy characterization in child 018.
 
 1. **Port each change as its own pull request here** (Recommended): reapply its reviewed work
    onto this tree with the criteria and tasks it closes restated, rerun CI and the recorded
@@ -205,7 +205,7 @@ RGBA render with its legacy characterization.
    restated first from the pre-public history, since the change records carry only group labels.
 3. **Drop or restart** some of them; name which.
 
-**If no answer**: port 006 and 010 first, then the rest.
+**If no answer**: continue the remaining reviewed ports in roadmap order.
 
 ### Which macOS CI runner the public repository uses
 
@@ -244,6 +244,15 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
 ## Your direction
+
+### Continue the next capabilities
+
+*2026-10-25 · owner · folded: 018-review-foundation*
+
+> please continue on next capabilities
+
+Continues the public roadmap with the reviewed raw-render foundation of change 012; existing
+review, platform qualification and release gates still apply.
 
 ### Public projects, fixes and logos
 

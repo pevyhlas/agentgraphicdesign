@@ -29,6 +29,7 @@
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="../FTPlus.AgentGraphicDesign.Core.Tests/Pixels/StillImportFixture.cs" Link="Fixtures/StillImportFixture.cs" />
+    <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
   </ItemGroup>
 
 </Project>

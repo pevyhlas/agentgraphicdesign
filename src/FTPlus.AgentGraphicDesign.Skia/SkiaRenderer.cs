@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Runtime.InteropServices;
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
@@ -78,7 +79,9 @@ public sealed class SkiaRenderer : IRenderer
 
         cancellationToken.ThrowIfCancellationRequested();
         using var image = surface.Snapshot();
-        var data = EncodeImage(image, options.Format);
+        var data = options.Format == RenderFormat.Rgba8
+            ? ReadUnpremultiplied(image)
+            : EncodeImage(image, options.Format);
         cancellationToken.ThrowIfCancellationRequested();
         return new RenderResult
         {
@@ -114,24 +117,57 @@ public sealed class SkiaRenderer : IRenderer
         return (pixelWidth, pixelHeight);
     }
 
-    private static byte[] EncodeImage(SKImage image, RenderFormat format)
+    /// <summary>
+    /// Reads the premultiplied surface back as unpremultiplied RGBA8 (row-major, top-down, no
+    /// padding). This read-back is the authoritative <see cref="RenderFormat.Rgba8"/> conversion;
+    /// the PNG encoder's own unpremultiply is characterized against it, not assumed equal.
+    /// </summary>
+    internal static byte[] ReadUnpremultiplied(SKImage image)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+        var info = new SKImageInfo(image.Width, image.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+        var data = new byte[checked((int)info.BytesSize64)];
+        var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+        try
+        {
+            if (!image.ReadPixels(info, handle.AddrOfPinnedObject(), info.RowBytes, 0, 0))
+                throw new InvalidOperationException("Skia failed to read back RGBA8 pixels");
+        }
+        finally
+        {
+            handle.Free();
+        }
+        return data;
+    }
+
+    /// <summary>
+    /// Encodes an image file. Every <see cref="RenderFormat"/> member has an explicit case:
+    /// <see cref="RenderFormat.Rgba8"/> is a raw buffer and is never encoded, so no path can turn
+    /// it into a PNG by default.
+    /// </summary>
+    internal static byte[] EncodeImage(SKImage image, RenderFormat format)
     {
         var encodedFormat = format switch
         {
+            RenderFormat.Png => SKEncodedImageFormat.Png,
             RenderFormat.Jpeg => SKEncodedImageFormat.Jpeg,
             RenderFormat.Webp => SKEncodedImageFormat.Webp,
-            _ => SKEncodedImageFormat.Png
+            RenderFormat.Rgba8 => throw new NotSupportedException(
+                "Rgba8 is a raw render buffer and is never encoded as an image file"),
+            _ => throw new ArgumentOutOfRangeException(nameof(format), $"Unsupported render format: {format}")
         };
         using var data = image.Encode(encodedFormat, format == RenderFormat.Png ? 100 : 90)
             ?? throw new InvalidOperationException($"Skia failed to encode {format} output");
         return data.ToArray();
     }
 
-    private static string GetMimeType(RenderFormat format) => format switch
+    internal static string GetMimeType(RenderFormat format) => format switch
     {
+        RenderFormat.Png => "image/png",
         RenderFormat.Jpeg => "image/jpeg",
         RenderFormat.Webp => "image/webp",
-        _ => "image/png"
+        RenderFormat.Rgba8 => RgbaImage.MimeType,
+        _ => throw new ArgumentOutOfRangeException(nameof(format), $"Unsupported render format: {format}")
     };
 
     private static void RenderNode(

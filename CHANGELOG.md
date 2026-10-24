@@ -11,6 +11,10 @@ full `agd --version` string when reporting a problem.
 
 ### Added
 
+- Internal straight RGBA rendering and a bounded `RgbaImage` for upcoming review sheets and
+  analysis. Raw buffers are never accepted as CLI, MCP or asset-manifest file formats.
+- Pre-refactor contact-sheet baselines across Skia, CLI and MCP, including directory fonts,
+  and exhaustive characterization of Skia's unpremultiplication against managed PNG decode.
 - A concise public README, retained complete usage reference, and release-readiness checklist.
 - A developer-only, standard-library Python CI guard for common credential signatures,
   non-example home paths, tracked runtime/credential files and public entry-page links.
@@ -31,6 +35,8 @@ full `agd --version` string when reporting a problem.
 
 ### Fixed
 
+- Raster encoder and export maps now use explicit format cases; existing PNG/JPEG/WebP
+  exports and legacy contact-sheet bytes are unchanged.
 - The exact SDK and restore-audit pins move together from 10.0.112 to the 10.0.113 patch.
   Install that SDK before running repository commands; no runtime package or format changes.
 - Vendored Product-Kit moves to public 1.1.1 with manifest integrity, helper fixes, ignored

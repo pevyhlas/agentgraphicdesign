@@ -47,11 +47,23 @@ public sealed record RenderOptions
     public bool StrictFonts { get; init; }
 }
 
+/// <summary>
+/// Output of <see cref="IRenderer.Render(FTPlus.AgentGraphicDesign.Core.Documents.Document, RenderOptions)"/>.
+/// <see cref="Png"/>, <see cref="Jpeg"/> and <see cref="Webp"/> are encoded image files.
+/// <see cref="Rgba8"/> is an internal raw buffer (see <see cref="RgbaImage"/>): it is never a file
+/// format, and no export, preview or manifest path accepts or encodes it.
+/// </summary>
 public enum RenderFormat
 {
     Png,
     Jpeg,
-    Webp
+    Webp,
+
+    /// <summary>
+    /// Unpremultiplied sRGB RGBA, 8 bits per channel, row-major, top-down, no row padding:
+    /// <c>Width·Height·4</c> bytes with MIME marker <see cref="RgbaImage.MimeType"/>.
+    /// </summary>
+    Rgba8
 }
 
 public sealed record RenderResult

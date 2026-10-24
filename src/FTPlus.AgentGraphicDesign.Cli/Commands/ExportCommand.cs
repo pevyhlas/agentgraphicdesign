@@ -270,11 +270,13 @@ public sealed class ExportCommand : AsyncCommand<ExportCommand.Settings>
 
             if (IsRasterFormat(exportType))
             {
+                // Explicit names only: the internal Rgba8 buffer is never a file format.
                 var renderFormat = exportType switch
                 {
+                    "png" => RenderFormat.Png,
                     "jpeg" or "jpg" => RenderFormat.Jpeg,
                     "webp" => RenderFormat.Webp,
-                    _ => RenderFormat.Png
+                    _ => throw new DocumentEngineException(EngineErrors.ExportUnsupported, $"Unsupported export format: {settings.Type}")
                 };
 
                 var renderOptions = new RenderOptions

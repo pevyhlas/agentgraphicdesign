@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Mcp\FTPlus.AgentGraphicDesign.Mcp.csproj" />
     <Compile Include="../FTPlus.AgentGraphicDesign.Core.Tests/Pixels/StillImportFixture.cs" Link="Fixtures/StillImportFixture.cs" />
+    <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
   </ItemGroup>
 
 </Project>
