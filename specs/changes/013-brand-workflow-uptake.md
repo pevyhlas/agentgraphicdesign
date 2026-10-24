@@ -79,5 +79,9 @@ architecture review (C-09).
 ## State
 
 **Step**: approach
-**Waiting on**: the owner, on how the in-flight branches land here (inbox)
-**Next**: land 006 and 010, the smallest standalone slices
+**Waiting on**: publication of the current maintenance/fidelity work (app credential); separate
+macOS qualification remains open. User directed continuation on the public repositories.
+**Next**: change 012 PR-1 (raw RGBA and legacy sheet characterization), then its shared builder.
+006 and 010 already merged publicly in PRs #5 and #4 with green Linux CI; their records now
+reflect that. Do not port those changes again. Change 016 fixes the known CSS alpha defect;
+017 exercises native logo authoring/export on Linux, not the full macOS S11 kit acceptance.

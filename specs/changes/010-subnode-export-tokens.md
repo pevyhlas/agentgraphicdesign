@@ -34,7 +34,7 @@ bounds diagnostics are not surfaced on sub-node export.
 
 - [x] Port the fix and its regression tests from the pre-public history, where they were
   reviewed.
-- [ ] Verify on Linux CI, and record the acceptance result.
+- [x] Verify on Linux CI, and record the acceptance result.
 - [x] Verify on macOS: the three token tests pass with the fix and fail without it; the full
   suite's failing set equals the `origin/main` baseline (known macOS platform failures).
 
@@ -47,12 +47,14 @@ format or interface change.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P1.B-15 | `SubNodeExportTests.ExportNode_ResolvesDocumentTokens`, `SubNodeRenderTests.RenderNode_ResolvesColorTokens`, `SubNodeRenderTests.RenderNode_TypographyTokenSizesTheCrop` | 1 | PENDING: macOS arm64 passes, each fails on the base; Linux CI on the PR is authoritative |
+| A1 | P1.B-15 | `SubNodeExportTests.ExportNode_ResolvesDocumentTokens`, `SubNodeRenderTests.RenderNode_ResolvesColorTokens`, `SubNodeRenderTests.RenderNode_TypographyTokenSizesTheCrop` | 1 | PASS: public PR #4 Linux CI; earlier macOS negative controls retained |
 
 ## State
 
-**Step**: review
-**Branch**: `fix/010-subnode-export-tokens`, PR against `main`
-**Waiting on**: Linux CI on the PR, then the lead's merge
-**Authority**: the lead merges; this change does not
-**Next**: record the Linux CI result in Acceptance A1, then close
+**Step**: verify
+**Public state (2026-10-24)**: PR [#4](https://github.com/pevyhlas/agentgraphicdesign/pull/4)
+merged on 2026-10-22 at d2590556fe341acf4b07ce865f93cf849629add8. Eight required Linux checks
+passed on b0732f744ae0bc8d738982d2e6739e216816a038
+([run](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/39865888118)); informational
+macOS skipped. This prerequisite is delivered, not waiting to be ported.
+**Next**: close the evidence record in a record-only PR; continue change 012.

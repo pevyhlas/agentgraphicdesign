@@ -93,7 +93,7 @@ spec text differ.
 - [x] Port the schema, store-free and store-conflict fixes with their tests from the pre-public
   history, where they were reviewed.
 - [x] Fold the spec text into P1, P4, interfaces and J-05; carry the sanitizer deferral to 008.
-- [ ] Verify on Linux CI at the pull request head, and record the acceptance results. macOS
+- [x] Verify on Linux CI at the pull request head, and record the acceptance results. macOS
   verification is the local non-root arm64 run, which is also the behavioral evidence for the
   read-only directory test. The live `tools/list` probe of the source plan is replaced by the
   protocol test, which asserts the tool count against the surface manifest.
@@ -115,14 +115,20 @@ changelog (C-09).
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P4.B-07 | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and `BooleanSubschemaWalker_RejectsNestedBooleanSchemas` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
-| A2 | P1.B-26 | CLI `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
-| A3 | P1.B-27, P4 failure semantics | CLI `PathCommandTests.StoreBackedCommand_*` and Core `FileDocumentStoreHardeningTests.Constructor_{RejectsNestedStoreRoot, RejectsStoreContainingAnExistingStore, RejectedNestedStore_LeavesNoDirectory}` | 1 | NOT_RUN on Linux CI; passes locally on macOS arm64 |
+| A1 | P4.B-07 | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and `BooleanSubschemaWalker_RejectsNestedBooleanSchemas` | 1 | PASS: public PR #5 Linux CI; earlier macOS arm64 evidence retained |
+| A2 | P1.B-26 | CLI `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot` | 1 | PASS: public PR #5 Linux CI |
+| A3 | P1.B-27, P4 failure semantics | CLI `PathCommandTests.StoreBackedCommand_*` and Core `FileDocumentStoreHardeningTests.Constructor_{RejectsNestedStoreRoot, RejectsStoreContainingAnExistingStore, RejectedNestedStore_LeavesNoDirectory}` | 1 | PASS: public PR #5 Linux CI |
 
 ## State
 
+**Public-state reconciliation (2026-10-24)**: PR [#5](https://github.com/pevyhlas/agentgraphicdesign/pull/5)
+merged at b73240715ebbf72a0682ea423fbcb2035898d659 on 2026-10-22. All eight required Linux
+checks passed on eb53414fbf349af97561db8daf1ca91eb094d761
+([run](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/39866542757)); informational
+macOS was skipped. Code is already delivered; do not port it again. Locate the independent
+public-port review evidence before closing the remaining review task.
+
 **Step**: verify
-**Waiting on**: Linux CI on the pull request head; a review of the port
-**Branch**: `fix/006-mcp-schema-and-path-commands`
-**Authority**: the lead merges once CI and review pass
-**Next**: record the CI result per acceptance item, then close with the log line
+**Waiting on**: the public-port independent review record, not CI or code implementation.
+**Delivered**: public PR #5; its source branch has already merged.
+**Next**: recover the remaining review evidence, then close with the log line.
