@@ -6,6 +6,10 @@
 
 ## Intent
 
+Owner follow-up (2026-10-24): succinct README, public Product-Kit, defect fixes, roadmap
+continuation and logos through the respective tools. This change further shortens README;
+the remaining work gets bounded changes, with existing stage/platform gates preserved.
+
 Polish public documentation, verify hosted CI/public-data hygiene and adopt public kit 1.1.1.
 Check stale PRs afterwards. Resolve the SDK-patch recommendation through bounded maintenance;
 release authority, platforms and future editor domains remain separate.
@@ -65,6 +69,8 @@ self-tests, package smoke, adoption/doctor and exact-head hosted CI.
 ## State
 
 **Step**: verify
+**Resume**: 2026-10-24 owner reports app access added, but current credential still returns
+push 403. No remote branch/PR exists. Product-Kit v1.1.1 remains the latest public release.
 **Waiting on**: repository write access for the automation credential (push 403); then exact-head CI.
 **Next**: restore repository write access, publish this branch and run all required exact-head
 hosted checks; resolve the tests review's remaining qualification finding before any merge.
