@@ -59,6 +59,10 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
 
 ## Interface guarantees
 
+- Raw RGBA buffers are internal to rendering. `export` and `export_document` reject raw
+  formats with `EXPORT_UNSUPPORTED`; CLI contact sheets reject non-PNG output extensions with
+  `INVALID_ARGUMENTS`; MCP previews and sheets always return PNG. Rejections write no output.
+  Tests: `RawRgbaRefusalCommandTests`, `RawRgbaRefusalToolsTests`.
 - Command, tool and resource names: changed only by a declared cutover recorded in the
   changelog, with the manifest updated in the same change. Schema: `docs/surface-manifest.json`.
 - CLI and MCP share engine operations but not argument, output, persistence or concurrency

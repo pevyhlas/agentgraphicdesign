@@ -1,0 +1,416 @@
+{
+  "platform": "linux-x64",
+  "note": "Pre-change characterization of the legacy contact-sheet grid (feature 012 T001). Never re-record to make a changed grid pass.",
+  "cases": {
+    "labels-off-128": {
+      "pngSha256": "02c2c1285ce5dd658bdb0808bb9be74268f1a41a17763e2c9b48e0d1826a4f7f",
+      "mimeType": "image/png",
+      "width": 280,
+      "height": 280,
+      "columns": 2,
+      "rows": 2,
+      "cells": [
+        {
+          "index": 0,
+          "label": "square",
+          "column": 0,
+          "row": 0,
+          "cell": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 1,
+          "label": "wide-10x3",
+          "column": 1,
+          "row": 0,
+          "cell": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 53,
+            "width": 128,
+            "height": 38
+          }
+        },
+        {
+          "index": 2,
+          "label": "translucent-edge",
+          "column": 0,
+          "row": 1,
+          "cell": {
+            "x": 8,
+            "y": 144,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 144,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 3,
+          "label": "wide-100x30",
+          "column": 1,
+          "row": 1,
+          "cell": {
+            "x": 144,
+            "y": 144,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 189,
+            "width": 128,
+            "height": 38
+          }
+        }
+      ]
+    },
+    "labels-on-128": {
+      "pngSha256": "d4d95bab1fa3bed3b553ce144eb6cac5e4a96abce0dc27f0cb01be9e0efb6f34",
+      "mimeType": "image/png",
+      "width": 280,
+      "height": 320,
+      "columns": 2,
+      "rows": 2,
+      "cells": [
+        {
+          "index": 0,
+          "label": "square",
+          "column": 0,
+          "row": 0,
+          "cell": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 1,
+          "label": "wide-10x3",
+          "column": 1,
+          "row": 0,
+          "cell": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 53,
+            "width": 128,
+            "height": 38
+          }
+        },
+        {
+          "index": 2,
+          "label": "translucent-edge",
+          "column": 0,
+          "row": 1,
+          "cell": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 3,
+          "label": "wide-100x30",
+          "column": 1,
+          "row": 1,
+          "cell": {
+            "x": 144,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 209,
+            "width": 128,
+            "height": 38
+          }
+        }
+      ]
+    },
+    "custom-64": {
+      "pngSha256": "74605b5faa2ea4c3884080477c1435913a04e9e12da44f3621ba9d97ebaa35cb",
+      "mimeType": "image/png",
+      "width": 271,
+      "height": 90,
+      "columns": 4,
+      "rows": 1,
+      "cells": [
+        {
+          "index": 0,
+          "label": "wide-100x30",
+          "column": 0,
+          "row": 0,
+          "cell": {
+            "x": 3,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          },
+          "image": {
+            "x": 3,
+            "y": 25,
+            "width": 64,
+            "height": 19
+          }
+        },
+        {
+          "index": 1,
+          "label": "wide-10x3",
+          "column": 1,
+          "row": 0,
+          "cell": {
+            "x": 70,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          },
+          "image": {
+            "x": 70,
+            "y": 25,
+            "width": 64,
+            "height": 19
+          }
+        },
+        {
+          "index": 2,
+          "label": "translucent-edge",
+          "column": 2,
+          "row": 0,
+          "cell": {
+            "x": 137,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          },
+          "image": {
+            "x": 137,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          }
+        },
+        {
+          "index": 3,
+          "label": "square",
+          "column": 3,
+          "row": 0,
+          "cell": {
+            "x": 204,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          },
+          "image": {
+            "x": 204,
+            "y": 3,
+            "width": 64,
+            "height": 64
+          }
+        }
+      ]
+    },
+    "font-dir": {
+      "pngSha256": "e0ec3755356fd457aac30b7e648c8ef8c5feb658abbf860e7095ab15275a1560",
+      "mimeType": "image/png",
+      "width": 280,
+      "height": 320,
+      "columns": 2,
+      "rows": 2,
+      "cells": [
+        {
+          "index": 0,
+          "label": "text-inter",
+          "column": 0,
+          "row": 0,
+          "cell": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 53,
+            "width": 128,
+            "height": 38
+          }
+        },
+        {
+          "index": 1,
+          "label": "square",
+          "column": 1,
+          "row": 0,
+          "cell": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 2,
+          "label": "translucent-edge",
+          "column": 0,
+          "row": 1,
+          "cell": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 3,
+          "label": "text-inter",
+          "column": 1,
+          "row": 1,
+          "cell": {
+            "x": 144,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 209,
+            "width": 128,
+            "height": 38
+          }
+        }
+      ]
+    },
+    "font-dir-control": {
+      "pngSha256": "4416eb6f49a8551bbade974d6bfa816cd928404f9cdadd7f03a0259b401f7d89",
+      "mimeType": "image/png",
+      "width": 280,
+      "height": 320,
+      "columns": 2,
+      "rows": 2,
+      "cells": [
+        {
+          "index": 0,
+          "label": "text-inter",
+          "column": 0,
+          "row": 0,
+          "cell": {
+            "x": 8,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 53,
+            "width": 128,
+            "height": 38
+          }
+        },
+        {
+          "index": 1,
+          "label": "square",
+          "column": 1,
+          "row": 0,
+          "cell": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 8,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 2,
+          "label": "translucent-edge",
+          "column": 0,
+          "row": 1,
+          "cell": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 8,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "index": 3,
+          "label": "text-inter",
+          "column": 1,
+          "row": 1,
+          "cell": {
+            "x": 144,
+            "y": 164,
+            "width": 128,
+            "height": 128
+          },
+          "image": {
+            "x": 144,
+            "y": 209,
+            "width": 128,
+            "height": 38
+          }
+        }
+      ]
+    }
+  }
+}

@@ -819,6 +819,27 @@ public sealed class AssetPipelineTests : IDisposable
     }
 
     [Theory]
+    [InlineData("generated/icon.rgba8")]
+    [InlineData("generated/icon.rgba")]
+    [InlineData("generated/icon.raw")]
+    public async Task RawRgbaOutputs_AreRefusedAndNothingIsWritten(string output)
+    {
+        // Feature 012 AC-02: the internal Rgba8 render buffer is never a manifest output format.
+        Save("source.json", Document("icon"));
+        var manifest = SingleManifest(output: output);
+        var pipeline = CreatePipeline(_engine);
+
+        var error = await Assert.ThrowsAsync<DocumentEngineException>(() => pipeline.RunAsync(manifest, false));
+
+        var admitted = OperatingSystem.IsWindows() || OperatingSystem.IsLinux() &&
+            RuntimeInformation.ProcessArchitecture == Architecture.X64 && Environment.Version.Major == 10;
+        Assert.Equal(admitted ? EngineErrors.ExportUnsupported : "ASSET_PLATFORM_UNSUPPORTED", error.Code);
+        Assert.False(Directory.Exists(Full("generated")));
+        // No manifest format maps to the raw buffer: VectorAssetFormat gains no member (plan C1).
+        Assert.Equal(["Svg", "Png", "Jpeg", "Webp"], Enum.GetNames<VectorAssetFormat>());
+    }
+
+    [Theory]
     [InlineData("invalid name", "generated/sprite.svg", EngineErrors.InvalidProperty)]
     [InlineData("icon", "generated/sprite.png", EngineErrors.InvalidArguments)]
     public async Task SpriteNameAndFormatErrors_AreStructured(string name, string output, string code)

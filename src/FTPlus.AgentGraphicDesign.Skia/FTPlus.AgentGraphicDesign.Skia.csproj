@@ -18,6 +18,11 @@
     <ProjectReference Include="..\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="FTPlus.AgentGraphicDesign.Skia.Tests" />
+    <InternalsVisibleTo Include="FTPlus.AgentGraphicDesign.Core.Tests" />
+  </ItemGroup>
+
   <!--
     Bundled default text family: Inter (SIL Open Font License 1.1), static Regular and
     Bold faces from the rsms/inter v4.1 release. Provenance (release tag, SHA-256) is

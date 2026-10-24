@@ -57,9 +57,9 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
 
 ## Tasks
 
-- [ ] PR-1: 012/T001 legacy grid characterization goldens; T002 `Rgba8` and `RgbaImage`; T003 the
-  unpremultiply characterization (implemented and reviewed pre-public; port it).
-- [ ] PR-2a (after change 010): T029 pre-refactor sub-node characterization; T032 the builder
+- [x] PR-1: 012/T001 legacy grid characterization goldens; T002 `Rgba8` and `RgbaImage`; T003 the
+  unpremultiply characterization (public port in child 018-review-foundation).
+- [ ] PR-2a (change 010 already merged): T029 pre-refactor sub-node characterization; T032 the builder
   replacing the sub-node copy; T033 its tests. PR-2b: T004 references, inspection, the inspected
   font set, the aggregate bound and the colour parser; T005 their tests. PR-2c: T034 the render
   session; T035 its tests.
@@ -93,9 +93,8 @@ assertions split across PR-2b and PR-2c; RC-05 weight 400 in the font anchors; R
 geometry; RC-07 AC-10 wording; RC-08 the guide keeps stating the deviation's residual risk.
 
 Recorded follow-ups outside this change: route `export`, `export_document` and `render_preview`
-reads through the same reference reader; one render session per asset-pipeline build; a defect
-where the renderer reads `#rrggbbaa` and `#rgba` document colours in ARGB order (to be fixed with
-its own characterization; this change does not depend on it).
+reads through the same reference reader; one render session per asset-pipeline build. The renderer's
+CSS alpha-hex defect was fixed and characterized by change 016 (public PR #9).
 
 ## Checks
 
@@ -104,10 +103,10 @@ analysis (Q-03); new commands and tools are registered in the surface manifest (
 
 ## Acceptance
 
-Design acceptance criteria 012/AC-01 to 012/AC-25 group as below. Only the group labels are public:
-each criterion's full text, and each task's acceptance text, stay in the pre-public history. D-26
-holds the binding contract; the pull request that ports or implements an increment restates, in its
-body and in this record, the criteria and tasks it closes.
+Design acceptance criteria 012/AC-01 to 012/AC-25 group as below. D-26 holds the binding contract;
+each increment restates the criteria and tasks it closes publicly in its change record and PR.
+Child 018 restates T001–T003, AC-01/AC-02 and the AC-09/AC-25 baseline scope. Remaining full
+criterion and task text is recovered from pre-public history before its increment starts.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
@@ -123,6 +122,5 @@ body and in this record, the criteria and tasks it closes.
 pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: 010; the owner, on porting (inbox)
-**Next**: port PR-1 as its own pull request, restating the criteria and tasks it closes, then
-PR-2a after 010
+**Waiting on**: child 018-review-foundation verification and review; change 010 is already merged
+**Next**: finish PR-1 in child 018 with restated criteria and fresh evidence, then PR-2a

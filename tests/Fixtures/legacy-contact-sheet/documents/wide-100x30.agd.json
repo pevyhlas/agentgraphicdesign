@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "version": 1,
+  "id": "0c5e0003-0000-4000-8000-000000000000",
+  "name": "wide-100x30",
+  "revn": 1,
+  "canvas": { "width": 100, "height": 30 },
+  "root": {
+    "type": "frame",
+    "id": "0c5e0003-0000-4000-8000-0000000000f0",
+    "order": "a0",
+    "name": "root",
+    "width": 100,
+    "height": 30,
+    "children": [
+      { "type": "rectangle", "id": "0c5e0003-0000-4000-8000-000000000001", "order": "a0", "name": "left", "width": 50, "height": 30, "style": { "fill": { "color": "#b91c1c" } } },
+      { "type": "ellipse", "id": "0c5e0003-0000-4000-8000-000000000002", "order": "a1", "name": "dot", "width": 30, "height": 30, "transform": { "x": 60, "y": 0 }, "style": { "fill": { "color": "#0f766e" } } }
+    ]
+  }
+}

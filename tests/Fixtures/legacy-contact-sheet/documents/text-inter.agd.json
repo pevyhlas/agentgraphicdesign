@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "version": 1,
+  "id": "0c5e0005-0000-4000-8000-000000000000",
+  "name": "text-inter",
+  "revn": 1,
+  "canvas": { "width": 160, "height": 48, "background": "#ffffff" },
+  "root": {
+    "type": "frame",
+    "id": "0c5e0005-0000-4000-8000-0000000000f0",
+    "order": "a0",
+    "name": "root",
+    "width": 160,
+    "height": 48,
+    "children": [
+      { "type": "text", "id": "0c5e0005-0000-4000-8000-000000000001", "order": "a0", "name": "caption", "text": "Agd 400", "fontFamily": "Inter", "fontSize": 24, "fontWeight": 400, "transform": { "x": 8, "y": 8 }, "style": { "fill": { "color": "#111827" } } }
+    ]
+  }
+}
