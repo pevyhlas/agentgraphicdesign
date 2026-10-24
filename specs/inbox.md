@@ -243,16 +243,6 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
-### Public readiness and SDK maintenance
-
-*2026-10-23 · owner · folded: changes/015-public-readiness.md*
-
-> lets make sure we have very polished readme pages and CI setup to be using github CI as projects are now public
-
-The bounded public-readiness pass includes the already recommended 10.0.113 patch update,
-with the repository audit pin, examples and CI qualification updated together. No public
-release, platform expansion or distribution-channel change is authorized by this work.
-
 ## Your direction
 
 ### Public projects, fixes and logos
