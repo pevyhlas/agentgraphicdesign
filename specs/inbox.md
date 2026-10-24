@@ -245,15 +245,6 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 ## Your direction
 
-### Continue the next capabilities
-
-*2026-10-25 · owner · folded: 018-review-foundation*
-
-> please continue on next capabilities
-
-Continues the public roadmap with the reviewed raw-render foundation of change 012; existing
-review, platform qualification and release gates still apply.
-
 ### Public projects, fixes and logos
 
 *2026-10-24 · owner · folded: 016-render-fidelity*

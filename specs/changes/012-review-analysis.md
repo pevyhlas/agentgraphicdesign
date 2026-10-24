@@ -58,7 +58,7 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
 ## Tasks
 
 - [x] PR-1: 012/T001 legacy grid characterization goldens; T002 `Rgba8` and `RgbaImage`; T003 the
-  unpremultiply characterization (public port in child 018-review-foundation).
+  unpremultiply characterization (child 018-review-foundation, [public PR #11](https://github.com/pevyhlas/agentgraphicdesign/pull/11)).
 - [ ] PR-2a (change 010 already merged): T029 pre-refactor sub-node characterization; T032 the builder
   replacing the sub-node copy; T033 its tests. PR-2b: T004 references, inspection, the inspected
   font set, the aggregate bound and the colour parser; T005 their tests. PR-2c: T034 the render
@@ -118,9 +118,8 @@ criterion and task text is recovered from pre-public history before its incremen
 ## State
 
 **Step**: tasks
-**Pre-public review**: design approved at closure pass 1 (architecture, security, test) in the
-pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
-security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
-and task text are not public
-**Waiting on**: child 018-review-foundation verification and review; change 010 is already merged
-**Next**: finish PR-1 in child 018 with restated criteria and fresh evidence, then PR-2a
+**Pre-public review**: design approved at closure pass 1 (architecture, security, test); its
+remaining criterion/task text is recovered before each increment. PR-1's public criteria,
+source/installed verification and five independent review verdicts are recorded in PR #11.
+**Waiting on**: nothing for PR-2a once PR #11 merges; change 010 is already merged
+**Next**: PR-2a, shared transient-document builder and sub-node characterization
