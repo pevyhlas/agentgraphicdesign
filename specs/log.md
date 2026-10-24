@@ -11,3 +11,4 @@ their records and pull requests belong to the pre-public history. -->
 - 2026-10-10 005-still-image-import: preserved managed-local PNG still import into native assets and independent layers — R-06, R-07 — pre-public history
 - 2026-10-24 015-public-readiness: concise public onboarding, Product-Kit 1.1.1, SDK 10.0.113 and bounded repository hygiene — J-05, C-01, C-10, Q-06 — [PR #8](https://github.com/pevyhlas/agentgraphicdesign/pull/8)
 - 2026-10-24 016-render-fidelity: shared CSS alpha-color rendering and immutable package source identity — P1 rendering, Q-01, Q-02, Q-06 — [PR #9](https://github.com/pevyhlas/agentgraphicdesign/pull/9)
+- 2026-10-24 017-brand-artwork: original editable identity proposals authored, exported and reviewed through AGD; permanent adoption remains owner choice — J-01, J-02, J-03, C-01 — [PR #10](https://github.com/pevyhlas/agentgraphicdesign/pull/10)
