@@ -69,6 +69,6 @@ complete artifact admission remain planned. See [roadmap](docs/public-readiness.
 
 ## Contributing and license
 
-[Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Product](specs/product.md) · [MIT](LICENSE)
+[Contributing](CONTRIBUTING.md) · [Brand artwork](docs/brand/README.md) · [Security](SECURITY.md) · [Product](specs/product.md) · [MIT](LICENSE)
 · [Third-party notices](THIRD-PARTY-NOTICES.txt). Fork-safe GitHub-hosted CI;
 [Product-Kit 1.1.1](https://github.com/pevyhlas/product-kit) vendored, no submodule required.

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://raw.githubusercontent.com/pevyhlas/agentgraphicdesign/v0.1.0/schemas/agd-document.schema.json",
+  "version": 1,
+  "id": "c0e1def1-0936-f375-1487-fc0efba27399",
+  "name": "AGD mono",
+  "revn": 4,
+  "canvas": {
+    "width": 128,
+    "height": 128,
+    "background": "#ffffff"
+  },
+  "root": {
+    "width": 128,
+    "height": 128,
+    "clipContent": true,
+    "children": [
+      {
+        "type": "path",
+        "d": "M 28 24 L 88 24 L 72 40 L 40 40 L 40 72 L 24 88 L 24 28 Z",
+        "id": "271c969f-b6de-4167-a3aa-46e27d1314ee",
+        "order": "a0",
+        "name": "northwest",
+        "visible": true,
+        "locked": false,
+        "style": {
+          "fill": {
+            "color": "#111111"
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "path",
+        "d": "M 104 40 L 104 100 L 100 104 L 40 104 L 56 88 L 88 88 L 88 56 Z",
+        "id": "5e265b1a-f2b5-40c1-a21a-f74f8fc15d71",
+        "order": "a1",
+        "name": "southeast",
+        "visible": true,
+        "locked": false,
+        "style": {
+          "fill": {
+            "color": "#111111"
+          },
+          "opacity": 1
+        }
+      },
+      {
+        "type": "path",
+        "d": "M 64 48 L 80 64 L 64 80 L 48 64 Z",
+        "id": "d31e31f6-3fae-40e7-8486-d13d93e70d87",
+        "order": "a2",
+        "name": "editable-center",
+        "visible": true,
+        "locked": false,
+        "style": {
+          "fill": {
+            "color": "#111111"
+          },
+          "opacity": 1
+        }
+      }
+    ],
+    "id": "d39cdd1c-477f-0318-c990-f8b59d3fd685",
+    "order": "a0",
+    "name": "root",
+    "visible": true,
+    "locked": false,
+    "type": "frame"
+  }
+}
