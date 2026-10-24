@@ -30,24 +30,34 @@ HEAD during the wrapped invocation and verifies the message still identifies the
 
 ## Tasks
 
-- [ ] Reproduce and fix RGBA raster mismatch; targeted and full Skia tests.
-- [ ] Bind package-smoke message to archive provenance; regression self-check.
-- [ ] Reconcile delivered roadmap slices 006/010 with public history; advance review workflow.
+- [x] Reproduce and fix RGBA raster mismatch; targeted and full Skia tests.
+- [x] Bind package-smoke message to archive provenance; regression self-check.
+- [x] Reconcile delivered roadmap slices 006/010 with public history; native artwork in 017.
 - [ ] Independent code/security/tests/ops review; authorized publication and CI.
 
 ## Acceptance
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | Q-02 | raster colors match CSS RGBA across paint/background paths | 0 | NOT_RUN |
-| A2 | Q-06 | package source identity remains fixed if branch advances | 0 | NOT_RUN |
-| A3 | J-01 | native AGD logo create/validate/preview/export journey | 0 | NOT_RUN |
-| A4 | C-04 | independent reviews and exact-head CI | 0 | NOT_RUN |
+| A1 | Q-02 | raster colors match CSS RGBA across paint/background paths | 1 | PASS: 139 Skia tests, including four new cross-paint/background cases |
+| A2 | Q-06 | package source identity remains fixed if branch advances | 1 | PASS: moving-HEAD wrapper fixture; package qualification recorded below |
+| A3 | J-01 | native AGD logo create/validate/preview/export journey | 1 | PASS locally in 017-brand-artwork; three treatments and byte-identical reexports |
+| A4 | C-04 | independent reviews and exact-head CI | 1 | implementation lenses PASS; tests qualification retains MEDIUM while hosted CI is blocked |
 
 ## State
 
-**Step**: build
+**Step**: verify
 **Waiting on**: app token refresh for public branch pushes (403).
-**Next**: fix confirmed defects, then produce artwork with the tool.
+**Next**: finish local qualification record, refresh app credential, publish and run exact-head CI.
 **Authority**: standing commit/feature push/PR/green-reviewed merge; no release/tag/assets upload.
 **Base**: 14e0b1d (stacked on 015-public-readiness, public ancestry only).
+**Review policy**: native AGD reviewers are unavailable in this harness; fresh independent
+general sessions applied the named `.prdkit/agents/agd-*-reviewer.md` rubrics, read-only.
+Architecture lens not applicable: shared parser repair adds no format, schema or engine API.
+One review fix round used; previous change 015's qualification finding remains unwaived.
+**Review**: round 1 · 14e0b1df2d9d5406146231ef64dca28e036eb124..4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
+**Review**: round 1 · 14e0b1df2d9d5406146231ef64dca28e036eb124..4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
+**Review**: round 1 · 14e0b1df2d9d5406146231ef64dca28e036eb124..4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
+**Review**: round 1 · 14e0b1df2d9d5406146231ef64dca28e036eb124..4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
+**Review**: round 2 · 4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8..3296b8ea6c74779bd7cb2de88bdec0310463bb32 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
+**Review**: round 2 · 4c08bd3f6fe0685fbe306ca5755a94d12a7e75d8..3296b8ea6c74779bd7cb2de88bdec0310463bb32 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · .prdkit/cache/evidence/016-render-fidelity/reviews-summary.md
