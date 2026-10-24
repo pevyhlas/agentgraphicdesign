@@ -235,6 +235,7 @@ jobs:
         with:
           global-json-file: global.json
 
+      - run: bash scripts/test-package-smoke-identity.sh
       - run: bash scripts/package-smoke.sh
 
   readiness:

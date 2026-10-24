@@ -243,17 +243,15 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
-### Public readiness and SDK maintenance
-
-*2026-10-23 · owner · folded: changes/015-public-readiness.md*
-
-> lets make sure we have very polished readme pages and CI setup to be using github CI as projects are now public
-
-The bounded public-readiness pass includes the already recommended 10.0.113 patch update,
-with the repository audit pin, examples and CI qualification updated together. No public
-release, platform expansion or distribution-channel change is authorized by this work.
-
 ## Your direction
+
+### Public projects, fixes and logos
+
+*2026-10-24 · owner · folded: 016-render-fidelity*
+
+> so both repos are now public and the app should have access to it to merge PRs - I have added both - so lets work on the public repos now - also here is what we need to do - 1. make sure we have very succint and to the point readme for both - also that public product kit is adopted - see product kit readme for inspiration it is quite to the point (not that much but not bad) - next we should identify any issues in both AGD and AB and then fix them, next proceed with roadmap - next we want to generate logos for AGD and AB via their respective workflows - please proceed with all of that
+
+Answers continuation on public history; existing review and qualification gates still apply.
 
 The owner direction is folded into C-01, C-03, C-06 to C-09 and C-11, D-01, D-08 and D-09,
 R-05, R-06 and R-09 to R-13, Q-05, changes 013 and 014 and the constitution's Action policy.

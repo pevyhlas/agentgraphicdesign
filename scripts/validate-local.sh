@@ -27,5 +27,6 @@ bash "$SCRIPT_DIR/test-claude-with-telemetry.sh"
 bash "$SCRIPT_DIR/check-dependencies.sh"
 bash "$SCRIPT_DIR/check-vulnerabilities.sh"
 bash "$SCRIPT_DIR/check-readiness.sh"
+bash "$SCRIPT_DIR/test-package-smoke-identity.sh"
 bash "$SCRIPT_DIR/package-smoke.sh"
 dotnet format "$ROOT_DIR/FTPlus.AgentGraphicDesign.slnx" --verify-no-changes --no-restore

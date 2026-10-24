@@ -17,6 +17,49 @@ public class SkiaRendererTests
 {
     private readonly SkiaRenderer _renderer = new();
 
+    [Theory]
+    [InlineData("#f008", "rgba(255,0,0,0.5333333333)", 136)]
+    [InlineData("#ff000080", "rgba(255,0,0,0.5)", 128)]
+    [InlineData("#f00", "rgb(255,0,0)", 255)]
+    [InlineData("#ff000000", "rgba(255,0,0,0)", 0)]
+    public void CssAlphaHexMatchesRgbaAcrossPaintAndBackground(string hex, string equivalent, byte alpha)
+    {
+        foreach (var mode in new[] { "fill", "stroke", "gradient", "canvas", "override" })
+        {
+            RenderResult Render(string color)
+            {
+                var doc = CreateEmptyDocument(width: 32, height: 32);
+                if (mode == "canvas") doc.Canvas.Background = color;
+                else if (mode != "override")
+                {
+                    var style = new Style();
+                    if (mode == "stroke") style.Stroke = new Stroke { Color = color, Width = 32 };
+                    else if (mode == "gradient") style.Fill = new Fill
+                    {
+                        Gradient = new LinearGradient
+                        {
+                            Stops = [new GradientStop { Offset = 0, Color = color }, new GradientStop { Offset = 1, Color = color }]
+                        }
+                    };
+                    else style.Fill = new Fill { Color = color };
+                    doc.Root.Children.Add(new RectangleNode { Width = 32, Height = 32, Style = style });
+                }
+                return _renderer.Render(doc, new RenderOptions { Background = mode == "override" ? color : null });
+            }
+            var rendered = Render(hex);
+            Assert.Equal(Render(equivalent).Data, rendered.Data);
+            using var bitmap = SKBitmap.Decode(rendered.Data)!;
+            var pixel = bitmap.GetPixel(8, 8);
+            Assert.Equal(alpha, pixel.Alpha);
+            if (alpha != 0)
+            {
+                Assert.Equal((byte)255, pixel.Red);
+                Assert.Equal((byte)0, pixel.Green);
+                Assert.Equal((byte)0, pixel.Blue);
+            }
+        }
+    }
+
     // ---- PNG format ----
 
     [Fact]
