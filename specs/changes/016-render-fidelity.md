@@ -46,8 +46,8 @@ HEAD during the wrapped invocation and verifies the message still identifies the
 
 ## State
 
-**Step**: verify
-**Waiting on**: final metadata-delta review and closure-head CI; PR #8 must merge first.
+**Step**: close
+**Waiting on**: closure-head CI; PR #8 must merge first.
 **Next**: close the record, retarget [PR #9](https://github.com/pevyhlas/agentgraphicdesign/pull/9)
 to main after #8, verify exact-head CI and the review gate, then merge.
 **Authority**: standing commit/feature push/PR/green-reviewed merge; no release/tag/assets upload.
@@ -84,3 +84,4 @@ publication evidence review below resolves it.
 **Review**: round 4 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..67d748983f08a88273461ccf29e1dbb3997a1dee · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/9#issuecomment-6387232738
 **Review**: round 4 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..67d748983f08a88273461ccf29e1dbb3997a1dee · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/9#issuecomment-6387232738
 **Review**: round 4 · 83c86f6f360ca4cc2a3dfa7dbf53f19a446e158e..67d748983f08a88273461ccf29e1dbb3997a1dee · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/9#issuecomment-6387232738
+**Review**: round 5 · 67d748983f08a88273461ccf29e1dbb3997a1dee..825b7ab75e1c94895ddd343a8b9151085c31ba1c · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/9#issuecomment-6387255670
