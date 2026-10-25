@@ -36,8 +36,8 @@ Missing authority is not permission; a generated plan grants none.
 ## Commands
 
 Run from the repository root. CI runs them on GitHub-hosted `ubuntu-24.04` runners with the SDK
-pinned in `global.json` installed by a SHA-pinned `actions/setup-dotnet`; a non-required macOS
-job runs only on schedule or manual dispatch and is informational.
+pinned in `global.json` installed by a SHA-pinned `actions/setup-dotnet`; an advisory macOS 26
+arm64 job runs on every PR, main push, schedule and manual dispatch, retaining diagnostic results.
 
 ```text
 dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode
