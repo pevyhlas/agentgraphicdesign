@@ -10,7 +10,12 @@
   artifacts, on GitHub-hosted runners with the SDK pinned in `global.json` and every action
   pinned by commit. `RepoChecks workflows` fails CI if a workflow leaves GitHub-hosted runners,
   uses `pull_request_target`, drops the top-level `permissions` block or uses an action that is
-  not pinned by full commit SHA with a version comment.
+   not pinned by full commit SHA with a version comment.
+- **macOS diagnostics**: every CI event also runs all four source suites on standard hosted
+  `macos-26` arm64 with OS/architecture assertions, physical temporary paths and bounded tests.
+  The advisory job retains runner/image/SDK identity, console output and TRX for seven days;
+  its summary reports the real test outcome. These artifacts are excluded from Linux coverage.
+  The hosted runner choice implements the public-CI direction; qualification remains change 008.
 - **Release bundle**: `scripts/release-bundle.sh` builds from an isolated `git archive` of one
   clean commit with locked restore and a non-incremental Release build, tests and packs without
   rebuilding, installs and checks the staged packages from a cleared local feed, reproduces the
