@@ -86,8 +86,8 @@ lists live in D-22 to D-25 until those slices open as changes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-21 to D-27 | independent design review, closure pass 2, all four lenses approved, no open blocking finding | 1 | PASS (pre-public history) |
-| A2 | owner choices on reuse and kits | owner answers | 1 | PASS (pre-public history) |
+| A1 | D-21 to D-27 | independent design review, closure pass 2, all four lenses approved, no open blocking finding (pre-public history) | 1 | PASS |
+| A2 | owner choices on reuse and kits | owner answers (pre-public history) | 1 | PASS |
 
 ## State
 

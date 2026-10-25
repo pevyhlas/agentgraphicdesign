@@ -115,9 +115,9 @@ changelog (C-09).
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P4.B-07 | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and `BooleanSubschemaWalker_RejectsNestedBooleanSchemas` | 1 | PASS: public PR #5 Linux CI; earlier macOS arm64 evidence retained |
-| A2 | P1.B-26 | CLI `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot` | 1 | PASS: public PR #5 Linux CI |
-| A3 | P1.B-27, P4 failure semantics | CLI `PathCommandTests.StoreBackedCommand_*` and Core `FileDocumentStoreHardeningTests.Constructor_{RejectsNestedStoreRoot, RejectsStoreContainingAnExistingStore, RejectedNestedStore_LeavesNoDirectory}` | 1 | PASS: public PR #5 Linux CI |
+| A1 | P4.B-07 | `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas` and `BooleanSubschemaWalker_RejectsNestedBooleanSchemas`; public PR #5 Linux CI; earlier macOS arm64 evidence retained | 1 | PASS |
+| A2 | P1.B-26 | CLI `PathCommandTests.PathCommands_AreStoreFree_InsideAnExistingStoreRoot`; public PR #5 Linux CI | 1 | PASS |
+| A3 | P1.B-27, P4 failure semantics | CLI `PathCommandTests.StoreBackedCommand_*` and Core `FileDocumentStoreHardeningTests.Constructor_{RejectsNestedStoreRoot, RejectsStoreContainingAnExistingStore, RejectedNestedStore_LeavesNoDirectory}`; public PR #5 Linux CI | 1 | PASS |
 
 ## State
 
