@@ -65,6 +65,8 @@ full `agd --version` string when reporting a problem.
 
 ### Changed
 
+- Vendored Product-Kit moves to 1.2.0 with dependency-aware planning and same-PR completion
+  guidance; project policy, acceptance gates and reviewer definitions are preserved.
 - **Error-code cutover:** nested/overlapping document stores now fail with `STORE_CONFLICT`
   (was `INVALID_PROPERTY`), naming the enclosing store root or the contained store's relative
   location; a refused store no longer leaves an empty `./.agd` behind.

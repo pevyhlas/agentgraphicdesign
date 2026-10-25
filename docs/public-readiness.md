@@ -11,7 +11,7 @@ is not a published binary release, a completed full editor, or proof of macOS qu
   package smoke, readiness artifacts, workflow policy and Product-Kit integrity checks.
 - Active main/release-tag rulesets. Main requires all eight Linux checks; the scheduled/manual
   macOS lane is informational and not a merge requirement.
-- Public Product-Kit **1.1.1**, vendored with manifest integrity and full upstream notices.
+- Public Product-Kit **1.2.0**, vendored with manifest integrity and full upstream notices.
 - Exact SDK **10.0.113**, including the repository audit check and its fixtures.
 
 The baseline main run passed the required Linux checks:
