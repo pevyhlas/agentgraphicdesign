@@ -122,7 +122,7 @@ criterion and task text is recovered from pre-public history before its incremen
 pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: child020-transient-builder design review before PR-2a implementation.
+**Waiting on**: child020-transient-builder implementation; its design review passed after one fix round.
 **Delivered**: child018-review-foundation merged as public PR #11 with fresh source/installed
 evidence and independent reviews; change010 is already merged.
 **Next**: T029 pre-refactor characterization, T032 shared builder and T033 tests in child020.

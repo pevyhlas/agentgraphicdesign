@@ -78,7 +78,7 @@ Proposed implementation choices for design review:
 
 ## Tasks
 
-- [ ] Independent architecture design review of the recovered contract and integration choices.
+- [x] Independent architecture design review of the recovered contract and integration choices.
 - [ ] T029 baseline on unmodified engine, committed before T032.
 - [ ] Builder, engine/surface diagnostic and font-policy integration; T033 and carry-over tests.
 - [ ] Source/installed verification, applicable independent reviews and exact-head delivery.
@@ -100,16 +100,18 @@ security lenses cover snapshot ownership, input bounds, font-policy and source-p
 
 ## State
 
-**Step**: design
-**Waiting on**: independent design review before implementation.
+**Step**: ready to implement
+**Waiting on**: nothing for T029; implementation and acceptance remain open.
 **Authority**: owner continuation (“please continue on next capabilities”, then “go ahead - we
 should setup github CI for mac os”); constitution authorizes feature commit/push/PR and reviewed
 exact-head green merge. Release and platform qualification gates hold.
 **Branch / PR**: 020-transient-builder; base55c0efab887ea924c14019f0d98cc5e5eec1f5c7;
-[PR #13](https://github.com/pevyhlas/agentgraphicdesign/pull/13). Merged019 hosted CI incorporated.
+[PR #13](https://github.com/pevyhlas/agentgraphicdesign/pull/13). Merged019 hosted CI incorporated;
+integration base8bad0a76a8ec3d663f734f172b6223fa6ee588d3. No production implementation yet.
 **Attempts**: 0 acceptance attempts; design fix round1 addresses crop-oracle and hidden-font
 findings. Initial external-directory reviewer access failure was tooling-only and is preserved.
-**Next**: scoped design re-review, then characterize existing exports before replacing the builder.
-**Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · `.prdkit/cache/evidence/020-transient-builder/reviews/round-1/agd-architecture-reviewer.md`
+**Next**: T029 pre-refactor characterization, committed before T032 builder replacement.
+**Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401464438
+**Design review**: round2 · 16005b84c333be97dbe7615d1d0d005f5ed8ab4d..41493d89a0c0904ca8747c06b420a14a8070e2bc · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401482295
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
