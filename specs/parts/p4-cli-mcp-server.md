@@ -59,6 +59,10 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
 
 ## Interface guarantees
 
+- Sub-node vector and raster exports report Core bounds notes in their existing `diagnostics`
+  arrays; CLI human output also prints them. Render previews retain combined bounds/render notes.
+  No new command or tool; SVG font-option restrictions are unchanged.
+  Tests: `ExportCommandSubNodeTests`, `ExportSubNodeToolTests`.
 - Raw RGBA buffers are internal to rendering. `export` and `export_document` reject raw
   formats with `EXPORT_UNSUPPORTED`; CLI contact sheets reject non-PNG output extensions with
   `INVALID_ARGUMENTS`; MCP previews and sheets always return PNG. Rejections write no output.

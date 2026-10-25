@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+  <g>
+    <g transform="translate(3, -7)">
+      <rect width="14" height="10" transform="translate(-3, 7)" fill="#13579b"/>
+    </g>
+  </g>
+</svg>

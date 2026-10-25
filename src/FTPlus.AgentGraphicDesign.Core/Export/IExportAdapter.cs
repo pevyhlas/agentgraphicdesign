@@ -1,4 +1,5 @@
 using FTPlus.AgentGraphicDesign.Core.Documents;
+using FTPlus.AgentGraphicDesign.Core.Rendering;
 
 namespace FTPlus.AgentGraphicDesign.Core.Export;
 
@@ -77,4 +78,7 @@ public sealed record ExportResult
     public required string MimeType { get; init; }
 
     public string? FileName { get; init; }
+
+    /// <summary>Non-fatal notes, including diagnostics from isolated-node bounds measurement.</summary>
+    public IReadOnlyList<RenderDiagnostic> Diagnostics { get; init; } = [];
 }

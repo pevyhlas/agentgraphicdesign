@@ -17,6 +17,28 @@ namespace FTPlus.AgentGraphicDesign.Mcp.Tests;
 /// </summary>
 public class ExportSubNodeToolTests : IDisposable
 {
+    [Theory]
+    [InlineData("svg")]
+    [InlineData("png")]
+    public async Task ExportNodeReportsBoundsDiagnostics(string format)
+    {
+        var text = new TextNode { Text = "Hello", TypographyTokenRef = "{missing}" };
+        var document = _engine.CreateDocument("diagnostic");
+        document.Root.Children = [text];
+        var path = Path.Combine(_testDir, "diagnostic.agd.json");
+        // Deliberately unresolved token is accepted for best-effort export.
+        File.WriteAllText(path, Core.Serialization.DocumentSerializer.Serialize(document));
+        var before = File.ReadAllBytes(path);
+        var result = await _tools.ExportDocument("diagnostic.agd.json", "diagnostic." + format,
+            format: format, nodeId: text.Id.ToString());
+        Assert.NotEqual(true, result.IsError);
+        var payload = Assert.IsType<TextContentBlock>(result.Content.Single()).Text;
+        using var json = JsonDocument.Parse(payload);
+        Assert.Contains(json.RootElement.GetProperty("data").GetProperty("diagnostics").EnumerateArray(),
+            d => d.GetProperty("code").GetString() == "BOUNDS_DIAGNOSTIC" && d.GetProperty("message").GetString()!.Contains("missing"));
+        Assert.Equal(before, File.ReadAllBytes(path));
+    }
+
     private readonly string _testDir;
     private readonly DocumentEngine _engine;
     private readonly DocumentTools _tools;

@@ -28,6 +28,7 @@ internal sealed class BoundsCalculator
     private readonly Dictionary<Guid, OwnGeometry> _own = [];
     private readonly Dictionary<Guid, Affine> _worldMatrices = [];
     private readonly Dictionary<Guid, Clip> _clips = [];
+    private long? _remainingTextWork;
 
     public BoundsCalculator(
         Document document,
@@ -35,7 +36,8 @@ internal sealed class BoundsCalculator
         ITextMeasurer measurer,
         TokenService tokens,
         PathOperationsService pathOps,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        long? maxTextWork = null)
     {
         _document = document;
         _index = index;
@@ -43,6 +45,7 @@ internal sealed class BoundsCalculator
         _tokens = tokens;
         _pathOps = pathOps;
         _cancellationToken = cancellationToken;
+        _remainingTextWork = maxTextWork;
 
         if (index.Count > MaxNodeCount)
         {
@@ -68,6 +71,21 @@ internal sealed class BoundsCalculator
         var list = new List<NodeBounds>(_index.Count);
         Collect(_document.Root, list);
         return list;
+    }
+
+    /// <summary>Diagnostic-only walk: do not measure hidden ancestor chains or their geometry.</summary>
+    public IEnumerable<NodeBounds> VisibleDiagnostics() => Visit(_document.Root);
+
+    private IEnumerable<NodeBounds> Visit(Node node)
+    {
+        _cancellationToken.ThrowIfCancellationRequested();
+        if (!node.Visible)
+            yield break;
+        yield return Describe(node, visibleOnly: true);
+        if (node is IContainerNode container)
+            foreach (var child in container.Children.OrderBy(child => child.Order, StringComparer.Ordinal))
+                foreach (var bounds in Visit(child))
+                    yield return bounds;
     }
 
     /// <summary>World box after all transforms, ignoring clipping. Null when the node has no geometry.</summary>
@@ -109,11 +127,11 @@ internal sealed class BoundsCalculator
         }
     }
 
-    private NodeBounds Describe(Node node)
+    private NodeBounds Describe(Node node, bool visibleOnly = false)
     {
         var own = OwnGeometryOf(node);
-        var local = Aabb(node, Affine.Identity, Clip.None, 0);
-        var world = Aabb(node, _worldMatrices[node.Id], _clips[node.Id], 0);
+        var local = Aabb(node, Affine.Identity, Clip.None, 0, visibleOnly);
+        var world = Aabb(node, _worldMatrices[node.Id], _clips[node.Id], 0, visibleOnly);
         var diagnostics = new List<string>(own.Diagnostics);
         var measured = own.Measured;
 
@@ -183,9 +201,11 @@ internal sealed class BoundsCalculator
     /// their descendants through the composed matrices; a clipping frame contributes
     /// only its own rectangle because its children never extend beyond it.
     /// </summary>
-    private AabbResult Aabb(Node node, Affine matrix, Clip clip, int depth)
+    private AabbResult Aabb(Node node, Affine matrix, Clip clip, int depth, bool visibleOnly = false)
     {
         _cancellationToken.ThrowIfCancellationRequested();
+        if (visibleOnly && !node.Visible)
+            return new AabbResult(null, null, 0);
         var own = OwnGeometryOf(node);
         var estimated = own.Measured == false ? 1 : 0;
         BoundingBox? ownBox = own.Rect is { } rect ? matrix.TransformBox(rect) : null;
@@ -197,7 +217,7 @@ internal sealed class BoundsCalculator
         var clipped = clip.Apply(ownBox);
         foreach (var child in container.Children)
         {
-            var result = Aabb(child, matrix.Multiply(Affine.FromTransform(child.Transform)), clip, depth + 1);
+            var result = Aabb(child, matrix.Multiply(Affine.FromTransform(child.Transform)), clip, depth + 1, visibleOnly);
             unclipped = BoundingBox.Union(unclipped, result.Unclipped);
             clipped = BoundingBox.Union(clipped, result.Clipped);
             estimated += result.EstimatedTexts;
@@ -293,6 +313,13 @@ internal sealed class BoundsCalculator
         var measured = true;
         TextMeasurement Measure(string line)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+            if (_remainingTextWork is { } remaining)
+            {
+                if (line.Length > remaining)
+                    throw new DocumentEngineException(EngineErrors.ResourceLimit, "Transient text measurement exceeds the 64000000-character work budget");
+                _remainingTextWork = remaining - line.Length;
+            }
             var measurement = _measurer.MeasureSafely(style.ToMeasurementRequest(line), _cancellationToken);
             measured &= measurement.Measured;
             if (measurement.Diagnostic is { } diagnostic && !diagnostics.Contains(diagnostic))

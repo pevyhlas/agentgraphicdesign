@@ -35,6 +35,12 @@ full `agd --version` string when reporting a problem.
 
 ### Fixed
 
+- Sub-node raster crops now use the requested font directories and system-font policy.
+  SVG/raster exports report non-fatal bounds diagnostics through CLI and MCP. Hidden text
+  does not acquire a strict-font failure during measurement. The shared private-copy builder
+  preserves existing SVG/PNG geometry crops, including legacy centered-stroke clipping.
+  Transient text measurement now refuses more than 64 million cumulative measured characters
+  with `RESOURCE_LIMIT`, including repeated line-wrap probes.
 - Raster encoder and export maps now use explicit format cases; existing PNG/JPEG/WebP
   exports and legacy contact-sheet bytes are unchanged.
 - The exact SDK and restore-audit pins move together from 10.0.112 to the 10.0.113 patch.

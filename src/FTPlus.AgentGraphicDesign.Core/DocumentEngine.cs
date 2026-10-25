@@ -913,82 +913,85 @@ public sealed class DocumentEngine : IDocumentEngine
 
     // ---- Sub-node export (D-10) ----
 
-    public Task<ExportResult> ExportNodeAsync(Document document, Guid nodeId, ExportOptions options, CancellationToken ct = default)
+    public async Task<ExportResult> ExportNodeAsync(Document document, Guid nodeId, ExportOptions options, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(options);
-        return ExportAsync(BuildSubtreeDocument(document, nodeId, ct), options, ct);
+        var transient = new TransientDocumentBuilder(MeasureTransient).Build(document, nodeId, TransientCrop.Ink,
+            cancellationToken: ct);
+        if (!_exportAdapters.TryGetValue(options.Format, out var adapter))
+            throw new DocumentEngineException(EngineErrors.ExportUnsupported,
+                $"Export format '{options.Format}' is not supported. Supported: {string.Join(", ", _exportAdapters.Keys)}");
+        // The builder already owns a private snapshot. Public ExportAsync still copies caller-owned documents.
+        var result = await adapter.ExportAsync(transient.Document, options, ct);
+        return result with { Diagnostics = [.. transient.Diagnostics, .. result.Diagnostics] };
     }
 
     public RenderResult RenderNode(Document document, Guid nodeId, RenderOptions options, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(options);
-        return Render(BuildSubtreeDocument(document, nodeId, cancellationToken), options, cancellationToken);
+        var policy = new FontPolicy
+        {
+            FontDirectories = options.FontDirectories,
+            SystemFonts = options.SystemFonts,
+            StrictFonts = options.StrictFonts
+        };
+        var transient = new TransientDocumentBuilder(MeasureTransient).Build(document, nodeId, TransientCrop.Ink,
+            policy, cancellationToken);
+        var result = Render(transient.Document, options, cancellationToken);
+        return result with { Diagnostics = [.. transient.Diagnostics, .. result.Diagnostics] };
     }
 
-    /// <summary>
-    /// Builds a transient document holding only the subtree rooted at <paramref name="nodeId"/>,
-    /// cropped to that subtree's own bounds and shifted so its top-left maps to (0,0). The node
-    /// is placed under a fresh, non-clipping root, so neither ancestor transforms nor ancestor
-    /// clipping affect the exported asset — a sub-node export reflects the node in isolation
-    /// (D-10). Document design tokens are carried over so token references resolve. Throws <see cref="EngineErrors.NodeNotFound"/> when the id is absent and
-    /// <see cref="EngineErrors.NodeNoBounds"/> when the subtree has no visible extent.
-    /// </summary>
-    private Document BuildSubtreeDocument(Document document, Guid nodeId, CancellationToken cancellationToken)
+    private TransientMeasurement MeasureTransient(Document document, Guid? nodeId, FontPolicy policy,
+        CancellationToken cancellationToken)
     {
-        Document copy;
-        lock (DocumentSynchronization.For(document))
+        // Clipped-frame crops used not to visit their text. Refuse oversized visible content
+        // before the new diagnostic walk can wrap/shape it, using the existing export limits.
+        var totalText = 0;
+        CheckText(document.Root);
+        IDisposable? rented = null;
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            copy = DocumentSerializer.Deserialize(DocumentSerializer.Serialize(document))!;
-        }
-
-        var node = DocumentIndex.Build(copy).Find(nodeId)
-            ?? throw new DocumentEngineException(EngineErrors.NodeNotFound, $"Node not found: {nodeId}");
-
-        // Measure the subtree's world box under a fresh, non-clipping root so neither ancestor
-        // transforms nor ancestor clipping influence the reported bounds.
-        var probe = new Document
-        {
-            Id = Guid.NewGuid(),
-            Name = copy.Name,
-            Canvas = new Canvas { Width = copy.Canvas.Width, Height = copy.Canvas.Height },
-            Tokens = copy.Tokens,
-            Root = new FrameNode { ClipContent = false, Width = copy.Canvas.Width, Height = copy.Canvas.Height, Children = { node } }
-        };
-        var world = GetBounds(probe, node.Id, cancellationToken).FirstOrDefault(b => b.Id == node.Id)?.World;
-        if (world is not { } box || box.Width <= 0 || box.Height <= 0)
-        {
-            throw new DocumentEngineException(EngineErrors.NodeNoBounds,
-                $"Node {nodeId} has no visible bounds to export");
-        }
-
-        // Wrap the node in a translating group under a non-clipping root sized to the box, so the
-        // subtree's top-left lands at the origin and the whole subtree sits inside the viewport.
-        return new Document
-        {
-            Id = Guid.NewGuid(),
-            Name = copy.Name,
-            Canvas = new Canvas { Width = box.Width, Height = box.Height },
-            // Design tokens are document-wide: token-referenced paint and typography in the
-            // subtree must resolve exactly as they do in the whole document.
-            Tokens = copy.Tokens,
-            Root = new FrameNode
+            var calculator = CreateBoundsCalculator(document, policy, cancellationToken, out rented, maxTextWork: 64_000_000);
+            var box = nodeId is null ? null : calculator.Compute(nodeId).Single().World;
+            var diagnostics = new List<RenderDiagnostic>();
+            var seen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var bounds in calculator.VisibleDiagnostics())
             {
-                ClipContent = false,
-                Width = box.Width,
-                Height = box.Height,
-                Children =
+                foreach (var message in bounds.Diagnostics)
                 {
-                    new GroupNode
+                    if (!seen.Add(message))
+                        continue;
+                    if (diagnostics.Count == 64)
                     {
-                        Transform = new Transform { X = -box.X, Y = -box.Y },
-                        Children = { node }
+                        diagnostics.Add(new(RenderDiagnosticCodes.DiagnosticsTruncated,
+                            "Further bounds diagnostics were omitted after 64 distinct messages"));
+                        return new(box, diagnostics);
                     }
+                    diagnostics.Add(new(RenderDiagnosticCodes.BoundsDiagnostic, message));
                 }
             }
-        };
+            return new(box, diagnostics);
+        }
+        finally { rented?.Dispose(); }
+
+        void CheckText(Node node)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!node.Visible)
+                return;
+            if (node is TextNode text)
+            {
+                if (text.Text.Length > SvgExportAdapter.MaxTextCharacters ||
+                    text.Text.Length > SvgExportAdapter.MaxTotalTextCharacters - totalText)
+                    throw new DocumentEngineException(EngineErrors.ResourceLimit, "Transient text exceeds export character limits");
+                totalText += text.Text.Length;
+            }
+            if (node is IContainerNode container)
+                foreach (var child in container.Children)
+                    CheckText(child);
+        }
     }
 
     // ---- Internals ----
@@ -1880,10 +1883,11 @@ public sealed class DocumentEngine : IDocumentEngine
         }
     }
 
-    private BoundsCalculator CreateBoundsCalculator(Document document, FontPolicy? fontPolicy, CancellationToken cancellationToken, out IDisposable? rented)
+    private BoundsCalculator CreateBoundsCalculator(Document document, FontPolicy? fontPolicy, CancellationToken cancellationToken, out IDisposable? rented,
+        long? maxTextWork = null)
     {
         var measurer = ResolveMeasurer(fontPolicy, out rented);
-        return new(document, DocumentIndex.Build(document), measurer, _tokenService, _pathOps, cancellationToken);
+        return new(document, DocumentIndex.Build(document), measurer, _tokenService, _pathOps, cancellationToken, maxTextWork);
     }
 
     /// <summary>
