@@ -59,11 +59,12 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
 
 - [x] PR-1: 012/T001 legacy grid characterization goldens; T002 `Rgba8` and `RgbaImage`; T003 the
   unpremultiply characterization (public port in child 018-review-foundation).
-- [ ] PR-2a in child020-transient-builder (change 010 already merged): T029 pre-refactor sub-node characterization; T032 the builder
-  replacing the sub-node copy; T033 its tests. PR-2b: T004 references, inspection, the inspected
-  font set, the aggregate bound and the colour parser; T005 their tests. PR-2c: T034 the render
-  session; T035 its tests.
-- [ ] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
+- [x] PR-2a in child020-transient-builder (public PR #13): T029 pre-refactor sub-node
+  characterization; T032 the builder replacing the sub-node copy; T033 its tests.
+- [ ] PR-2b in child021-review-inputs: T004 references, inspection, the inspected font set,
+  aggregate bound and colour parser; T005 their tests. Requires the public008/PR-1 registry gate.
+- [ ] PR-2c: T034 the render session; T035 its tests.
+- [x] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
   `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and
   surface the probe's bounds diagnostics (such as an unresolved typography token) on sub-node
   export. Both are pre-existing gaps found in the change 010 review and handed to this change.
@@ -122,7 +123,8 @@ criterion and task text is recovered from pre-public history before its incremen
 pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: child020-transient-builder implementation; its design review passed after one fix round.
+**Waiting on**: child021-review-inputs design and the public008/PR-1 registry prerequisite.
 **Delivered**: child018-review-foundation merged as public PR #11 with fresh source/installed
-evidence and independent reviews; change010 is already merged.
-**Next**: T029 pre-refactor characterization, T032 shared builder and T033 tests in child020.
+evidence and independent reviews; child020-transient-builder merged as public PR #13 after frozen
+characterization, source/installed checks and four independent lenses. Change010 is already merged.
+**Next**: port008's shared capability registry, then T004/T005 in child021 and render sessions.
