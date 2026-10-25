@@ -102,12 +102,20 @@ claimed until parent012's surface increment.
 
 ## State
 
-**Step**: design drafted; prerequisite identified
+**Step**: design drafted; prerequisite definitions and source recovered
 **Waiting on**: public change008/PR-1 registry increment, then independent design review.
 **Authority**: owner public-roadmap continuation and “and then continue with next steps”; the
 constitution permits feature commits, branch publication and reviewed exact-head green merges.
 **Attempts**: implementation and acceptance0; design review0.
-**Next**: recover the approved008/T001–T002 definitions and port the registry as its own child;
-then review and implement this bounded input foundation. No platform qualification is inferred.
+Product-Kit 1.2.0 is incorporated from public main `3e2d353` ([uptake #15](https://github.com/pevyhlas/agentgraphicdesign/pull/15));
+its required CI/reviews passed. The advisory macOS run retained exactly the prior main's 485
+failing test names/outcomes (2,900 passed); that is not qualification or a new acceptance attempt.
+The full approved 008/T001–T002 definitions, design/acceptance and original `Core/Platform`
+implementation are now recovered in ignored evidence at
+`.prdkit/cache/evidence/021-review-inputs/recovered/008-platform-registry/` with source hashes.
+**Next**: restate T001/T002 publicly and port the registry as its own reviewed child, adapting old
+CI/evidence assumptions to current hosted CI and squash history; retain D-28 P0's macOS
+PR-head/private-tmp checks. Then review and implement this input foundation. No platform
+qualification or new implementation acceptance is inferred.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
