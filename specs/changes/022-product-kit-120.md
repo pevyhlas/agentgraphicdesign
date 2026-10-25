@@ -75,17 +75,25 @@ required CI. Runtime source did not change, so no new product tests or qualifica
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | C-01, operations | `source-preservation.json`, `post-upgrade.log`, `adoption.log`: 72 managed files equal pinned source, both MIT notices verbatim | baseline | PASS |
-| A2 | Q-04/Q-06 | `idempotence-upgrade.log`, pinned-source regression evidence on companion AgentBlender uptake PR, `doctor.log`, `status.log`, `public-hygiene.log`; policy/reviewers unchanged | baseline | PASS |
+| A2 | Q-04/Q-06 | `idempotence-upgrade.log`, `upstream-evidence/` (original eight logs, pinned definitions, hashes and execution context), `doctor.log`, `status.log`, `public-hygiene.log`; policy/reviewers unchanged | baseline | PASS |
 | A3 | J-02/J-05 | next-work table checked against main and draft #14; independent reviews and exact-head CI remain required delivery gates | baseline | PASS |
 
 ## State
 
 **Step**: uptake verification
-**Waiting on**: independent reviews and exact-head CI.
+**Waiting on**: scoped test re-review of the repaired evidence package, then exact-head CI.
 **Authority**: owner's 2026-10-26 uptake request; standing constitution feature commit/push/PR
 and reviewed exact-head green merge policy. Releases and platform qualification retain their gates.
 **Attempts**: baseline only; repair 0. The same pinned source passed eight upstream regression suites.
+**Review repair**: round 1 test review found an evidence-access gap (one medium); no implementation
+defect. Original logs and pinned definitions are now copied byte-for-byte into this worktree's
+ignored `upstream-evidence/`, with command/exit/source/platform context. Review fix round 1;
+no acceptance rerun or reset. The failed report remains recorded below and on public PR #15.
 **Next**: verify/publish, complete reviews and merge, then refresh draft #14 and report registry
 port readiness. Raw evidence: `.prdkit/cache/evidence/022-product-kit-120/`.
+**Review**: round 1 · 90b98fa04455678fc928ceb6f6a451c41d3400fd..de3758e4df05257b5f5b280573815b726acbf95e · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/15#issuecomment-6405023647
+**Review**: round 1 · 90b98fa04455678fc928ceb6f6a451c41d3400fd..de3758e4df05257b5f5b280573815b726acbf95e · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/15#issuecomment-6405024045
+**Review**: round 1 · 90b98fa04455678fc928ceb6f6a451c41d3400fd..de3758e4df05257b5f5b280573815b726acbf95e · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/15#issuecomment-6405023863
+**Review**: round 1 · 90b98fa04455678fc928ceb6f6a451c41d3400fd..de3758e4df05257b5f5b280573815b726acbf95e · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/15#issuecomment-6405024225
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
