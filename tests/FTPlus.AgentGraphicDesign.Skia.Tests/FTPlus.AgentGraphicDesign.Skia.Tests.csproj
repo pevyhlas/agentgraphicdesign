@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
     <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
+    <Content Include="../Fixtures/sub-node/*" Link="Fixtures/sub-node/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

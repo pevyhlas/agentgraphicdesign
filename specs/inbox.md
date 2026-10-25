@@ -226,6 +226,15 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 ## Your direction
 
+### Continue after CI setup
+
+*2026-10-25 · owner · folded: 020-transient-builder*
+
+> and then continue with next steps
+
+Continues the reviewed capability increments after the macOS CI merges; acceptance and review
+gates still apply to the capability PRs.
+
 ### GitHub macOS CI
 
 *2026-10-25 · owner · folded: 019-macos-ci*

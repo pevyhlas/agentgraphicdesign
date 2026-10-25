@@ -79,7 +79,7 @@ Proposed implementation choices for design review:
 ## Tasks
 
 - [x] Independent architecture design review of the recovered contract and integration choices.
-- [ ] T029 baseline on unmodified engine, committed before T032.
+- [x] T029 baseline on unmodified engine, committed before T032.
 - [ ] Builder, engine/surface diagnostic and font-policy integration; T033 and carry-over tests.
 - [ ] Source/installed verification, applicable independent reviews and exact-head delivery.
 
@@ -93,24 +93,26 @@ security lenses cover snapshot ownership, input bounds, font-policy and source-p
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P1.B-15, Q-01/Q-02 | pre-refactor SVG/PNG goldens plus hand-derived legacy crop boxes remain equal; stroke ink overflow/clipping documented separately | 0 | NOT_RUN |
+| A1 | P1.B-15, Q-01/Q-02 | pre-refactor SVG/PNG goldens plus hand-derived legacy crop boxes remain equal; stroke ink overflow/clipping documented separately | 2 | BASELINE_PASS on Linux x64, unmodified engine7887bea; post-refactor pending; `.prdkit/cache/evidence/020-transient-builder/t029-baseline-2.log` |
 | A2 | D-26, Q-03/Q-04 | builder masks/background restore, copy-count/cancellation, tokens and source-preservation tests | 0 | NOT_RUN |
 | A3 | P1.B-15, P4, Q-02 | font policy affects actual crop; bounds diagnostics reach render/vector export and both surfaces | 0 | NOT_RUN |
 | A4 | Delivery | source/installed checks, exact-head CI and independent review | 0 | NOT_RUN |
 
 ## State
 
-**Step**: ready to implement
-**Waiting on**: nothing for T029; implementation and acceptance remain open.
+**Step**: implementing after T029 checkpoint
+**Waiting on**: implementation and post-refactor acceptance.
 **Authority**: owner continuation (“please continue on next capabilities”, then “go ahead - we
 should setup github CI for mac os”); constitution authorizes feature commit/push/PR and reviewed
 exact-head green merge. Release and platform qualification gates hold.
 **Branch / PR**: 020-transient-builder; base55c0efab887ea924c14019f0d98cc5e5eec1f5c7;
 [PR #13](https://github.com/pevyhlas/agentgraphicdesign/pull/13). Merged019 hosted CI incorporated;
 integration base8bad0a76a8ec3d663f734f172b6223fa6ee588d3. No production implementation yet.
-**Attempts**: 0 acceptance attempts; design fix round1 addresses crop-oracle and hidden-font
+**Attempts**: A1 baseline2 (first independent pixel assertion exposed one-unit premultiply rounding;
+corrected the color tolerance, preserving captured bytes). Seven sub-node tests pass. Initial fixture
+setup failures retained with capture logs. Design fix round1 addresses crop-oracle and hidden-font
 findings. Initial external-directory reviewer access failure was tooling-only and is preserved.
-**Next**: T029 pre-refactor characterization, committed before T032 builder replacement.
+**Next**: T032 builder replacement, T033 and diagnostic/font-policy tests against frozen T029 bytes.
 **Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401464438
 **Design review**: round2 · 16005b84c333be97dbe7615d1d0d005f5ed8ab4d..41493d89a0c0904ca8747c06b420a14a8070e2bc · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401482295
 <!-- One line per verdict (workflows/change.md, Review):
