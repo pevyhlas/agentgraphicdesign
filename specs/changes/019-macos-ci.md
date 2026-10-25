@@ -36,9 +36,10 @@ actual test-step outcome in the job summary so advisory success cannot imply pas
 
 ## Tasks
 
-- [ ] Wire the lane and reconcile the runner choice.
-- [ ] Validate locally; publish a draft PR and observe its macOS run and downloadable artifact.
-- [ ] Independent code, tests and operations review; exact-head gates; merge.
+- [x] Wire the lane and reconcile the runner choice.
+- [x] Validate locally; publish PR #12 and observe its macOS run and downloaded artifact.
+- [x] Independent code, tests and operations review; required source-head gates.
+- [ ] Close the record and merge after final-head gates.
 
 ## Checks
 
@@ -52,17 +53,20 @@ no engine, document, producer or MCP interface changes.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | L1 CI, C-10 | local workflow-policy/self-test, adoption, doctor, public hygiene and whitespace | 1 | PASS: Linux local checks, `.prdkit/cache/evidence/019-macos-ci/local-checks.log`; hosted verification pending |
-| A2 | L1 CI, Q-05 | PR run asserts macOS 26 arm64, builds and attempts all four suites; summary and downloadable profile/console/TRX artifact preserve actual outcomes | 0 | NOT_RUN |
-| A3 | Delivery policy | required Linux checks and independent reviews pass on exact head | 0 | NOT_RUN |
+| A1 | L1 CI, C-10 | workflow-policy/self-test, adoption, doctor, public hygiene and whitespace | 1 | PASS: local log and required hosted gates on `9538351`, [run](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40219615008) |
+| A2 | L1 CI, Q-05 | macOS PR run, all four suites and retained diagnostics | 1 | PASS for diagnostic infrastructure on `9538351`: macOS 26.6.2 arm64, 3363 executed, 2878 passed/485 failed, four TRX files downloaded; [independent evidence](https://github.com/pevyhlas/agentgraphicdesign/pull/12#issuecomment-6401308496). Not platform qualification |
+| A3 | Delivery policy | required Linux checks and independent reviews pass on exact source head | 1 | PASS: all eight Linux jobs green on `9538351`, three independent PASS verdicts below; final metadata-only head gated again before merge |
 
 ## State
 
-**Step**: implement
+**Step**: close
 **Waiting on**: nothing
 **Authority**: owner request “go ahead - we should setup github CI for mac os”; constitution
 permits feature commit/push/PR and exact-head reviewed green merge. Releases remain owner-gated.
-**Branch**: 019-macos-ci; base 55c0efab887ea924c14019f0d98cc5e5eec1f5c7.
-**Attempts**: acceptance 0; review fix rounds 0. Branch-protection API read returned 403 with
+**Branch / PR**: 019-macos-ci; base 55c0efab887ea924c14019f0d98cc5e5eec1f5c7; [PR #12](https://github.com/pevyhlas/agentgraphicdesign/pull/12).
+**Attempts**: A1/A2/A3 one each; review fix rounds 0. Branch-protection API read returned 403 with
 app credentials; workflow delivery does not require administration access.
-**Next**: publish the CI checkpoint and inspect hosted macOS results before final review.
+**Next**: commit review record, close, publish and enforce final-head gates before merge.
+**Review**: round 1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..95383519630275bbaab104df2c2137addb20bff6 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/12#issuecomment-6401260870
+**Review**: round 1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..95383519630275bbaab104df2c2137addb20bff6 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/12#issuecomment-6401261081
+**Review**: round 1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..95383519630275bbaab104df2c2137addb20bff6 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/12#issuecomment-6401308496
