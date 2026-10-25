@@ -946,10 +946,14 @@ public sealed class DocumentEngine : IDocumentEngine
     private TransientMeasurement MeasureTransient(Document document, Guid? nodeId, FontPolicy policy,
         CancellationToken cancellationToken)
     {
+        // Clipped-frame crops used not to visit their text. Refuse oversized visible content
+        // before the new diagnostic walk can wrap/shape it, using the existing export limits.
+        var totalText = 0;
+        CheckText(document.Root);
         IDisposable? rented = null;
         try
         {
-            var calculator = CreateBoundsCalculator(document, policy, cancellationToken, out rented);
+            var calculator = CreateBoundsCalculator(document, policy, cancellationToken, out rented, maxTextWork: 64_000_000);
             var box = nodeId is null ? null : calculator.Compute(nodeId).Single().World;
             var diagnostics = new List<RenderDiagnostic>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
@@ -971,6 +975,23 @@ public sealed class DocumentEngine : IDocumentEngine
             return new(box, diagnostics);
         }
         finally { rented?.Dispose(); }
+
+        void CheckText(Node node)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!node.Visible)
+                return;
+            if (node is TextNode text)
+            {
+                if (text.Text.Length > SvgExportAdapter.MaxTextCharacters ||
+                    text.Text.Length > SvgExportAdapter.MaxTotalTextCharacters - totalText)
+                    throw new DocumentEngineException(EngineErrors.ResourceLimit, "Transient text exceeds export character limits");
+                totalText += text.Text.Length;
+            }
+            if (node is IContainerNode container)
+                foreach (var child in container.Children)
+                    CheckText(child);
+        }
     }
 
     // ---- Internals ----
@@ -1862,10 +1883,11 @@ public sealed class DocumentEngine : IDocumentEngine
         }
     }
 
-    private BoundsCalculator CreateBoundsCalculator(Document document, FontPolicy? fontPolicy, CancellationToken cancellationToken, out IDisposable? rented)
+    private BoundsCalculator CreateBoundsCalculator(Document document, FontPolicy? fontPolicy, CancellationToken cancellationToken, out IDisposable? rented,
+        long? maxTextWork = null)
     {
         var measurer = ResolveMeasurer(fontPolicy, out rented);
-        return new(document, DocumentIndex.Build(document), measurer, _tokenService, _pathOps, cancellationToken);
+        return new(document, DocumentIndex.Build(document), measurer, _tokenService, _pathOps, cancellationToken, maxTextWork);
     }
 
     /// <summary>

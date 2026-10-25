@@ -114,6 +114,13 @@ corrected the color tolerance, preserving captured bytes). Seven sub-node tests 
 setup failures retained with capture logs. Design fix round1 addresses crop-oracle and hidden-font
 findings. Initial external-directory reviewer access failure was tooling-only and is preserved.
 **Next**: full source/installed gates, final architecture/security/code/test reviews and exact-head CI.
+**Implementation review fix round1**: bound visible text before diagnostic measurement and cap
+aggregate wrapping/measurement work at64 million characters. Security's medium finding and
+the original validation attempt are retained; focused regression tests pass. Operations lens is
+not applicable: no CI, packaging, release or platform-support contract changes.
+**Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734006
+**Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-security-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734253
+**Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734660
 **Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401464438
 **Design review**: round2 · 16005b84c333be97dbe7615d1d0d005f5ed8ab4d..41493d89a0c0904ca8747c06b420a14a8070e2bc · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401482295
 <!-- One line per verdict (workflows/change.md, Review):

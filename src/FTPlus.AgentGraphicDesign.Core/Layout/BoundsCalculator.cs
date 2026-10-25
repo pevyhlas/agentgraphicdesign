@@ -28,6 +28,7 @@ internal sealed class BoundsCalculator
     private readonly Dictionary<Guid, OwnGeometry> _own = [];
     private readonly Dictionary<Guid, Affine> _worldMatrices = [];
     private readonly Dictionary<Guid, Clip> _clips = [];
+    private long? _remainingTextWork;
 
     public BoundsCalculator(
         Document document,
@@ -35,7 +36,8 @@ internal sealed class BoundsCalculator
         ITextMeasurer measurer,
         TokenService tokens,
         PathOperationsService pathOps,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        long? maxTextWork = null)
     {
         _document = document;
         _index = index;
@@ -43,6 +45,7 @@ internal sealed class BoundsCalculator
         _tokens = tokens;
         _pathOps = pathOps;
         _cancellationToken = cancellationToken;
+        _remainingTextWork = maxTextWork;
 
         if (index.Count > MaxNodeCount)
         {
@@ -310,6 +313,13 @@ internal sealed class BoundsCalculator
         var measured = true;
         TextMeasurement Measure(string line)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+            if (_remainingTextWork is { } remaining)
+            {
+                if (line.Length > remaining)
+                    throw new DocumentEngineException(EngineErrors.ResourceLimit, "Transient text measurement exceeds the 64000000-character work budget");
+                _remainingTextWork = remaining - line.Length;
+            }
             var measurement = _measurer.MeasureSafely(style.ToMeasurementRequest(line), _cancellationToken);
             measured &= measurement.Measured;
             if (measurement.Diagnostic is { } diagnostic && !diagnostics.Contains(diagnostic))

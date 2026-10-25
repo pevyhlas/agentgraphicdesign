@@ -190,6 +190,48 @@ public sealed class TransientDocumentBuilderTests
     }
 
     private static TransientDocumentBuilder Builder() => new((_, _, _, _) => new(null, []));
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task OversizedVisibleTextRefusesBeforeMeasurementAndPreservesSource(bool aggregate)
+    {
+        var children = Enumerable.Range(0, aggregate ? 16 : 1).Select(i => (Node)new TextNode
+        {
+            Text = new string('x', aggregate ? 64_000 : 1_000_000),
+            MaxWidth = 1_000_000_000,
+            Order = i.ToString("D3", System.Globalization.CultureInfo.InvariantCulture)
+        }).ToList();
+        var frame = new FrameNode { Width = 10, Height = 10, ClipContent = true, Children = children };
+        var source = Scene(frame);
+        var before = DocumentSerializer.Serialize(source);
+        var engine = new DocumentEngine(renderer: new RecordingRenderer(), measurerFactory: _ =>
+            throw new Xunit.Sdk.XunitException("must refuse before acquiring a measurer"));
+        var svg = await Assert.ThrowsAsync<DocumentEngineException>(() => engine.ExportNodeAsync(source, frame.Id, new ExportOptions()));
+        Assert.Equal(EngineErrors.ResourceLimit, svg.Code);
+        var raster = Assert.Throws<DocumentEngineException>(() => engine.RenderNode(source, frame.Id, new RenderOptions(), CancellationToken.None));
+        Assert.Equal(EngineErrors.ResourceLimit, raster.Code);
+        Assert.Equal(before, DocumentSerializer.Serialize(source));
+        // A hidden ancestor must not turn skipped text into a new render failure.
+        frame.Children = [new GroupNode { Visible = false, Children = children }];
+        var hidden = await new DocumentEngine().ExportNodeAsync(source, frame.Id, new ExportOptions());
+        Assert.Empty(hidden.Diagnostics);
+    }
+
+    [Fact]
+    public void WrappingWorkIsBoundedEvenWithinTheTextLengthLimit()
+    {
+        var text = new TextNode { Text = string.Concat(Enumerable.Repeat("a ", 32_000)), MaxWidth = 1_000_000_000 };
+        var frame = new FrameNode { Width = 10, Height = 10, ClipContent = true, Children = [text] };
+        var source = Scene(frame);
+        var before = DocumentSerializer.Serialize(source);
+        var measurer = new Measuring();
+        var engine = new DocumentEngine(renderer: new RecordingRenderer(), measurerFactory: _ => measurer);
+        var error = Assert.Throws<DocumentEngineException>(() => engine.RenderNode(source, frame.Id, new RenderOptions(), CancellationToken.None));
+        Assert.Equal(EngineErrors.ResourceLimit, error.Code);
+        Assert.True(measurer.Disposed);
+        Assert.Equal(before, DocumentSerializer.Serialize(source));
+    }
     private static Document Scene(params Node[] children) => new()
     {
         Id = Guid.NewGuid(),

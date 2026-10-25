@@ -35,7 +35,10 @@ Format reference: [docs/format.md](../../../docs/format.md).
   strict-font enforcement for rendered text. A separate diagnostic walk skips hidden ancestor
   chains, preserves document order and deduplicates messages, capped at 64 plus a truncation note.
   Bounds notes use `BOUNDS_DIAGNOSTIC` on render and vector export results. SVG measurement uses
-  the default font policy. Tests: `SubNodeFontPolicyTests`, `TransientDocumentBuilderTests`.
+  the default font policy. Visible text is checked against existing export limits before measuring;
+  transient measurement caps aggregate measured characters (including repeated wrapping probes)
+  at 64,000,000 and refuses excess with `RESOURCE_LIMIT`. Hidden chains bypass the visible-text
+  check. Tests: `SubNodeFontPolicyTests`, `TransientDocumentBuilderTests`.
 - **P1.B-16 Deterministic fonts**: raster text resolves font directories, then bundled Inter,
   then host fonts when allowed; an unresolved family is substituted with bundled Inter and
   reported as `FONT_SUBSTITUTED`, and strict font mode fails instead. Byte-stable raster text
