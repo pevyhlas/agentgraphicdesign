@@ -81,7 +81,7 @@ Proposed implementation choices for design review:
 - [x] Independent architecture design review of the recovered contract and integration choices.
 - [x] T029 baseline on unmodified engine, committed before T032.
 - [x] Builder, engine/surface diagnostic and font-policy integration; T033 and carry-over tests.
-- [ ] Source/installed verification, applicable independent reviews and exact-head delivery.
+- [x] Source/installed verification and applicable independent reviews; final closing-head CI gates merge.
 
 ## Checks
 
@@ -93,15 +93,15 @@ security lenses cover snapshot ownership, input bounds, font-policy and source-p
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P1.B-15, Q-01/Q-02 | pre-refactor SVG/PNG goldens plus hand-derived legacy crop boxes remain equal; stroke ink overflow/clipping documented separately | 2 | BASELINE_PASS on Linux x64, unmodified engine7887bea; post-refactor pending; `.prdkit/cache/evidence/020-transient-builder/t029-baseline-2.log` |
-| A2 | D-26, Q-03/Q-04 | builder masks/background restore, copy-count/cancellation, tokens and source-preservation tests | 0 | NOT_RUN |
-| A3 | P1.B-15, P4, Q-02 | font policy affects actual crop; bounds diagnostics reach render/vector export and both surfaces | 0 | NOT_RUN |
-| A4 | Delivery | source/installed checks, exact-head CI and independent review | 0 | NOT_RUN |
+| A1 | P1.B-15, Q-01/Q-02 | pre-refactor SVG/PNG goldens plus hand-derived legacy crop boxes remain equal; stroke ink overflow/clipping documented separately | 2 baseline, 1 post-refactor | PASS baseline and frozen post-refactor goldens; `t029-baseline-2.log`, `t032-goldens.log` under evidence020 |
+| A2 | D-26, Q-03/Q-04 | builder masks/background restore, copy-count/cancellation, tokens and source-preservation tests | 1, plus security fix1 | PASS focused builder tests and full Core2524; `security-fix-1.log`, `validate-local-2.log` |
+| A3 | P1.B-15, P4, Q-02 | font policy affects actual crop; bounds diagnostics reach render/vector export and both surfaces | 1 | PASS source tests plus installed CLI SVG/PNG and MCP real-stdio SVG/PNG diagnostics/output/source-preservation probe; `installed-subnode-2.log` |
+| A4 | Delivery | source/installed checks, exact-head CI and independent review | 2 | PASS at source3e27d56: full3385, clean-archive3385, installedCLI64/MCP37, all4review lenses; required CI run40230713898 green; record-only closing-head CI still gates merge |
 
 ## State
 
-**Step**: source and installed verification
-**Waiting on**: complete checks and final independent reviews.
+**Step**: ready for record-only closure and exact-head delivery
+**Waiting on**: closing-head required CI before merge.
 **Authority**: owner continuation (“please continue on next capabilities”, then “go ahead - we
 should setup github CI for mac os”); constitution authorizes feature commit/push/PR and reviewed
 exact-head green merge. Release and platform qualification gates hold.
@@ -113,7 +113,14 @@ builder and diagnostics implementation now present.
 corrected the color tolerance, preserving captured bytes). Seven sub-node tests pass. Initial fixture
 setup failures retained with capture logs. Design fix round1 addresses crop-oracle and hidden-font
 findings. Initial external-directory reviewer access failure was tooling-only and is preserved.
-**Next**: full source/installed gates, final architecture/security/code/test reviews and exact-head CI.
+**Next**: close child020 after its recorded acceptance, verify exact closing-head checks, merge;
+parent012 continues with reference reader/font inspection/aggregate bound (PR-2b), then render sessions.
+**Evidence**: `.prdkit/cache/evidence/020-transient-builder/validate-local-2.log` completed exit0;
+3385 source and clean-archive tests, installedCLI64/MCP37, package smoke/format/dependency/audit/
+readiness/adoption/doctor pass. First validation's source suites passed but package refused a
+tree changed during review repair; failure retained. Installed feature probe initially hit the
+supported nested-store guard; separate harness roots passed without product changes. All22new
+cases passed native macOS, while overall advisory suite still fails; no platform qualification.
 **Implementation review fix round1**: bound visible text before diagnostic measurement and cap
 aggregate wrapping/measurement work at64 million characters. Security's medium finding and
 the original validation attempt are retained; focused regression tests pass. Operations lens is
@@ -121,6 +128,11 @@ not applicable: no CI, packaging, release or platform-support contract changes.
 **Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734006
 **Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-security-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734253
 **Review**: round 3 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..abe01aaea146f9b9bdd1219858b7e5532154cdb9 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402734660
+**Review**: round 4 · abe01aaea146f9b9bdd1219858b7e5532154cdb9..3e27d5636bcd496dc2114ebaa7318cae24cb135a · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402848425
+**Review**: round 4 · abe01aaea146f9b9bdd1219858b7e5532154cdb9..3e27d5636bcd496dc2114ebaa7318cae24cb135a · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402848774
+**Review**: round 4 · abe01aaea146f9b9bdd1219858b7e5532154cdb9..3e27d5636bcd496dc2114ebaa7318cae24cb135a · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6402849084
+**Review**: round 4 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..3e27d5636bcd496dc2114ebaa7318cae24cb135a · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6403045434
+**Review**: round 4 · 8bad0a76a8ec3d663f734f172b6223fa6ee588d3..3e27d5636bcd496dc2114ebaa7318cae24cb135a · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6403050647
 **Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401464438
 **Design review**: round2 · 16005b84c333be97dbe7615d1d0d005f5ed8ab4d..41493d89a0c0904ca8747c06b420a14a8070e2bc · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401482295
 <!-- One line per verdict (workflows/change.md, Review):
