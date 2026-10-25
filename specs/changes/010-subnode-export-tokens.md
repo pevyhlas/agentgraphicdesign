@@ -47,7 +47,7 @@ format or interface change.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P1.B-15 | `SubNodeExportTests.ExportNode_ResolvesDocumentTokens`, `SubNodeRenderTests.RenderNode_ResolvesColorTokens`, `SubNodeRenderTests.RenderNode_TypographyTokenSizesTheCrop` | 1 | PASS: public PR #4 Linux CI; earlier macOS negative controls retained |
+| A1 | P1.B-15 | `SubNodeExportTests.ExportNode_ResolvesDocumentTokens`, `SubNodeRenderTests.RenderNode_ResolvesColorTokens`, `SubNodeRenderTests.RenderNode_TypographyTokenSizesTheCrop`; public PR #4 Linux CI; earlier macOS negative controls retained | 1 | PASS |
 
 ## State
 

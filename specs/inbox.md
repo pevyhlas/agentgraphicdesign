@@ -226,6 +226,14 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 ## Your direction
 
+### Latest Product-Kit and next steps
+
+*2026-10-26 · owner · folded: 022-product-kit-120*
+
+> please uptake the latest product kit and then see what are the next steps
+
+Updates the public vendored kit and assesses roadmap readiness under the existing action policy.
+
 ### Continue after CI setup
 
 *2026-10-25 · owner · folded: 020-transient-builder*
