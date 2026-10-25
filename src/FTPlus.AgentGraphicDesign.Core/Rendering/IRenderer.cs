@@ -86,6 +86,9 @@ public sealed record RenderDiagnostic(string Code, string Message);
 /// <summary>Stable diagnostic codes shared by all surfaces.</summary>
 public static class RenderDiagnosticCodes
 {
+    /// <summary>The sub-node crop or visible geometry has a non-fatal bounds diagnostic.</summary>
+    public const string BoundsDiagnostic = "BOUNDS_DIAGNOSTIC";
+
     /// <summary>A requested font family was unavailable and the bundled default family was drawn instead.</summary>
     public const string FontSubstituted = "FONT_SUBSTITUTED";
 

@@ -69,7 +69,8 @@ public sealed class SubNodeCharacterizationTests
         var rectangle = new RectangleNode
         {
             Id = Guid.Parse("20000000-0000-0000-0000-000000000001"),
-            Width = 20, Height = 20,
+            Width = 20,
+            Height = 20,
             Style = new Style { Fill = new Fill { Color = "#ffffff" }, Stroke = new Stroke { Color = "#000000", Width = 4 } }
         };
         Node target = rectangle;
@@ -108,7 +109,9 @@ public sealed class SubNodeCharacterizationTests
             Canvas = new Canvas { Width = 200, Height = 150, Background = "#ff00ff" },
             Root = new FrameNode
             {
-                Width = 200, Height = 150, ClipContent = true,
+                Width = 200,
+                Height = 150,
+                ClipContent = true,
                 Transform = new Transform { X = 1000, Y = 2000, ScaleX = 4, ScaleY = 5 },
                 Children = [target]
             }

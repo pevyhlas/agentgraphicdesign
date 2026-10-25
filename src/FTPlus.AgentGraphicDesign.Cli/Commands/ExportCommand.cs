@@ -316,6 +316,7 @@ public sealed class ExportCommand : AsyncCommand<ExportCommand.Settings>
                     : await _engine.ExportAsync(document, exportOptions, ct);
                 data = result.Data;
                 mimeType = result.MimeType;
+                diagnostics = result.Diagnostics;
             }
 
             if (data.LongLength > SurfaceIO.MaxOutputBytes)

@@ -80,7 +80,7 @@ Proposed implementation choices for design review:
 
 - [x] Independent architecture design review of the recovered contract and integration choices.
 - [x] T029 baseline on unmodified engine, committed before T032.
-- [ ] Builder, engine/surface diagnostic and font-policy integration; T033 and carry-over tests.
+- [x] Builder, engine/surface diagnostic and font-policy integration; T033 and carry-over tests.
 - [ ] Source/installed verification, applicable independent reviews and exact-head delivery.
 
 ## Checks
@@ -100,19 +100,20 @@ security lenses cover snapshot ownership, input bounds, font-policy and source-p
 
 ## State
 
-**Step**: implementing after T029 checkpoint
-**Waiting on**: implementation and post-refactor acceptance.
+**Step**: source and installed verification
+**Waiting on**: complete checks and final independent reviews.
 **Authority**: owner continuation (“please continue on next capabilities”, then “go ahead - we
 should setup github CI for mac os”); constitution authorizes feature commit/push/PR and reviewed
 exact-head green merge. Release and platform qualification gates hold.
 **Branch / PR**: 020-transient-builder; base55c0efab887ea924c14019f0d98cc5e5eec1f5c7;
 [PR #13](https://github.com/pevyhlas/agentgraphicdesign/pull/13). Merged019 hosted CI incorporated;
-integration base8bad0a76a8ec3d663f734f172b6223fa6ee588d3. No production implementation yet.
+integration base8bad0a76a8ec3d663f734f172b6223fa6ee588d3. T029 baseline checkpoint04fae3d;
+builder and diagnostics implementation now present.
 **Attempts**: A1 baseline2 (first independent pixel assertion exposed one-unit premultiply rounding;
 corrected the color tolerance, preserving captured bytes). Seven sub-node tests pass. Initial fixture
 setup failures retained with capture logs. Design fix round1 addresses crop-oracle and hidden-font
 findings. Initial external-directory reviewer access failure was tooling-only and is preserved.
-**Next**: T032 builder replacement, T033 and diagnostic/font-policy tests against frozen T029 bytes.
+**Next**: full source/installed gates, final architecture/security/code/test reviews and exact-head CI.
 **Design review**: round1 · 55c0efab887ea924c14019f0d98cc5e5eec1f5c7..16005b84c333be97dbe7615d1d0d005f5ed8ab4d · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401464438
 **Design review**: round2 · 16005b84c333be97dbe7615d1d0d005f5ed8ab4d..41493d89a0c0904ca8747c06b420a14a8070e2bc · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/13#issuecomment-6401482295
 <!-- One line per verdict (workflows/change.md, Review):

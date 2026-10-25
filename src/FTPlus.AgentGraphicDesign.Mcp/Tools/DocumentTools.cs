@@ -1164,6 +1164,7 @@ public sealed class DocumentTools
                     : await _engine.ExportAsync(handle.Document, exportOptions, cancellationToken);
                 data = exportResult.Data;
                 mimeType = exportResult.MimeType;
+                diagnostics = exportResult.Diagnostics;
             }
 
             if (data.LongLength > MaxOutputBytes)

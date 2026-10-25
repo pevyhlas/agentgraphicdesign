@@ -22,7 +22,20 @@ Format reference: [docs/format.md](../../../docs/format.md).
 - **P1.B-15 Isolated sub-node export**: exporting one node draws its subtree alone, cropped to
   its own bounds, without ancestor transforms or clipping, and resolves token references in
   paint and typography exactly as the whole document does; a node with no visible bounds fails
-  with `NODE_NO_BOUNDS`. Test: `SubNodeExportTests`, `SubNodeRenderTests`, `ExportCommandSubNodeTests`.
+   with `NODE_NO_BOUNDS`. Test: `SubNodeExportTests`, `SubNodeRenderTests`, `ExportCommandSubNodeTests`.
+- The shared internal transient builder takes one synchronized private snapshot; masks retain
+  selected subtrees and ancestor chains without enabling authored-hidden nodes. Clearing a mask
+  restores visibility; source/none backgrounds change only the snapshot, without another copy.
+  Node crops use a fresh non-clipping probe and translated wrapper; ancestors are excluded.
+  The legacy D-10 “ink” box is geometry-only: centered stroke overflow stays clipped at the
+  raster viewport. SVG bytes and Linux x64 PNG hashes pin that behavior before the refactor.
+  Tests: `TransientDocumentBuilderTests`, `SubNodeCharacterizationTests`.
+- Raster sub-node bounds honor the caller's font directories and system-font policy. Measurement
+  is non-strict because legacy crop geometry can include hidden text; the actual renderer retains
+  strict-font enforcement for rendered text. A separate diagnostic walk skips hidden ancestor
+  chains, preserves document order and deduplicates messages, capped at 64 plus a truncation note.
+  Bounds notes use `BOUNDS_DIAGNOSTIC` on render and vector export results. SVG measurement uses
+  the default font policy. Tests: `SubNodeFontPolicyTests`, `TransientDocumentBuilderTests`.
 - **P1.B-16 Deterministic fonts**: raster text resolves font directories, then bundled Inter,
   then host fonts when allowed; an unresolved family is substituted with bundled Inter and
   reported as `FONT_SUBSTITUTED`, and strict font mode fails instead. Byte-stable raster text

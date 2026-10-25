@@ -8,6 +8,26 @@ namespace FTPlus.AgentGraphicDesign.Cli.Tests.Commands;
 /// </summary>
 public class ExportCommandSubNodeTests : CommandTestBase
 {
+    [Theory]
+    [InlineData("svg")]
+    [InlineData("png")]
+    public void ExportNodeReportsBoundsDiagnostics(string type)
+    {
+        var path = CreateTestDocument();
+        var document = Core.Serialization.DocumentSerializer.Deserialize(File.ReadAllText(path))!;
+        var text = new Core.Documents.Nodes.TextNode { Text = "Hello", TypographyTokenRef = "{missing}" };
+        document.Root.Children = [text];
+        File.WriteAllText(path, Core.Serialization.DocumentSerializer.Serialize(document));
+        var before = File.ReadAllBytes(path);
+        var outputPath = Path.Combine(TestDir, "diagnostic." + type);
+        var result = RunCommand("export", path, "--node", text.Id.ToString(), "--type", type, "-o", outputPath, "-f", "json");
+        Assert.Equal(0, result.ExitCode);
+        using var json = JsonDocument.Parse(result.Output);
+        Assert.Contains(json.RootElement.GetProperty("data").GetProperty("diagnostics").EnumerateArray(),
+            d => d.GetProperty("code").GetString() == "BOUNDS_DIAGNOSTIC" && d.GetProperty("message").GetString()!.Contains("missing"));
+        Assert.Equal(before, File.ReadAllBytes(path));
+    }
+
     [Fact]
     public async Task Export_WithNode_CropsSvgToSubtreeBounds()
     {
