@@ -39,9 +39,9 @@ S03, S06, S09 and S11 depend on it. Q-05 is planned on this change.
 
 Owner choices: Apple silicon osx-arm64, APFS, macOS 26 or later only; the strict symlink rule with
 the three verified aliases `/var`, `/tmp`, `/etc`; the raster platform class decided once the
-Linux-to-macOS corpus exists (recommended outcome B, D-28). The pre-public runner choice, a
-self-hosted runner under a separate unprivileged account, is reopened for the public repository
-(inbox). Design (D-28; plan sections 008/D1 to 008/D12): a Core registry with three-valued
+Linux-to-macOS corpus exists (recommended outcome B, D-28). The public runner choice is standard
+GitHub-hosted `macos-26` arm64 (owner direction, child 019); the pre-public account-provisioning
+tasks do not apply. Design (D-28; plan sections 008/D1 to 008/D12): a Core registry with three-valued
 per-capability qualification and staged values; Darwin backends behind a syscall seam testable on
 every OS; one canonical-path entry point; a stored-name gate for pixel writer locks; one redactor;
 portable tests and scripts; a corpus comparison; a scripted, hash-bound qualification record with a
@@ -67,8 +67,7 @@ Pull request increments, in order (task IDs as in the pre-public plan):
   008/T002 test classes on the pull request head in `private-tmp` mode, and those classes pass; no
   `macos-progress` record, which 008/T003 builds later.
 - [ ] 008/T003 repository checks (path-API ban, OS-guarded-return ban, workflow lint, bash 3.2
-  lint, the `macos-progress` record); 008/T016a runner script and runbook (only if the owner picks
-  a self-hosted runner).
+  lint, the `macos-progress` record). 008/T016a account provisioning is inapplicable to hosted CI.
 - [ ] 008/T012 `PathRedactor`, which also fixes the unanchored Core path pattern that garbles
   `/private/...` roots and relative store locations with a `tmp`, `var` or similar segment in
   `STORE_CONFLICT` messages (deferred here from change 006); 008/T013a OFL-1.1 test fonts;
@@ -81,14 +80,16 @@ Pull request increments, in order (task IDs as in the pre-public plan):
   the claim check compares it with the commit that added the record on first-parent history, and
   `verify-merge` compares it with the pull request's merge result (D-28); 008/T019 the live
   availability probe (needed by change 009 B5).
-- [ ] 008/T016b the macOS workflow; 008/T016c the owner's one-time runner setup (self-hosted only).
+- [ ] 008/T016b head-bound qualification recording and workflow checks, extending the diagnostic
+  job in child 019. 008/T016c owner-operated runner setup is inapplicable to hosted CI.
 - [ ] 008/T005 the corpus at one commit with T006, T007 and T011, then the raster class wording;
   008/T017 the support matrix as the single source in the release contract and the linked docs.
 - [ ] 008/T018 final qualification (S3): qualify the pull request, whose merge result carries the
   registry flip and the `d10` entry, add the record in a results-only commit, and squash-merge once
   `verify-merge` shows the record's input digest equals the merge result's. The pre-public plan's
   merge commit is superseded (D-28).
-- [ ] Choose the macOS CI runner for the public repository (inbox).
+- [x] Choose the macOS CI runner: standard GitHub-hosted `macos-26` arm64, owner direction
+  implemented by child 019-macos-ci. Qualification recording and claim checks remain here.
 
 Implementation-review checks from design closure, each settled in its task's review: 008/RC-01
 anchored, column-pinned pass patterns plus positive and `FAIL`-row self-tests (T002); RC-02 the
@@ -138,6 +139,7 @@ body and in this record, the criteria and tasks it closes.
 test), and the first increment (PR-0 and PR-1) passed implementation review in all four lenses
 with low notes only, both in the pre-public history; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: the owner, on porting (inbox) and on the macOS CI runner (inbox)
+**Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
+by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
 **Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
 close, then 008/T003

@@ -207,25 +207,6 @@ platform registry), 011's special-file gate and 012's raw RGBA/legacy characteri
 
 **If no answer**: continue the remaining reviewed ports in roadmap order.
 
-### Which macOS CI runner the public repository uses
-
-*2026-10-22 · agent · open*
-
-The macOS qualification lane ([change 008](changes/008-macos-qualification.md)) needs a CI
-runner; this repository's workflows use GitHub-hosted runners only. Before going public the
-choice was a self-hosted runner under a separate, audited, unprivileged account, designed to be
-disabled or fork-approval-gated once the repository became public ([D-28](decisions/D-28.md)).
-
-1. **A GitHub-hosted Apple silicon runner** (Recommended): no machine to secure; the qualified
-   macOS version depends on the runner images offered.
-2. **Keep the informational scheduled job** until qualification needs more; macOS evidence then
-   comes from lead-run qualification records.
-3. **The self-hosted runner as designed**, with approval required for every fork workflow run:
-   the qualified macOS version is under your control; you run the one-time setup and keep the
-   machine maintained.
-
-**If no answer**: keep the informational scheduled job.
-
 ### Platform class of glyph-outline geometry
 
 *2026-10-22 · agent · open*
@@ -244,6 +225,15 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
 ## Your direction
+
+### GitHub macOS CI
+
+*2026-10-25 · owner · folded: 019-macos-ci*
+
+> go ahead - we should setup github CI for mac os
+
+Selects a standard GitHub-hosted Apple silicon runner for public CI; implemented on macOS 26.
+The complete qualification and required-check promotion remain under change 008.
 
 ### Continue the next capabilities
 

@@ -1,8 +1,8 @@
 name: CI
 
 # The merge gate. It runs on GitHub-hosted runners for every pull request, forks included,
-# every push to main, a weekly schedule (new vulnerability advisories and the informational
-# macOS job) and manual dispatch. No job needs secrets, every third-party action is pinned by
+# every push to main, a weekly schedule (new vulnerability advisories) and manual dispatch.
+# macOS runs on the same events, advisory until qualification. Every third-party action is pinned by
 # full commit SHA with a version comment, and the workflow token is read-only.
 # `RepoChecks workflows` enforces this policy in the repository-gates job.
 
@@ -95,18 +95,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # TODO(platform qualification): macOS is not a qualified authoring profile. Native
-  # pixel storage and the asset-pipeline file probe fail closed off Linux x64, so many
-  # tests fail here today. This informational job is non-required (continue-on-error)
-  # until a platform qualification change qualifies macOS (Q-05 in
-  # specs/product/qualities.md, planned under specs/changes/008-macos-qualification.md). Do not
-  # add it to required status checks before then. It runs only on the weekly schedule
-  # or a manual dispatch, never on PRs or pushes, so it cannot become a required check
-  # by accident.
+  # macOS remains unqualified (Q-05, change 008): guarded file operations currently fail
+  # closed. Run the complete source suite on PRs too, retaining failures for qualification.
+  # Keep advisory and out of required status checks until that qualification is complete.
   test-macos:
-    name: Test macOS (informational)
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    runs-on: macos-latest
+    name: Test macOS 26 arm64 (advisory)
+    runs-on: macos-26
     timeout-minutes: 35
     continue-on-error: true
     steps:
@@ -120,6 +114,20 @@ jobs:
         with:
           global-json-file: global.json
 
+      - name: Record and assert macOS runner profile
+        run: |
+          {
+            sw_vers
+            uname -m
+            printf 'ImageOS=%s\nImageVersion=%s\n' "$ImageOS" "$ImageVersion"
+            dotnet --info
+          } > macos-environment.log 2>&1
+          cat macos-environment.log
+          test "$(uname -m)" = arm64
+          test "$(sw_vers -productVersion | cut -d. -f1)" = 26
+          # Avoid the /var alias in the default macOS temporary path.
+          echo "TMPDIR=$(cd "$RUNNER_TEMP" && pwd -P)/" >> "$GITHUB_ENV"
+
       - name: Restore locked graph
         run: dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode
 
@@ -127,7 +135,40 @@ jobs:
         run: dotnet build FTPlus.AgentGraphicDesign.slnx --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test FTPlus.AgentGraphicDesign.slnx --configuration Release --no-build
+        id: macos-tests
+        timeout-minutes: 25
+        run: |
+          umask 022
+          dotnet test FTPlus.AgentGraphicDesign.slnx --configuration Release --no-build \
+            --logger "console;verbosity=normal" --logger trx \
+            --results-directory "$RUNNER_TEMP/macos-test-results" \
+            --blame-hang-timeout 5m --blame-hang-dump-type none > macos-tests.log 2>&1
+
+      - name: Report macOS test outcome
+        if: always()
+        env:
+          TEST_OUTCOME: ${{ steps.macos-tests.outcome }}
+        run: |
+          if [ -f macos-tests.log ]; then tail -150 macos-tests.log; fi
+          {
+            echo '### macOS 26 arm64 — advisory'
+            printf 'Source-suite step outcome: **%s**.\n\n' "$TEST_OUTCOME"
+            echo 'See macos-test-results for runner identity, console log and TRX results.'
+            echo 'This lane is diagnostic evidence, not platform qualification (change 008).'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload macOS test results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          # Separate from test-results-* consumed by the required Linux coverage gate.
+          name: macos-test-results
+          path: |
+            macos-environment.log
+            macos-tests.log
+            ${{ runner.temp }}/macos-test-results
+          if-no-files-found: error
+          retention-days: 7
 
   coverage:
     name: Coverage Gate
