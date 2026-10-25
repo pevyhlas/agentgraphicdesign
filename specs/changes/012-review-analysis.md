@@ -59,7 +59,7 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
 
 - [x] PR-1: 012/T001 legacy grid characterization goldens; T002 `Rgba8` and `RgbaImage`; T003 the
   unpremultiply characterization (public port in child 018-review-foundation).
-- [ ] PR-2a (change 010 already merged): T029 pre-refactor sub-node characterization; T032 the builder
+- [ ] PR-2a in child020-transient-builder (change 010 already merged): T029 pre-refactor sub-node characterization; T032 the builder
   replacing the sub-node copy; T033 its tests. PR-2b: T004 references, inspection, the inspected
   font set, the aggregate bound and the colour parser; T005 their tests. PR-2c: T034 the render
   session; T035 its tests.
@@ -122,5 +122,7 @@ criterion and task text is recovered from pre-public history before its incremen
 pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: child 018-review-foundation verification and review; change 010 is already merged
-**Next**: finish PR-1 in child 018 with restated criteria and fresh evidence, then PR-2a
+**Waiting on**: child020-transient-builder design review before PR-2a implementation.
+**Delivered**: child018-review-foundation merged as public PR #11 with fresh source/installed
+evidence and independent reviews; change010 is already merged.
+**Next**: T029 pre-refactor characterization, T032 shared builder and T033 tests in child020.
