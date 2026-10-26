@@ -79,8 +79,12 @@ internal static partial class Program
                 foreach (var key in new[] { "sourceEvidence", "installedEvidence", "reviewEvidence" })
                     if (!fields.TryGetValue(key, out var link) || !EvidenceLink(root, link)) errors.Add($"{label}: selected record needs valid {key}");
                 if (capability == "stillImport")
-                    foreach (var key in new[] { "ac01", "ac02", "ac03", "ac04" })
+                {
+                    foreach (var key in new[] { "ac01", "ac02", "ac03" })
                         if (fields.GetValueOrDefault(key) != "PASS") errors.Add($"{label}: selected record needs {key}=PASS");
+                    if (fields.GetValueOrDefault("ac04") != "PREMERGE_PROOF_PASS")
+                        errors.Add($"{label}: selected record needs ac04=PREMERGE_PROOF_PASS; final integration remains independently required");
+                }
                 // Only the selected record is evaluated. Unrelated historical FAIL records do not poison it.
                 if (line.Contains("Failed!", StringComparison.Ordinal) || Regex.IsMatch(line, @"\|\s*FAIL\s*\|", RegexOptions.CultureInvariant, PatternTimeout))
                     errors.Add($"{label}: selected record contains a failed test line or FAIL result column");
@@ -278,7 +282,7 @@ internal static partial class Program
             ["passPatterns"] = new JsonArray("^ATTEST test-" + c.ToLowerInvariant() + " .*$")
         };
         var baseline = new JsonObject { ["version"] = 1, ["entries"] = new JsonArray(KnownCapabilities.Select(c => (JsonNode)Entry(c)).ToArray()) };
-        var records = KnownCapabilities.Select(c => $"ATTEST test-{c.ToLowerInvariant()} by=agent what=platform-qualification profile=dotnet10-linux-x64 capability={c} sourceCommit={commit} evaluator=independent-review result=PASS sourceEvidence=https://github.com/example/source installedEvidence=https://github.com/example/installed reviewEvidence=https://github.com/example/reviews env=dotnet10-linux-x64 version={commit} date=2026-10-26{(c == "stillImport" ? " ac01=PASS ac02=PASS ac03=PASS ac04=PASS" : "")} — inspected public proof").ToArray();
+        var records = KnownCapabilities.Select(c => $"ATTEST test-{c.ToLowerInvariant()} by=agent what=platform-qualification profile=dotnet10-linux-x64 capability={c} sourceCommit={commit} evaluator=independent-review result=PASS sourceEvidence=https://github.com/example/source installedEvidence=https://github.com/example/installed reviewEvidence=https://github.com/example/reviews env=dotnet10-linux-x64 version={commit} date=2026-10-26{(c == "stillImport" ? " ac01=PASS ac02=PASS ac03=PASS ac04=PREMERGE_PROOF_PASS" : "")} — inspected public proof").ToArray();
         var count = 0;
         void Fixture(string name, Action<JsonObject> change, Func<string[], string[]>? recordChange = null, bool passes = false, bool missingFile = false)
         {
@@ -321,7 +325,14 @@ internal static partial class Program
         Fixture("extra pair", d => { var e = Entry("vector"); e["profile"] = "dotnet10-windows-x64"; d["entries"]!.AsArray().Add(e); });
         Fixture("missing evaluator", _ => { }, r => { r[0] = r[0].Replace(" evaluator=independent-review", "", StringComparison.Ordinal); return r; });
         Fixture("missing installed evidence", _ => { }, r => { r[0] = r[0].Replace("installedEvidence=https://github.com/example/installed", "installedEvidence=PENDING", StringComparison.Ordinal); return r; });
-        Fixture("still-import incomplete", _ => { }, r => r.Select(l => l.Replace("ac04=PASS", "ac04=NOT_RUN", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import incomplete", _ => { }, r => r.Select(l => l.Replace("ac04=PREMERGE_PROOF_PASS", "ac04=NOT_RUN", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import generic PASS is not premerge proof", _ => { }, r => r.Select(l => l.Replace("ac04=PREMERGE_PROOF_PASS", "ac04=PASS", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import missing premerge proof", _ => { }, r => r.Select(l => l.Replace(" ac04=PREMERGE_PROOF_PASS", "", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import pending premerge proof", _ => { }, r => r.Select(l => l.Replace("ac04=PREMERGE_PROOF_PASS", "ac04=PENDING", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import unknown premerge proof", _ => { }, r => r.Select(l => l.Replace("ac04=PREMERGE_PROOF_PASS", "ac04=COMPLETE", StringComparison.Ordinal)).ToArray());
+        Fixture("still-import failed premerge proof with PASS prose", _ => { }, r => r.Select(l => l.Replace("ac04=PREMERGE_PROOF_PASS", "ac04=FAIL", StringComparison.Ordinal) + " PASS PREMERGE_PROOF_PASS").ToArray());
+        foreach (var key in new[] { "ac01", "ac02", "ac03" })
+            Fixture($"still-import {key} still requires runtime PASS", _ => { }, r => r.Select(l => l.Replace($"{key}=PASS", $"{key}=PREMERGE_PROOF_PASS", StringComparison.Ordinal)).ToArray());
         Fixture("duplicate selected line", _ => { }, r => r.Append(r[0]).ToArray());
         Console.WriteLine($"Qualification evidence self-tests: {count} synthetic positive/negative fixtures.");
     }

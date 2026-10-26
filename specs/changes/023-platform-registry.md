@@ -18,7 +18,7 @@ qualification remains Linux x64; later macOS backend/corpus/qualification work s
 | L1 | D-28 | implement the approved S0 registry and capability report; document public evidence mapping | no S1/S2/S3 admission |
 | L2 | P1.I-08/09, P4.B-02 | route guards through one registry and replace legacy report fields | explicit cutover |
 | L2 | P1.I-02 | retain vector storage's unguarded, unqualified off-profile behavior | no canonical-path/backend port |
-| L1 / checks | D-28 S0 evidence | explicit AC-04 premerge-proof stage with final CI independently mandatory | bounded sequencing correction, design review pending |
+| L1 / checks | D-28 S0 evidence | explicit AC-04 premerge-proof stage with final CI independently mandatory | bounded sequencing design approved at a5f6460 |
 
 ## Bounds
 
@@ -94,7 +94,7 @@ Still-import equivalence is explicit:
 | 005/AC-01 | `NativeStillImportTests` independent literal samples and two-layer mask/native composition; CLI `PixelsCommandTests.StillImport_*` and MCP `ProtocolTests.StillImport_*` import/inspect/edit/preview/export/check, non-square/thin/hidden RGB, sibling preservation and native Q24 expected differences, in source and installed tools |
 | 005/AC-02 | the same suites' exact descriptor/PNG/native frame/record bytes, supplier mutation/deletion, caller-operated Git/file restoration, restarted-server restoration and restored snapshot eligibility |
 | 005/AC-03 | Core import/decoder boundary suites, `NativeStillImportConcurrencyTests`, and CLI/MCP negative cases: original-byte duplicate/unknown/type/token/limits, hash/CRC/DEFLATE/inventory/path/link/FIFO/profile/canvas/conflict/capacity/busy, actual access failures, staging ownership, separate-process create/append and real-held-lock cancellation/recovery |
-| 005/AC-04 | approved pre-runtime design; exact-source/installed suites; coverage/dependency/audit/self-test/format/adoption/doctor; five owning reviews of those observations/import boundary. Proposed `PREMERGE_PROOF_PASS` records these observed prerequisites only. Full AC-04 additionally requires final attestation-bearing-head native P0 and every required CI/review gate before merge |
+| 005/AC-04 | approved pre-runtime design; exact-source/installed suites; coverage/dependency/audit/self-test/format/adoption/doctor; five owning reviews of those observations/import boundary. `PREMERGE_PROOF_PASS` records these observed prerequisites only. Full AC-04 additionally requires final attestation-bearing-head native P0 and every required CI/review gate before merge |
 
 An attestation is an index, not independent proof. Each has a unique id binding **in one selected
 record** profile, capability, exact evaluated commit, result, evaluator and source/installed/review
@@ -108,7 +108,7 @@ the table. Missing equivalent evidence requires fresh execution, never an invent
 qualification claim. The final record-only commit may cite its evaluated implementation parent;
 review verifies only attestation bookkeeping changed and CI reruns on the final head.
 
-**Proposed sequencing correction (independent design review pending)**: the original `ac04=PASS`
+**Sequencing correction (independent design review PASS at a5f6460)**: the original `ac04=PASS`
 checker requirement was circular: AC-04 included final CI, while that CI required the record first.
 Use the exact field value `ac04=PREMERGE_PROOF_PASS` for observed implementation prerequisites above;
 reject generic PASS, missing/pending/unknown/failure values. This does not close full originalAC-04,
@@ -187,9 +187,9 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 
 ## State
 
-**Step**: exact-source/installed proof and five implementation reviews PASS; sequencing correction
-**Waiting on**: independent design review of the AC-04 prerequisite cycle, bounded checker correction,
-truthful six attestations and final exact-head P0/CI. No future CI success has been recorded.
+**Step**: approved sequencing correction implemented; scoped verification/review next
+**Waiting on**: exact corrected-source proof, checker/record review, truthful six attestations and
+final exact-head P0/CI. No future CI success has been recorded.
 **Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
 reviewed exact-head green merges. No platform expansion, release or spending authority inferred.
@@ -236,5 +236,9 @@ No merge-ready claim; source checkpoint is public on PR16.
 **Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
 **Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
 **Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
+**Review**: round 5 · 355eb7970686fa8a852e477754b530142187c19f..a5f6460a6c36a0115cc1b76d3d894bad3131d381 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417246949
+**Review**: round 5 · 355eb7970686fa8a852e477754b530142187c19f..a5f6460a6c36a0115cc1b76d3d894bad3131d381 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417246949
+**Review**: round 5 · 355eb7970686fa8a852e477754b530142187c19f..a5f6460a6c36a0115cc1b76d3d894bad3131d381 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417246949
+**Review**: round 5 · 355eb7970686fa8a852e477754b530142187c19f..a5f6460a6c36a0115cc1b76d3d894bad3131d381 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417246949
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
