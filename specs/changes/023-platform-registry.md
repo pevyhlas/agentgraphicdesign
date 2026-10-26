@@ -181,14 +181,14 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 |------|--------|-------|----------|--------|
 | A1 | D-28, P4.B-02; 008/AC-01/02/03 | exact229 archive3453 and installed CLI66/MCP40; tuple policies/bytes, host agreement and MCP cutover | 3 exact source/package observations | PASS |
 | A2 | P1.I-08/09, Q-04 | exact229 source/refusal and installed surface selections; messages/no-write boundaries preserved | 3 exact source/package observations | PASS |
-| A3 | D-28 evidence; 008/AC-32 | 38 negative/positive claim fixtures; six selected exact229 records and no-I/O tests; record review pending | baseline + sequencing correction | BLOCKED |
+| A3 | D-28 evidence; 008/AC-32 | 38 negative/positive claim fixtures; six selected exact229 records/no-I/O tests; all five selected-record reviews PASS at05c7d58 | baseline + sequencing correction | PASS |
 | A4 | D-28 P0 | original008/T002 inventory:69 native cases PASS at229, aggregate FAIL only missing records; final attestation-bearing head pending | 3 retained diagnostic heads | BLOCKED |
 | A5 | Q-06, delivery | exact229 Linux/installed and five owning reviews PASS; final record review and exact-head required CI/review gate pending | 3 source/package heads | BLOCKED |
 
 ## State
 
-**Step**: exact229 proof complete; selected-evidence and parent bookkeeping review
-**Waiting on**: scoped record review and final attestation-bearing-head P0/CI. Six records index
+**Step**: exact229 proof and all five selected-evidence reviews PASS
+**Waiting on**: attestation-bearing-head P0/CI, then record-only closure and final gates. Six records index
 observed Linux proof only; no future CI success has been recorded.
 **Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
@@ -218,8 +218,8 @@ Design initial review FAIL (security2 medium, tests1
 medium; architecture/operations PASS). Fix round1 defines the evidence equivalents and P0 inventory;
 scoped security/test re-review PASS with0 findings. Parent008's existing failures/gates remain;
 the unchanged 485 advisory macOS failures are baseline context, not cleared by this child.
-**Next**: review the selected records/parent bookkeeping against exact229 proof, then final-head
-P0/CI/review gate and same-PR closure. Exact229 archive3453/installed66+40 PASS/0skip/0fail,
+**Next**: complete final-head P0/CI/review gate and same-PR closure. Selected records/parent bookkeeping
+passed all five reviews at05c7d58, zero findings. Exact229 archive3453/installed66+40 PASS/0skip/0fail,
 zero-warning build; 38 evidence/22P0 checker fixtures and solution/checker formatting PASS.
 CI40331570710 passed Linux/coverage/package/readiness and repository checks before refusing missing
 records; native69 PASS but aggregateFAIL. Selected local packages bind229, distinct from CI's
@@ -250,5 +250,10 @@ No merge-ready claim; source checkpoint is public on PR16.
 **Review**: round 6 · 355eb7970686fa8a852e477754b530142187c19f..229323436c69ac3edc18ceb30cf8aeae6577abe6 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417361986
 **Review**: round 6 · 355eb7970686fa8a852e477754b530142187c19f..229323436c69ac3edc18ceb30cf8aeae6577abe6 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417361986
 **Review**: round 6 · 355eb7970686fa8a852e477754b530142187c19f..229323436c69ac3edc18ceb30cf8aeae6577abe6 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417361986
+**Review**: round 7 · 229323436c69ac3edc18ceb30cf8aeae6577abe6..05c7d5816f2814a7b3002f2d4e69ac0c43f2039f · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417635725
+**Review**: round 7 · 229323436c69ac3edc18ceb30cf8aeae6577abe6..05c7d5816f2814a7b3002f2d4e69ac0c43f2039f · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417635725
+**Review**: round 7 · 229323436c69ac3edc18ceb30cf8aeae6577abe6..05c7d5816f2814a7b3002f2d4e69ac0c43f2039f · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417635725
+**Review**: round 7 · 229323436c69ac3edc18ceb30cf8aeae6577abe6..05c7d5816f2814a7b3002f2d4e69ac0c43f2039f · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417635725
+**Review**: round 7 · 229323436c69ac3edc18ceb30cf8aeae6577abe6..05c7d5816f2814a7b3002f2d4e69ac0c43f2039f · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417635725
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
