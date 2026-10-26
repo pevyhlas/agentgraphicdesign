@@ -1,11 +1,11 @@
 {
   "version": 1,
   "entries": [
-    { "profile": "dotnet10-linux-x64", "capability": "vector", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-vector", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-vector .*$"] },
-    { "profile": "dotnet10-linux-x64", "capability": "rasterExport", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-raster-export", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-raster-export .*$"] },
-    { "profile": "dotnet10-linux-x64", "capability": "assetPipeline", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-asset-pipeline", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-asset-pipeline .*$"] },
-    { "profile": "dotnet10-linux-x64", "capability": "artifactVerify", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-artifact-verify", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-artifact-verify .*$"] },
-    { "profile": "dotnet10-linux-x64", "capability": "stillImport", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-still-import", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-still-import .*$"] },
-    { "profile": "dotnet10-linux-x64", "capability": "nativePixels", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-native-pixels", "sourceCommit": "PENDING", "passPatterns": ["^ATTEST platform-s0-native-pixels .*$"] }
+    { "profile": "dotnet10-linux-x64", "capability": "vector", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-vector", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-vector .*$"] },
+    { "profile": "dotnet10-linux-x64", "capability": "rasterExport", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-raster-export", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-raster-export .*$"] },
+    { "profile": "dotnet10-linux-x64", "capability": "assetPipeline", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-asset-pipeline", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-asset-pipeline .*$"] },
+    { "profile": "dotnet10-linux-x64", "capability": "artifactVerify", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-artifact-verify", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-artifact-verify .*$"] },
+    { "profile": "dotnet10-linux-x64", "capability": "stillImport", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-still-import", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-still-import .*$"] },
+    { "profile": "dotnet10-linux-x64", "capability": "nativePixels", "kind": "pre-d10", "path": "specs/records.md", "attestationId": "platform-s0-native-pixels", "sourceCommit": "229323436c69ac3edc18ceb30cf8aeae6577abe6", "passPatterns": ["^ATTEST platform-s0-native-pixels .*$"] }
   ]
 }

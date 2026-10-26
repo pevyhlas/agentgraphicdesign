@@ -57,16 +57,17 @@ unchanged and its phase B waits for 008/T006, 008/T012 and 008/T019.
 
 Pull request increments, in order (task IDs as in the pre-public plan):
 
-Child [023-platform-registry](023-platform-registry.md) implements the bounded S0 PR-1 port
-and public evidence/P0 wiring. Its acceptance remains open; later macOS work below is unchanged.
+Child023 ([PR #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16)) implements the bounded
+S0 PR-1 port and public evidence/P0 wiring. Its final exact-head gates govern acceptance; later
+macOS work below remains open. Source/installed proof and scoped owning reviews passed at2293234;
+the selected public evidence is indexed in `specs/records.md`, not a macOS qualification.
 
-- [ ] PR-0, 008/T000: one CI job for the four suites and the coverage gate, no inter-job artifacts
-  (implemented and reviewed pre-public; its artifact-quota motive may not apply here, so decide
-  while porting).
-- [ ] PR-1, 008/T001 and 008/T002: `Core/Platform` exactly as D-28, stage S0 values,
+- [x] PR-0, 008/T000 disposition: the pre-public artifact-quota premise is superseded by hosted CI;
+  child023's reviewed design preserves the public suite/coverage/artifact topology.
+- [x] PR-1, 008/T001 and 008/T002 implementation in child023: `Core/Platform` exactly as D-28, stage S0 values,
   `get_capabilities.platform`, golden fixtures per tuple, gate-agreement and entry-point refusal
   tests, the evidence file with the claim check's linux-x64 entries (implemented and reviewed
-  pre-public: port it). Merge evidence (D-28 phase P0): Linux CI, plus a local macOS run of the
+  pre-public and freshly reviewed in the public port). Merge evidence (D-28 phase P0): Linux CI, plus a local macOS run of the
   008/T002 test classes on the pull request head in `private-tmp` mode, and those classes pass; no
   `macos-progress` record, which 008/T003 builds later.
 - [ ] 008/T003 repository checks (path-API ban, OS-guarded-return ban, workflow lint, bash 3.2
@@ -144,5 +145,9 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: port PR-0 and PR-1 as their own pull request, restating the criteria and tasks they
-close, then 008/T003
+**Next**: after child023's final exact-head gates/merge, continue008/T003 and the later bounded
+increments above. Its native69 cases passed before attestations, but aggregate checks failed on
+missing records until the final integration; do not substitute partial runs for that gate. Broad
+advisory Mac retained484 baseline failures and an earlier timing-sensitive cancellation failure;
+child023 does not clear these or qualify the platform. Windows x64's existing C-11 deviation remains
+the owner-inbox question. Future work inherits these outcomes and their evidence on PR #16.
