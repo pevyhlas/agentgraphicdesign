@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using FTPlus.AgentGraphicDesign.Core.Export;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Validation;
 
@@ -43,12 +44,12 @@ public sealed class AssetPipeline
             if (manifestPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Contains(".."))
                 throw AssetPaths.Unsafe(manifestPath);
             manifestPath = Path.GetFullPath(manifestPath);
-            AssetPaths.Inspect(manifestPath, directory: false, required: true, ct);
+            AssetPaths.Inspect(manifestPath, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
             var directory = Path.GetDirectoryName(manifestPath)!;
             var manifest = AssetManifest.Parse(await ReadBoundedAsync(manifestPath, MaxManifestBytes, ct));
             var outputRoot = AssetPaths.Resolve(directory, manifest.OutputRoot);
-            AssetPaths.Inspect(outputRoot, directory: true, required: false, ct);
-            AssetPaths.RejectCaseAliases(directory, outputRoot, ct);
+            AssetPaths.Inspect(outputRoot, directory: true, required: false, PlatformCapability.AssetPipeline, ct);
+            AssetPaths.RejectCaseAliases(directory, outputRoot, PlatformCapability.AssetPipeline, ct);
             var plans = new List<PlannedAsset>();
             var outputs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var outputComponents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -71,8 +72,8 @@ public sealed class AssetPipeline
                         throw AssetManifest.Invalid($"Case-insensitive output directory collision: {entry.Output}");
                     outputComponents[component] = component;
                 }
-                AssetPaths.Inspect(output, directory: false, required: false, ct);
-                AssetPaths.RejectCaseAliases(directory, output, ct);
+                AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
+                AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
                 var format = Path.GetExtension(output).ToLowerInvariant() switch
                 {
                     ".svg" => "svg",
@@ -89,7 +90,7 @@ public sealed class AssetPipeline
                 {
                     if (AssetPaths.Overlaps(source, outputRoot) || source.Equals(manifestPath, StringComparison.OrdinalIgnoreCase))
                         throw AssetPaths.Unsafe(source);
-                    AssetPaths.Inspect(source, directory: false, required: true, ct);
+                    AssetPaths.Inspect(source, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
                     var size = new FileInfo(source).Length;
                     inputBytes += size;
                     if (size > FileDocumentStore.DefaultMaxDocumentBytes || inputBytes > MaxInputBytes)
@@ -106,7 +107,7 @@ public sealed class AssetPipeline
                         continue;
                     if (fontDirectories.Count > 16)
                         throw AssetManifest.Limit();
-                    AssetPaths.Inspect(font, directory: true, required: true, ct);
+                    AssetPaths.Inspect(font, directory: true, required: true, PlatformCapability.AssetPipeline, ct);
                     var count = 0;
                     foreach (var file in Directory.EnumerateFileSystemEntries(font))
                     {
@@ -114,7 +115,7 @@ public sealed class AssetPipeline
                             throw AssetManifest.Limit();
                         // The renderer's font lookup is non-recursive; inspect every immediate entry.
                         var isDirectory = (File.GetAttributes(file) & FileAttributes.Directory) != 0;
-                        AssetPaths.Inspect(file, isDirectory, required: true, ct);
+                        AssetPaths.Inspect(file, isDirectory, required: true, PlatformCapability.AssetPipeline, ct);
                         if (isDirectory || Path.GetExtension(file).ToLowerInvariant() is not (".ttf" or ".otf"))
                             continue;
                         var size = new FileInfo(file).Length;
@@ -126,7 +127,7 @@ public sealed class AssetPipeline
                 plans.Add(new PlannedAsset(sources, output, format, entry.Sprite, entry.Options, fonts));
             }
 
-            var inventory = AssetPaths.Inventory(outputRoot, ct).ToHashSet(StringComparer.Ordinal);
+            var inventory = AssetPaths.Inventory(outputRoot, PlatformCapability.AssetPipeline, ct).ToHashSet(StringComparer.Ordinal);
             var generated = new List<byte[]>();
             var diagnostics = new List<AssetPipelineDiagnostic>();
             long outputBytes = 0;
@@ -137,7 +138,7 @@ public sealed class AssetPipeline
                 foreach (var source in plan.Sources)
                 {
                     ct.ThrowIfCancellationRequested();
-                    AssetPaths.Inspect(source, directory: false, required: true, ct);
+                    AssetPaths.Inspect(source, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
                     var loaded = _engine.TryLoadDocumentFromFile(source, ct);
                     var document = loaded.Document;
                     if (!loaded.Success || document is null)
@@ -217,11 +218,11 @@ public sealed class AssetPipeline
             {
                 ct.ThrowIfCancellationRequested();
                 var output = plans[index].Output;
-                AssetPaths.RejectCaseAliases(directory, output, ct);
+                AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
                 var status = "missing";
                 if (inventory.Contains(output))
                 {
-                    AssetPaths.Inspect(output, directory: false, required: true, ct);
+                    AssetPaths.Inspect(output, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
                     var expected = generated[index];
                     status = new FileInfo(output).Length == expected.Length &&
                         (await ReadBoundedAsync(output, expected.Length, ct)).AsSpan().SequenceEqual(expected)
@@ -271,10 +272,10 @@ public sealed class AssetPipeline
 
     private static async Task PublishAsync(string output, byte[] data, CancellationToken ct)
     {
-        AssetPaths.Inspect(output, directory: false, required: false, ct);
+        AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
         var directory = Path.GetDirectoryName(output)!;
         Directory.CreateDirectory(directory);
-        AssetPaths.Inspect(directory, directory: true, required: true, ct);
+        AssetPaths.Inspect(directory, directory: true, required: true, PlatformCapability.AssetPipeline, ct);
         var temporary = Path.Combine(directory, $".agd-assets-{Guid.NewGuid():N}.tmp");
         var created = false;
         try
@@ -287,7 +288,7 @@ public sealed class AssetPipeline
                 await stream.FlushAsync(ct);
             }
             ct.ThrowIfCancellationRequested();
-            AssetPaths.Inspect(output, directory: false, required: false, ct);
+            AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
             File.Move(temporary, output, overwrite: true);
         }
         finally

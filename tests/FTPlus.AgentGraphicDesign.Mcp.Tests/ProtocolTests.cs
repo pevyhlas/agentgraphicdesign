@@ -9,6 +9,7 @@ using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Export;
 using FTPlus.AgentGraphicDesign.Core.Layout;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
 using FTPlus.AgentGraphicDesign.Skia;
@@ -821,9 +822,11 @@ public partial class ProtocolTests : IDisposable
         Assert.Equal(_testDir, capabilities.GetProperty("workingDirectory").GetString());
         Assert.True(capabilities.GetProperty("domains").GetProperty("layeredStillPixels").GetBoolean());
         Assert.False(capabilities.GetProperty("domains").GetProperty("providedArtifactAdmission").GetBoolean());
-        Assert.Equal("dotnet10-linux-x64", capabilities.GetProperty("supportedPlatform").GetString());
+        Assert.Equal(PlatformProfile.Current.ToCapabilitiesJson().ToJsonString(),
+            JsonNode.Parse(capabilities.GetProperty("platform").GetRawText())!.ToJsonString());
+        Assert.False(capabilities.TryGetProperty("supportedPlatform", out _));
+        Assert.False(capabilities.TryGetProperty("currentPlatformMatches", out _));
         Assert.StartsWith("0.3.0", capabilities.GetProperty("version").GetString());
-        Assert.True(capabilities.GetProperty("currentPlatformMatches").GetBoolean());
         foreach (var format in new[] { "vector", "nativePixels", "providedArtifact" })
             Assert.Equal(1, capabilities.GetProperty("formats").GetProperty(format).GetInt32());
         Assert.True(capabilities.GetProperty("domains").GetProperty("nativeImageImport").GetBoolean());

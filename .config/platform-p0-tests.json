@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "id": "core",
+      "project": "tests/FTPlus.AgentGraphicDesign.Core.Tests/FTPlus.AgentGraphicDesign.Core.Tests.csproj",
+      "namespace": "FTPlus.AgentGraphicDesign.Core.Tests",
+      "wholeClasses": ["Platform.PlatformRegistryTests", "Platform.PlatformArchitectureTests", "Platform.PlatformAssetEntryPointRefusalTests", "Platform.PlatformArtifactVerifyRefusalTests", "Platform.PlatformPixelEntryPointRefusalTests"],
+      "methods": {
+        "Platform.PlatformRegistryTests.Registry_MatchesTheLiteralStageTable": 8,
+        "Platform.PlatformRegistryTests.LiteralTable_CoversEveryTuple": 1,
+        "Platform.PlatformRegistryTests.CapabilitiesJson_MatchesTheCommittedGoldenFixtureByteForByte": 8,
+        "Platform.PlatformRegistryTests.GoldenFixtureSet_EqualsTheTupleTable": 1,
+        "Platform.PlatformRegistryTests.CapabilitiesJson_IsOrdinalSortedStableAndHasNoTopLevelQualifiedFlag": 8,
+        "Platform.PlatformRegistryTests.Identity_IsBuiltFromTheTupleFacts": 5,
+        "Platform.PlatformRegistryTests.Identity_FormatsVersionsAndUnknownOperatingSystems": 1,
+        "Platform.PlatformRegistryTests.For_DecidesTheOsFloorFromItsOsVersionArgument": 5,
+        "Platform.PlatformRegistryTests.Current_EqualsForOverTheHostFacts": 1,
+        "Platform.PlatformRegistryTests.Invariants_HoldForEveryTupleAndTheHost": 1,
+        "Platform.PlatformRegistryTests.QualifiedProfiles_AreTheStageS0Table": 1,
+        "Platform.PlatformRegistryTests.EvidenceFile_EntriesEqualTheQualifiedPairs": 1,
+        "Platform.PlatformRegistryTests.Vocabulary_IsStable": 1,
+        "Platform.PlatformRegistryTests.RefusalMessage_ListsTheQualifiedProfilesAndNamesNoPath": 1,
+        "Platform.PlatformRegistryTests.NarrowForTests_OnlyLowersCurrentAndRestoresOnDispose": 1,
+        "Platform.PlatformRegistryTests.NarrowForTests_FlowsIntoAsyncWorkAndDoesNotLeakToOtherFlows": 1,
+        "Platform.PlatformArchitectureTests.RegistrySource_ReferencesNoIoApi": 3,
+        "Platform.PlatformArchitectureTests.PlatformDirectory_ContainsOnlyTheScannedRegistrySources": 1,
+        "Platform.PlatformArchitectureTests.PlatformNamespace_DeclaresNoPInvoke": 1,
+        "Platform.PlatformGateAgreementTests.HostGates_AgreeWithTheRegistry": 1,
+        "Platform.PlatformAssetEntryPointRefusalTests.AssetsBuildAndCheck_RefuseAssetPipelineBeforeAnyWrite": 2,
+        "Platform.PlatformAssetEntryPointRefusalTests.ArtifactPreflight_RefusesArtifactVerifyWithTheRegistryTextUnchanged": 1,
+        "Platform.PlatformArtifactVerifyRefusalTests.ArtifactVerify_RefusesArtifactVerifyWithTheRegistryTextUnchanged": 1,
+        "Platform.PlatformPixelEntryPointRefusalTests.StillImport_RefusesStillImportBeforeAnyWrite": 1,
+        "Platform.PlatformPixelEntryPointRefusalTests.PixelRead_RefusesNativePixelsBeforeAnyWrite": 3,
+        "Platform.PlatformPixelEntryPointRefusalTests.StillImportLayer_RefusesStillImportBeforeAnyWrite": 1,
+        "Platform.PlatformPixelEntryPointRefusalTests.PixelCreate_RefusesNativePixelsBeforeAnyWrite": 1,
+        "Platform.PlatformPixelEntryPointRefusalTests.PixelEdit_RefusesNativePixelsBeforeAnyWrite": 1,
+        "Platform.PlatformPixelEntryPointRefusalTests.PixelExport_RefusesNativePixelsBeforeAnyWrite": 1,
+        "Assets.AssetPipelineTests.PlatformGuard_FollowsTheRegistryGate": 1
+      }
+    },
+    {
+      "id": "cli",
+      "project": "tests/FTPlus.AgentGraphicDesign.Cli.Tests/FTPlus.AgentGraphicDesign.Cli.Tests.csproj",
+      "namespace": "FTPlus.AgentGraphicDesign.Cli.Tests",
+      "wholeClasses": ["Commands.PlatformGateCommandTests"],
+      "methods": {
+        "Commands.PlatformGateCommandTests.AssetsPreflight_HostGateAndRefusalTextAgreeWithTheRegistry": 1,
+        "Commands.PlatformGateCommandTests.AssetsCheck_HostGateAndRefusalTextAgreeWithTheRegistry": 1
+      }
+    },
+    {
+      "id": "mcp",
+      "project": "tests/FTPlus.AgentGraphicDesign.Mcp.Tests/FTPlus.AgentGraphicDesign.Mcp.Tests.csproj",
+      "namespace": "FTPlus.AgentGraphicDesign.Mcp.Tests",
+      "wholeClasses": [],
+      "methods": {
+        "ProtocolTests.GetCapabilities_PlatformMemberEqualsTheRegistryAndReplacesTheOldFields": 1,
+        "ProtocolTests.PreflightArtifact_HostGateAndRefusalTextAgreeWithTheRegistry": 1,
+        "ProtocolTests.ToolResultFail_PassesEveryRegistryRefusalTextThroughUnchanged": 1
+      }
+    }
+  ],
+  "repositoryChecks": ["self-test", "qualification-evidence", "platform-rules", "platform-fixtures"]
+}

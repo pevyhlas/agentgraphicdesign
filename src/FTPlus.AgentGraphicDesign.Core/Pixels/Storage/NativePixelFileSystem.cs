@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Pixels.Storage;
 
@@ -240,10 +241,11 @@ internal static class NativePixelFileSystem
     private static void InspectLockPath(string path, NativeOperationScope scope)
     {
         scope.Check();
-        try { AssetPaths.Inspect(path, false, required: false, scope.Caller); }
+        try { AssetPaths.Inspect(path, false, required: false, PlatformCapability.NativePixels, scope.Caller); }
         catch (DocumentEngineException ex)
         {
-            throw new NativePixelException(ex.Code, "The native writer lock path has an unsafe or unavailable entry type.");
+            throw new NativePixelException(ex.Code, ex.Code == NativePixelErrors.AssetPlatformUnsupported
+                ? ex.Message : "The native writer lock path has an unsafe or unavailable entry type.");
         }
     }
 

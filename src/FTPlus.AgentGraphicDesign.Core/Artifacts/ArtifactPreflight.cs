@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Artifacts;
 
@@ -161,7 +162,7 @@ public static class ArtifactPreflight
             throw new DocumentEngineException(EngineErrors.ResourceLimit, "Artifact input path exceeds 4096 characters.");
         try
         {
-            AssetPaths.Inspect(path, directory, required: true, ct);
+            AssetPaths.Inspect(path, directory, required: true, PlatformCapability.ArtifactVerify, ct);
         }
         catch (DocumentEngineException ex)
         {
@@ -170,7 +171,7 @@ public static class ArtifactPreflight
             {
                 EngineErrors.DocumentNotFound => "Required artifact input was not found.",
                 EngineErrors.PathEscape => "Artifact input must be free of links and special files and have the required entry type.",
-                "ASSET_PLATFORM_UNSUPPORTED" => "Artifact input file-type inspection is unsupported on this platform.",
+                EngineErrors.AssetPlatformUnsupported => ex.Message,
                 _ => "Artifact input path inspection failed."
             });
         }

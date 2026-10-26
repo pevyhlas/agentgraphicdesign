@@ -74,10 +74,11 @@ sequenceDiagram
   cases, and do not replace existing files by default. Enforced by: `NativePixelOutputTests`.
 - **P1.I-08 Qualified profile only**: storage is qualified only on .NET 10 Linux x64 with a
   trusted, quiescent local filesystem (Q-05); unqualified profiles fail closed (C-11). Every
-  read, create and edit passes the shared asset file probe, so another OS, architecture or
-  runtime fails closed with `ASSET_PLATFORM_UNSUPPORTED`, except for the Windows pass-through
-  stated in P1.I-09. Enforced by: `AssetPipelineTests` (shared probe); CI runs only the
-  qualified profile.
+  read, create and edit passes the shared `nativePixels` gate; still import first passes
+  `stillImport` at entry. Another OS, architecture or runtime fails closed with
+  `ASSET_PLATFORM_UNSUPPORTED` and unchanged registry text, including Windows native reads
+  (P1.I-09). Enforced by: host agreement and ordinary-file no-write refusal tests, plus
+  the existing native storage tests. No Darwin backend is built by this increment.
 
 ## Interface guarantees
 

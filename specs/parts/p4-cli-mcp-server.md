@@ -38,7 +38,11 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
 
 - **P4.B-02 Discovery**: `get_capabilities` reports the executable version, root, platform
   profile, enabled domains, limits and CLI-only operations from the running build, not a
-  static list. Test: `ProtocolTests`.
+  static list. Its I/O-free `platform` member embeds Core's D-28 projection unchanged:
+  architecture, capabilities, OS/version, profile, qualified profiles and runtime version,
+  ordinal keys and enum/table array order. `supportedPlatform` and `currentPlatformMatches`
+  are removed, without aliases; there is no top-level qualified boolean or live probe.
+  Test: `ProtocolTests` (including the three explicit platform methods).
 - **P4.B-03 Small previews**: vector previews default to a thumbnail no larger than 512 px
   without upscaling, explicit sizes are bounded, and every inline image is a valid base64 PNG.
   Test: `ProtocolTests`.

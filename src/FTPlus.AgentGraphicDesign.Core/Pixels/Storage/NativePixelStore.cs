@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Pixels.Storage;
 
@@ -605,7 +606,7 @@ internal static partial class NativePixelStore
         scope.Check();
         try
         {
-            return AssetPaths.Inspect(path, isDirectory, required, scope.Caller);
+            return AssetPaths.Inspect(path, isDirectory, required, PlatformCapability.NativePixels, scope.Caller);
         }
         catch (DocumentEngineException error)
         {
@@ -621,7 +622,7 @@ internal static partial class NativePixelStore
     {
         EngineErrors.PathEscape => new NativePixelException(EngineErrors.PathEscape, "An asset path is unconfined or of an unsafe type."),
         EngineErrors.DocumentNotFound => new NativePixelException(EngineErrors.DocumentNotFound, "A required native asset path was not found."),
-        NativePixelErrors.AssetPlatformUnsupported => new NativePixelException(NativePixelErrors.AssetPlatformUnsupported, "The native asset platform primitives are unavailable."),
+        NativePixelErrors.AssetPlatformUnsupported => new NativePixelException(NativePixelErrors.AssetPlatformUnsupported, error.Message),
         _ => new NativePixelException(EngineErrors.StoreUnavailable, "A native asset path could not be accessed."),
     };
 

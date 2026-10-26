@@ -21,15 +21,17 @@ qualities/<area>.md and keep one line and a link per area here. -->
 - **Q-05 Supported-platform honesty** (validated, planned: 008-macos-qualification): file
   safety is qualified only on .NET 10 Linux x64 now; Apple silicon on APFS with macOS 26 or
   later is planned, with its own CI lane. One shared asset file probe guards the asset
-  pipeline, artifact preflight, still import and native pixel storage: it allows .NET 10 Linux
-  x64 and fails closed with `ASSET_PLATFORM_UNSUPPORTED` on every other profile except
-  Windows, whose unqualified pass-through is stated in P1.I-09. Qualifying a further profile
-  is the owner's decision, and every unqualified profile must fail closed for the guarded
-  operations (C-11); the Windows pass-through deviates from that (inbox). Vector document
-  reads and writes are not guarded by the probe: they run on every profile, and their
+  pipeline, artifact preflight, still import and native pixel storage, with an explicit
+  capability at each call. D-28 S0 retains .NET 10 Linux x64 qualification and Windows x64
+  .NET 10 unqualified pipeline/artifact admission; all other guarded capabilities refuse with
+  `ASSET_PLATFORM_UNSUPPORTED`. Windows native reads now refuse too. Qualifying a further
+  profile remains the owner's decision (C-11). C-11 still requires guarded unqualified profiles
+  to fail closed; the retained Windows pipeline/artifact deviation remains in the owner inbox,
+  not silently ratified by the registry port. Vector document reads/writes and raster export
+  are not guarded by the probe: they run on every profile, and their
   file-safety promise (Q-04, P1.I-02) is qualified only on .NET 10 Linux x64 (inbox).
-  Journeys: J-03, J-04, J-05. Enforced by: `AssetPipelineTests` (platform guard); the Windows
-  pass-through and unguarded vector document storage are unenforced (inbox).
+  Journeys: J-03, J-04, J-05. Enforced by: synthetic policy/golden tests, host agreement,
+  no-write refusal tests, real CLI/MCP platform methods and the public evidence claim check.
 - **Q-06 Reproducible releases** (validated): a release bundle is built from a clean archive
   of one commit with checksums and provenance, and scripts never publish it. Journeys: J-05.
   Enforced by: the release-bundle script at release time and package smoke in CI.

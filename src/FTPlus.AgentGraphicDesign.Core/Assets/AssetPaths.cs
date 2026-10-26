@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Assets;
 
@@ -36,13 +37,13 @@ internal static class AssetPaths
     internal static bool Overlaps(string first, string second) =>
         first.Equals(second, StringComparison.OrdinalIgnoreCase) || Within(first, second) || Within(second, first);
 
-    internal static void RejectCaseAliases(string directory, string path, CancellationToken ct)
+    internal static void RejectCaseAliases(string directory, string path, PlatformCapability capability, CancellationToken ct)
     {
         var parts = Path.GetRelativePath(directory, path).Split(Path.DirectorySeparatorChar);
         var current = directory;
         foreach (var part in parts)
         {
-            if (!Inspect(current, directory: true, required: false, ct))
+            if (!Inspect(current, directory: true, required: false, capability, ct))
                 return;
             var count = 0;
             var found = false;
@@ -65,12 +66,12 @@ internal static class AssetPaths
     }
 
     /// <summary>Checks every component before opening anything, including broken links.</summary>
-    internal static bool Inspect(string path, bool directory, bool required, CancellationToken ct)
+    internal static bool Inspect(string path, bool directory, bool required, PlatformCapability capability, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-        if (!OperatingSystem.IsWindows() && (!OperatingSystem.IsLinux() ||
-            RuntimeInformation.ProcessArchitecture != Architecture.X64 || Environment.Version.Major != 10))
-            throw UnsupportedPlatform();
+        var platform = PlatformProfile.Current;
+        if (!platform.GateAdmits(capability))
+            throw platform.Refusal(capability);
         var root = Path.GetPathRoot(path)!;
         var current = root;
         var parts = path[root.Length..].Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries);
@@ -108,17 +109,17 @@ internal static class AssetPaths
                 }
                 catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException or BadImageFormatException)
                 {
-                    throw UnsupportedPlatform();
+                    throw platform.Refusal(capability);
                 }
             }
         }
         return true;
     }
 
-    internal static List<string> Inventory(string root, CancellationToken ct)
+    internal static List<string> Inventory(string root, PlatformCapability capability, CancellationToken ct)
     {
         var files = new List<string>();
-        if (!Inspect(root, directory: true, required: false, ct))
+        if (!Inspect(root, directory: true, required: false, capability, ct))
             return files;
         var pending = new Stack<(string Path, int Depth)>();
         pending.Push((root, 0));
@@ -131,7 +132,7 @@ internal static class AssetPaths
                 if (++count > MaxInventoryEntries || directory.Depth >= 64)
                     throw AssetManifest.Limit();
                 var isDirectory = (File.GetAttributes(entry) & FileAttributes.Directory) != 0;
-                Inspect(entry, isDirectory, required: true, ct);
+                Inspect(entry, isDirectory, required: true, capability, ct);
                 if (isDirectory)
                     pending.Push((entry, directory.Depth + 1));
                 else
@@ -145,10 +146,7 @@ internal static class AssetPaths
     internal static DocumentEngineException Unsafe(string path) =>
         new(EngineErrors.PathEscape, $"Asset path must be confined, free of symlinks/reparse points, and of the required file type: {path}");
 
-    private static DocumentEngineException UnsupportedPlatform() => new("ASSET_PLATFORM_UNSUPPORTED",
-        "Asset pipeline preview requires Windows file attributes or the verified .NET 10 Linux x64 file-type inspection ABI");
-
-    // Private ABI pinned to verified .NET 10 Linux x64 by Inspect, not a portability promise.
+    // Private PAL ABI behind the capability gate (S0: .NET 10 Linux x64; Windows never reaches it).
     // FileAttributes alone cannot distinguish Unix regular files from FIFOs/devices.
     [DllImport("System.Native", EntryPoint = "SystemNative_LStat", SetLastError = true)]
     private static extern int LStat([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out UnixFileStatus status);
