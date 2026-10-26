@@ -2,7 +2,8 @@ name: CI
 
 # The merge gate. It runs on GitHub-hosted runners for every pull request, forks included,
 # every push to main, a weekly schedule (new vulnerability advisories) and manual dispatch.
-# macOS runs on the same events, advisory until qualification. Every third-party action is pinned by
+# The full macOS suite is advisory; bounded platform-registry P0 is a separate required obligation.
+# Every third-party action is pinned by
 # full commit SHA with a version comment, and the workflow token is read-only.
 # `RepoChecks workflows` enforces this policy in the repository-gates job.
 
@@ -170,6 +171,70 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  platform-p0:
+    name: Platform registry P0 (macOS 26 arm64)
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Assert exact head and inherit a private physical root
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$(uname -m)" = arm64
+          test "$(sw_vers -productVersion | cut -d. -f1)" = 26
+          umask 077
+          root="$(mktemp -d /private/tmp/agd-platform-p0.XXXXXX)"
+          root="$(cd "$root" && pwd -P)"
+          case "$root" in /private/tmp/*) ;; *) exit 1 ;; esac
+          printf 'TMPDIR=%s/\n' "$root" >> "$GITHUB_ENV"
+          {
+            git rev-parse HEAD
+            sw_vers
+            uname -m
+            printf 'PhysicalTempRoot=%s\nImageOS=%s\nImageVersion=%s\n' "$root" "$ImageOS" "$ImageVersion"
+            dotnet --info
+          } > platform-p0-environment.log 2>&1
+
+      - name: Restore locked graph and build source
+        run: |
+          dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode > platform-p0-restore.log 2>&1
+          dotnet build FTPlus.AgentGraphicDesign.slnx --configuration Release --no-restore > platform-p0-build.log 2>&1
+          dotnet build scripts/RepoChecks/RepoChecks.csproj --configuration Release > platform-p0-checker-build.log 2>&1
+
+      - name: Run complete original008 T002 inventory
+        timeout-minutes: 20
+        run: >-
+          dotnet scripts/RepoChecks/bin/Release/net10.0/RepoChecks.dll
+          platform-p0-run . platform-p0-results "$EXPECTED_HEAD" --macos
+
+      - name: Check every discovered and executed method and theory case
+        run: >-
+          dotnet scripts/RepoChecks/bin/Release/net10.0/RepoChecks.dll
+          platform-p0-check . platform-p0-results "$EXPECTED_HEAD" --macos
+
+      - name: Retain P0 identity, commands, failures and TRX
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: platform-p0-macos
+          path: |
+            platform-p0-*.log
+            platform-p0-results
+          if-no-files-found: error
+          retention-days: 7
+
   coverage:
     name: Coverage Gate
     runs-on: ubuntu-24.04
@@ -204,7 +269,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Install pinned .NET SDK
@@ -239,6 +304,18 @@ jobs:
 
       - name: Check CI workflow policy
         run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- workflows .
+
+      - name: Check public qualification claims
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- qualification-evidence .
+
+      - name: Check platform test and narrowing rules
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-rules .
+
+      - name: Check explicit platform fixtures
+        run: |
+          dotnet restore src/FTPlus.AgentGraphicDesign.Core/FTPlus.AgentGraphicDesign.Core.csproj --locked-mode
+          dotnet build src/FTPlus.AgentGraphicDesign.Core/FTPlus.AgentGraphicDesign.Core.csproj --configuration Release --no-restore
+          dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-fixtures . --check
 
       - name: Test opt-in telemetry launcher (fake CLI, nothing exported)
         run: bash scripts/test-claude-with-telemetry.sh

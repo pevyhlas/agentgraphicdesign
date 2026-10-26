@@ -38,5 +38,6 @@ public static class EngineErrors
     public const string UnsupportedVersion = "UNSUPPORTED_VERSION";
     public const string ResourceLimit = "RESOURCE_LIMIT";
     public const string FontNotFound = "FONT_NOT_FOUND";
+    public const string AssetPlatformUnsupported = "ASSET_PLATFORM_UNSUPPORTED";
     public const string MixedParents = "MIXED_PARENTS";
 }

@@ -161,9 +161,10 @@ the work budget. Existing per-document and renderer bounds also apply.
 **0.3.0's Unix file inspection is qualified only on .NET 10 Linux x64.**
 It uses the pinned runtime's native metadata ABI to reject FIFOs/devices without
 opening them. Other Unix/runtime/architecture combinations fail closed with
-`ASSET_PLATFORM_UNSUPPORTED`; Windows uses public file attributes but has not yet
-been qualified. A supported portable inspection boundary and cross-platform tests
-remain release gates, not an implied portability guarantee. Static path checks
+`ASSET_PLATFORM_UNSUPPORTED`. Development source's S0 registry admits Windows x64 on
+.NET 10 unqualified using public file attributes; Windows arm64 and other runtime
+majors now refuse. No additional platform is qualified. A portable inspection backend
+remains a later gate, not an implied portability guarantee. Static path checks
 assume a trusted local workspace, not hostile concurrent filesystem replacement.
 
 Default raster font policy uses bundled Inter/explicit fonts without host lookup.

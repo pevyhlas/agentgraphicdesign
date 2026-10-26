@@ -23,6 +23,9 @@ python3 "$SCRIPT_DIR/check-public-repo.py" --self-test
 python3 "$SCRIPT_DIR/check-public-repo.py"
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- self-test
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- workflows "$ROOT_DIR"
+dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- qualification-evidence "$ROOT_DIR"
+dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- platform-rules "$ROOT_DIR"
+dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- platform-fixtures "$ROOT_DIR" --check
 bash "$SCRIPT_DIR/test-claude-with-telemetry.sh"
 bash "$SCRIPT_DIR/check-dependencies.sh"
 bash "$SCRIPT_DIR/check-vulnerabilities.sh"

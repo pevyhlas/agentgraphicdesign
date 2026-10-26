@@ -136,11 +136,10 @@ reproduces its license verbatim.
 *2026-10-20 · agent · open*
 
 [C-11](product/constraints.md) says unqualified platforms fail closed. The shared asset file probe
-(P1.I-09) already does so for every profile except Windows, which it lets through: the asset
-pipeline build and check (including the build's output writes) and artifact preflight run there
-unqualified, and native pixel reads (inspect, validate, region read) succeed. Still import and
-every other native pixel write pass the probe but then fail closed at the writer lock or the
-no-replace publication, and preview and export fail closed at their output checks
+(P1.I-09) still retains D-28 S0's Windows x64 .NET 10 exception: asset pipeline build/check
+(including output writes) and artifact preflight run there unqualified. Child023 narrows all
+Windows native operations, Windows arm64 and runtime majors other than10 to capability refusal.
+The remaining pipeline/artifact pass-through is still a deviation, not an owner-ratified exception
 ([P1.I-09](parts/p1-core-engine/asset-pipeline.md), [Q-05](product/qualities.md)).
 
 1. **Reject Windows in the probe** (Recommended): one change makes every guarded path fail

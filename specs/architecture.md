@@ -85,10 +85,10 @@ All decisions: [decisions](architecture/decisions.md). Moved and retired IDs:
 ## Risks
 
 - File safety is claimed only where it is qualified; P1 storage relies on a quiescent local
-  filesystem and on Linux primitives. The shared file probe fails closed off the qualified
-  profile except on Windows, where the asset pipeline build (including its output writes) and
-  artifact preflight run unqualified, and native pixel reads run while native pixel writes
-  fail closed (P1.I-09, inbox).
+  filesystem and on Linux primitives. D-28's S0 registry refuses guarded operations except
+  on .NET 10 Linux x64 and unqualified Windows x64 .NET 10 pipeline/artifact paths. All native
+  pixel operations now refuse on Windows, including reads. Vector/raster remain unguarded,
+  unqualified off Linux x64; no macOS backend or qualification is implied (P1.I-09).
 - Agents may still need more calls than a person would; the bet is checked through real use
   ([why it works](architecture/why-it-works.md)).
 

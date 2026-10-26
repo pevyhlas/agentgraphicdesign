@@ -57,6 +57,9 @@ unchanged and its phase B waits for 008/T006, 008/T012 and 008/T019.
 
 Pull request increments, in order (task IDs as in the pre-public plan):
 
+Child [023-platform-registry](023-platform-registry.md) implements the bounded S0 PR-1 port
+and public evidence/P0 wiring. Its acceptance remains open; later macOS work below is unchanged.
+
 - [ ] PR-0, 008/T000: one CI job for the four suites and the coverage gate, no inter-job artifacts
   (implemented and reviewed pre-public; its artifact-quota motive may not apply here, so decide
   while porting).

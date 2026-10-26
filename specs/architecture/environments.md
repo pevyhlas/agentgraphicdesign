@@ -20,5 +20,10 @@ flowchart LR
 - **macOS CI**: the full source suite runs on every CI event on `macos-26` arm64, with runner
   identity, console and TRX artifacts retained for seven days and the actual test outcome in the
   summary. It stays advisory until change 008 qualifies macOS; failures are diagnostic evidence.
+- **Bounded registry P0**: a separate non-advisory macOS 26 arm64 job checks out the exact
+  PR head, inherits a private physical `/private/tmp` root and runs every method/case in
+  `.config/platform-p0-tests.json`, plus repository checks. Missing, failed, skipped,
+  not-executed, cancelled and timed-out results fail. Identity, exact commands and TRX are
+  retained. This merge obligation does not qualify macOS or replace the broad advisory lane.
 - **Isolation**: CI holds no secrets and no user data; LOCAL never sends data anywhere.
 - **Data between environments**: never moves; CI uses fixtures only.

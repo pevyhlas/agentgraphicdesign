@@ -5,6 +5,7 @@ using FTPlus.AgentGraphicDesign.Core.Assets;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Export;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Skia;
 using SkiaSharp;
@@ -799,13 +800,13 @@ public sealed class AssetPipelineTests : IDisposable
     }
 
     [Fact]
-    public async Task PlatformGuard_AllowsOnlyWindowsOrVerifiedUnixConfiguration()
+    public async Task PlatformGuard_FollowsTheRegistryGate()
     {
         Save("source.json", Document("icon"));
         var manifest = SingleManifest();
         var pipeline = CreatePipeline(_engine);
-        if (OperatingSystem.IsWindows() || OperatingSystem.IsLinux() &&
-            RuntimeInformation.ProcessArchitecture == Architecture.X64 && Environment.Version.Major == 10)
+        var platform = PlatformProfile.Current;
+        if (platform.GateAdmits(PlatformCapability.AssetPipeline))
         {
             Assert.True((await pipeline.RunAsync(manifest, false)).Success);
         }
@@ -813,7 +814,7 @@ public sealed class AssetPipelineTests : IDisposable
         {
             var error = await Assert.ThrowsAsync<DocumentEngineException>(() => pipeline.RunAsync(manifest, false));
             Assert.Equal("ASSET_PLATFORM_UNSUPPORTED", error.Code);
-            Assert.Contains(".NET 10 Linux x64", error.Message);
+            Assert.Equal(platform.RefusalMessage(PlatformCapability.AssetPipeline), error.Message);
             Assert.False(Directory.Exists(Full("generated")));
         }
     }

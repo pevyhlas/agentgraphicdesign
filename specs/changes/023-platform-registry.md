@@ -30,6 +30,8 @@ with both sides, never resolved here. -->
 - C-09: direct cutover from `supportedPlatform`/`currentPlatformMatches` to `platform`; no aliases.
 - C-10: no private-history identifiers or raw machine evidence in tracked records; public CI stays hosted/read-only.
 - C-11/Q-05: S0 only, with Windows arm64/runtime narrowing declared; no Mac qualification claim.
+  Retained Windows x64 pipeline/artifact pass-through remains the existing owner-inbox deviation;
+  the port does not ratify or amend C-11's fail-closed policy.
 - Q-01/Q-04: deterministic tuple goldens and no-write refusal checks; no file-backend changes.
 - Others in scope: hold.
 
@@ -129,7 +131,7 @@ method filters are added to installed-package verification; source-only surface 
 
 ## Tasks
 
-- [ ] T000 Public design review settles evidence mapping and P0 execution without relaxing its outcome.
+- [x] T000 Public design review settles evidence mapping and P0 execution without relaxing its outcome.
 - [ ] T001 Port `Core/Platform`: capability/qualification/policy types, profile factory/current,
   S0 registry, ordinal JSON projection, qualified profiles, narrowing-only seam and availability
   interface/vocabulary. Require capability arguments across pipeline/lint/preflight/import/pixel
@@ -174,14 +176,27 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 
 ## State
 
-**Step**: public port design
-**Waiting on**: scoped design re-review of evidence equivalence and complete original008/T002 inventory.
+**Step**: bounded source implemented; wider verification
+**Waiting on**: full source/installed proof, six attestations, native P0 and independent reviews.
+**Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
 reviewed exact-head green merges. No platform expansion, release or spending authority inferred.
-**Attempts**: implementation0, acceptance0, design initial review FAIL (security2 medium, tests1
+**Attempts**: focused working-tree platform64 Core/2 CLI/3 MCP PASS plus24 special-file tests,
+30 claim-check and22 P0-checker fixtures PASS. Diagnostic P0 aggregate remains FAIL because all
+six attestations are intentionally pending. Initial missing-restore and two compile diagnostics
+were corrected with failed logs retained. No native P0, full source or installed run yet.
+Design initial review FAIL (security2 medium, tests1
 medium; architecture/operations PASS). Fix round1 defines the evidence equivalents and P0 inventory;
-scoped security/test re-review pending. Parent008's existing failures/gates remain;
+scoped security/test re-review PASS with0 findings. Parent008's existing failures/gates remain;
 the unchanged 485 advisory macOS failures are baseline context, not cleared by this child.
-**Next**: review public adaptation, then reapply the recovered increment and verify P0.
+**Next**: execute source/installed proof at the checkpoint, review actual evidence, record only
+observed attestations, then complete exact-head macOS P0 and final review/CI gates.
+
+**Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906362
+**Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906787
+**Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-security-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412907121
+**Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412907503
+**Review**: round 2 · 2d6eff761c4d00328d640b8749f560fe7f5162b7..d4368bc9503e7a2978ab7c67cbac4cf3bd967356 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412963434
+**Review**: round 2 · 2d6eff761c4d00328d640b8749f560fe7f5162b7..d4368bc9503e7a2978ab7c67cbac4cf3bd967356 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412963830
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->

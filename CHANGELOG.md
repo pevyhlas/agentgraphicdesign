@@ -11,6 +11,10 @@ full `agd --version` string when reporting a problem.
 
 ### Added
 
+- Shared I/O-free stage-S0 platform registry, synthetic tuple fixtures and per-capability
+  gates. Availability types are a contract only; no live probe or macOS backend is added.
+- Explicit platform P0 method/case inventory and head-bound macOS 26 arm64 CI lane,
+  separate from the existing broad advisory suite. This is not macOS qualification.
 - Internal straight RGBA rendering and a bounded `RgbaImage` for upcoming review sheets and
   analysis. Raw buffers are never accepted as CLI, MCP or asset-manifest file formats.
 - Pre-refactor contact-sheet baselines across Skia, CLI and MCP, including directory fonts,
@@ -32,6 +36,19 @@ full `agd --version` string when reporting a problem.
   `nativeImageImport: true` and a `nativeStillImport` block. See
   [still import](docs/native-still-import.md) and its
   [contract](docs/contracts/native-still-import-v1.md).
+
+### Changed
+
+- Breaking discovery cutover: MCP `get_capabilities.platform` replaces `supportedPlatform`
+  and `currentPlatformMatches`, with no aliases. It reports process architecture (including
+  Rosetta), runtime/OS versions and three-valued capability qualifications; keys are ordinal.
+- Guarded paths now require runtime major 10. Windows arm64 and other runtime majors no
+  longer pass the asset/preflight probe. Windows x64 on .NET 10 keeps unqualified asset
+  pipeline and artifact verification admission, but **all native pixel operations, including
+  inspect, validate and region reads**, now refuse at the capability gate; previously those
+  reads passed through while writes later failed at Linux primitives. Vector/raster operations
+  remain unguarded and unqualified off Linux x64. Registry refusal text is preserved through
+  CLI/MCP and storage wrappers. No additional platform is qualified.
 
 ### Fixed
 
