@@ -72,7 +72,8 @@ fields together (no cross-record matching):
 | evaluator / date | Named evaluator and ISO date |
 | result | Explicit whole-record result, not PASS text in explanatory prose |
 | sourceEvidence / installedEvidence / reviewEvidence | GitHub HTTPS links or existing ignored `.prdkit/cache/evidence/` files |
-| ac01 / ac02 / ac03 / ac04 | Separate observed still-import outcomes, required for that capability |
+| ac01 / ac02 / ac03 | Separate observed still-import runtime outcomes, each `PASS` |
+| ac04 | Proposed023 correction: `PREMERGE_PROOF_PASS` for observed implementation proof, never future CI |
 
 Field values are space-free; explanatory prose follows ` — `. Duplicate fields or selected
 ids fail. Whole-line anchored patterns are evaluated only against that selected record.
@@ -80,3 +81,12 @@ Unrelated historical failures do not poison a later valid selected attestation. 
 FAIL, failed-test line, missing proof, swapped pair or borrowed SHA cannot satisfy a claim.
 `d10` records remain refused until 008/T015. The checker validates an index, not the truth
 of linked execution evidence; independent reviewers must inspect the actual runs.
+
+The proposed023 sequencing correction separates already-observed proof from final integration:
+`PREMERGE_PROOF_PASS` means the approved design, full exact-source/installed suites, coverage,
+dependency/audit/self-test/format/adoption/doctor checks and all five implementation reviews passed.
+The evidence-index check and final integration cannot attest themselves in advance. Full original
+005/AC-04 and merge eligibility remain incomplete until the final attestation-bearing head passes
+complete native P0, every required CI job and the review gate. The always-run P0 dependency stays
+required. Generic `ac04=PASS` is refused rather than silently redefined. No entry changes until this
+bounded design/checker correction is reviewed; no d10 binding or qualification scope is added.

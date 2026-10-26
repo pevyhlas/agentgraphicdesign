@@ -18,6 +18,7 @@ qualification remains Linux x64; later macOS backend/corpus/qualification work s
 | L1 | D-28 | implement the approved S0 registry and capability report; document public evidence mapping | no S1/S2/S3 admission |
 | L2 | P1.I-08/09, P4.B-02 | route guards through one registry and replace legacy report fields | explicit cutover |
 | L2 | P1.I-02 | retain vector storage's unguarded, unqualified off-profile behavior | no canonical-path/backend port |
+| L1 / checks | D-28 S0 evidence | explicit AC-04 premerge-proof stage with final CI independently mandatory | bounded sequencing correction, design review pending |
 
 ## Bounds
 
@@ -93,7 +94,7 @@ Still-import equivalence is explicit:
 | 005/AC-01 | `NativeStillImportTests` independent literal samples and two-layer mask/native composition; CLI `PixelsCommandTests.StillImport_*` and MCP `ProtocolTests.StillImport_*` import/inspect/edit/preview/export/check, non-square/thin/hidden RGB, sibling preservation and native Q24 expected differences, in source and installed tools |
 | 005/AC-02 | the same suites' exact descriptor/PNG/native frame/record bytes, supplier mutation/deletion, caller-operated Git/file restoration, restarted-server restoration and restored snapshot eligibility |
 | 005/AC-03 | Core import/decoder boundary suites, `NativeStillImportConcurrencyTests`, and CLI/MCP negative cases: original-byte duplicate/unknown/type/token/limits, hash/CRC/DEFLATE/inventory/path/link/FIFO/profile/canvas/conflict/capacity/busy, actual access failures, staging ownership, separate-process create/append and real-held-lock cancellation/recovery |
-| 005/AC-04 | this public port's approved pre-runtime design; locked build/full source and exact installed suites; coverage, dependency/audit/self-test/format/adoption/doctor; five independent final owning-domain reviews explicitly covering these fresh observations and preservation of the import boundary; exact-head required CI |
+| 005/AC-04 | approved pre-runtime design; exact-source/installed suites; coverage/dependency/audit/self-test/format/adoption/doctor; five owning reviews of those observations/import boundary. Proposed `PREMERGE_PROOF_PASS` records these observed prerequisites only. Full AC-04 additionally requires final attestation-bearing-head native P0 and every required CI/review gate before merge |
 
 An attestation is an index, not independent proof. Each has a unique id binding **in one selected
 record** profile, capability, exact evaluated commit, result, evaluator and source/installed/review
@@ -106,6 +107,14 @@ passes, reviewers inspect linked executions' actual revision/environment/selecti
 the table. Missing equivalent evidence requires fresh execution, never an invented PASS or weakened
 qualification claim. The final record-only commit may cite its evaluated implementation parent;
 review verifies only attestation bookkeeping changed and CI reruns on the final head.
+
+**Proposed sequencing correction (independent design review pending)**: the original `ac04=PASS`
+checker requirement was circular: AC-04 included final CI, while that CI required the record first.
+Use the exact field value `ac04=PREMERGE_PROOF_PASS` for observed implementation prerequisites above;
+reject generic PASS, missing/pending/unknown/failure values. This does not close full originalAC-04,
+authorize merge or promise future CI. Keep required P0/repository-gate enforcement unchanged. Re-review
+the changed checker/fixtures/spec and selected records before final exact-head gates. No d10 redesign,
+platform expansion, gate waiver, incomplete-result PASS or implementation change disguised as records.
 
 ### Original008/T002 P0 inventory
 
@@ -148,6 +157,8 @@ method filters are added to installed-package verification; source-only surface 
   unknown/d10 kind, malformed/duplicate pair and invalid path. Keep all raw evidence outside specs.
 - [ ] T005 Update current contracts and cutover docs; complete Linux/installed checks and exact-head
   macOS P0 proof, then all implementation reviews and exact-head CI/review gate before merge.
+- [ ] T006 Independently review and correct AC-04 evidence sequencing, with an explicit premerge-proof
+  value and negative fixtures, preserving every final exact-head merge obligation.
 
 <!-- Tiny fixes stay inline. Optional detail: .prdkit/cache/implementation/<id>.md;
 useful context/progress on the same PR. Product/programme discovery uses workflows/planning.md. -->
@@ -176,9 +187,9 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 
 ## State
 
-**Step**: bounded source implemented; wider verification
-**Waiting on**: finish local archive/installed proof, six attestations and independent reviews;
-native P0 tests passed, but its complete gate still requires those attestations.
+**Step**: exact-source/installed proof and five implementation reviews PASS; sequencing correction
+**Waiting on**: independent design review of the AC-04 prerequisite cycle, bounded checker correction,
+truthful six attestations and final exact-head P0/CI. No future CI success has been recorded.
 **Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
 reviewed exact-head green merges. No platform expansion, release or spending authority inferred.
@@ -197,17 +208,22 @@ This observation is retained, not declared fixed or a new qualification.
 Remote rules require the existing repository-gates check but do not name new P0. The follow-up
 wires explicit always-run P0-result enforcement into that required check (a failed dependency
 must not become a neutral skip); checker self-tests/rules/workflow/format PASS. No remote policy
-change was made. Local exact-source archive/installed execution remains running; inspect its
-completion and provenance before attesting. All raw results remain in the change evidence cache
+change was made. Local exact835bc85 archive3453/installed CLI66/MCP40 completed PASS; fresh exact355eb79
+archive3453/installed66+40 also PASS/0skip/0fail, build0warnings. Five implementation lenses PASS at355,
+explicitly validating six runtime equivalence mappings and preserving import boundaries. Native355
+P0 cases69 PASS but aggregate fails pending records; broad advisory2969 PASS/484 FAIL. The earlier
+additional timing failure is retained, not declared repaired. All raw results remain in the evidence cache
 and [CI40306733196](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40306733196).
 Design initial review FAIL (security2 medium, tests1
 medium; architecture/operations PASS). Fix round1 defines the evidence equivalents and P0 inventory;
 scoped security/test re-review PASS with0 findings. Parent008's existing failures/gates remain;
 the unchanged 485 advisory macOS failures are baseline context, not cleared by this child.
-**Next**: capture local archive completion; review actual source/installed equivalence with all
-five named lenses, record only observed attestations, then complete final exact-head macOS P0
-and review/CI gates. Required-gate wiring also needs those implementation reviews. No merge-ready
-claim; source checkpoint is public on PR16.
+**Next**: review the proposed bounded sequencing correction, implement it and verify its refusal
+fixtures, then record only observed attestations, scoped re-review and final exact-head P0/CI.
+Architecture coordination confirmed the circular AC-04 condition; generic PASS must not mean
+future CI. This is a T2 evidence-order correction within S0, not authority to waive any gate.
+Exact-source proof: https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910786.
+No merge-ready claim; source checkpoint is public on PR16.
 
 **Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906362
 **Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906787
@@ -215,5 +231,10 @@ claim; source checkpoint is public on PR16.
 **Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412907503
 **Review**: round 2 · 2d6eff761c4d00328d640b8749f560fe7f5162b7..d4368bc9503e7a2978ab7c67cbac4cf3bd967356 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412963434
 **Review**: round 2 · 2d6eff761c4d00328d640b8749f560fe7f5162b7..d4368bc9503e7a2978ab7c67cbac4cf3bd967356 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412963830
+**Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
+**Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
+**Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
+**Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
+**Review**: round 4 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..355eb7970686fa8a852e477754b530142187c19f · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910338
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
