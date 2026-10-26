@@ -64,19 +64,18 @@ Proposed for independent architecture/security design review before implementati
    and emit six lowercase RGB hex digits. Document colours and legacy sheet backgrounds keep
    their existing semantics. `rgba(37,99,235,0.999)` normalizes to `#2563eb`;0.998 refuses.
 
-Dependency discovered on public-tree inspection: D-26 requires D-28's shared asset-inspection
-capability, but `Core/Platform` has not yet been ported (change008/PR-1). `AssetPaths.Inspect`
-still embeds its old OS predicate, including the tracked Windows pass-through. Land that approved
-registry increment first, then bind this reader to its gate; do not invent a second platform
-registry or silently settle the Windows inbox question here. Hosted macOS CI is available for
-that increment's native evidence, but does not itself qualify inspection.
+Dependency satisfied: child023 merged as e50b1a15cc054359d654a8f692c781d36325d13c ([PR #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16)),
+with all required CI, complete native P0 and five owning reviews. This branch incorporates that
+public baseline. Bind inspection to `PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline)` and the capability
+argument required by `AssetPaths.Inspect`; never duplicate an OS predicate. The tracked Windows
+pass-through remains the owner-inbox question; hosted P0 does not qualify macOS inspection.
 
 Alternatives: duplicating current surface readers would repeat limits and safety rules; embedding
 new OS tests here would drift from D-28. Prefer the shared reader after its registry prerequisite.
 
 ## Tasks
 
-- [ ] Port change008/PR-1's platform registry and public capability gate before implementation.
+- [x] Incorporate merged change008/PR-1's platform registry and public capability gate.
 - [ ] Independent architecture/security design review against recovered T004/T005 and D-26.
 - [ ] T004: references, bounded capture/hash, inspection, font rules and aggregate budget, colours.
 - [ ] T005: independent grammar/order/boundary/special-file and forced-gate tests.
@@ -102,22 +101,22 @@ claimed until parent012's surface increment.
 
 ## State
 
-**Step**: design drafted; prerequisite public port is implementing
-**Waiting on**: child023 platform registry ([draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16)), then independent input-design review.
+**Step**: prerequisite merged; independent input-design review
+**Waiting on**: architecture/security/test design review of the bounded input foundation.
 **Authority**: owner public-roadmap continuation and “and then continue with next steps”; the
 constitution permits feature commits, branch publication and reviewed exact-head green merges.
-**Attempts**: implementation and acceptance0; design review0.
+**Attempts**: implementation and acceptance0; initial public design review next.
 Product-Kit 1.2.0 is incorporated from public main `3e2d353` ([uptake #15](https://github.com/pevyhlas/agentgraphicdesign/pull/15));
 its required CI/reviews passed. The advisory macOS run retained exactly the prior main's 485
 failing test names/outcomes (2,900 passed); that is not qualification or a new acceptance attempt.
 The full approved 008/T001–T002 definitions, design/acceptance and original `Core/Platform`
 implementation are now recovered in ignored evidence at
 `.prdkit/cache/evidence/021-review-inputs/recovered/008-platform-registry/` with source hashes.
-Child023 publicly restates original008/T001–T002 and adapts evidence/CI assumptions. Its four
-design concerns passed after one fix round pinned capability-specific public proof and the full
-original008/T002 P0 inventory. Hosted macOS26-arm64 exact-head/private-tmp execution satisfies
-that bounded gate; implementation and acceptance remain pending on PR16.
-**Next**: incorporate the reviewed, accepted registry once merged, then independently review and
-implement this input foundation. No platform qualification or input acceptance is inferred.
+Child023 completed source/installed proof at2293234 and full final-head CI/nativeP0 at981bc80;
+its selected evidence and reviews remain on PR16. Mac advisory484 failures and earlier transient
+cancellation failure remain parent008 observations. This change inherits no qualification claim.
+**Next**: complete independent design review, implement the shared input foundation and verify
+source/installed regressions. Owner2026-10-26 “sounds good, continue with those” confirms this
+priority alongside AgentBlender startup reliability; no broader platform/release scope is inferred.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->

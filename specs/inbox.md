@@ -225,6 +225,16 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 ## Your direction
 
+### Continue review inputs and startup reliability
+
+*2026-10-26 · owner · folded: 021-review-inputs*
+
+> sounds good, continue with those
+
+Confirms the presented immediate priorities: AGD's bounded review-input foundation after the
+registry merge, alongside AgentBlender startup reliability in its own repository. Existing design,
+verification and release gates remain binding.
+
 ### Continue after Product-Kit uptake
 
 *2026-10-26 · owner · folded: 023-platform-registry*
