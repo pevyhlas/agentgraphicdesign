@@ -20,7 +20,11 @@ and the [asset pipeline guide](../../../docs/asset-pipeline.md).
 - **P1.B-22 Budgets before work**: a producer run is charged for nodes and raster pixels before
   validation or raster work, the host meters output bytes, and an over-budget run is refused
   with a structured limit error. Test:
-  `AssetProducerPipelineTests`, `VectorAssetProducerTests`.
+   `AssetProducerPipelineTests`, `VectorAssetProducerTests`.
+- Font-directory inspection shares the bounded, non-recursive pre-pass used by review inputs.
+  The pipeline retains its own policy: a font above8 MiB refuses with `RESOURCE_LIMIT`, whereas
+  review inputs skip it. Pipeline document occurrence accounting and ordinary export's linked-font
+  skipping are unchanged. Tests: `AssetPipelineTests`, `InspectedFontSetTests`.
 
 ## Invariants
 

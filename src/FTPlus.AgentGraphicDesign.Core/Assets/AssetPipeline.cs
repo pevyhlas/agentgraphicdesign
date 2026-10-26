@@ -107,16 +107,10 @@ public sealed class AssetPipeline
                         continue;
                     if (fontDirectories.Count > 16)
                         throw AssetManifest.Limit();
-                    AssetPaths.Inspect(font, directory: true, required: true, PlatformCapability.AssetPipeline, ct);
-                    var count = 0;
-                    foreach (var file in Directory.EnumerateFileSystemEntries(font))
+                    foreach (var file in FontDirectoryInspection.Inspect(font, ct))
                     {
-                        if (++count > 256)
-                            throw AssetManifest.Limit();
-                        // The renderer's font lookup is non-recursive; inspect every immediate entry.
                         var isDirectory = (File.GetAttributes(file) & FileAttributes.Directory) != 0;
-                        AssetPaths.Inspect(file, isDirectory, required: true, PlatformCapability.AssetPipeline, ct);
-                        if (isDirectory || Path.GetExtension(file).ToLowerInvariant() is not (".ttf" or ".otf"))
+                        if (isDirectory || !FontDirectoryRules.IsFont(file))
                             continue;
                         var size = new FileInfo(file).Length;
                         inputBytes += size;

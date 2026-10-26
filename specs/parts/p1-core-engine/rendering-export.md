@@ -60,6 +60,23 @@ Format reference: [docs/format.md](../../../docs/format.md).
   PNG hashes are Linux x64-specific, while cell maps and refusal messages are platform-neutral.
   Tests: `LegacyContactSheetCharacterizationTests` on Skia, CLI and MCP.
 
+- The D-26 review-input foundation resolves document-only `AssetReference` values against an
+  explicit base. Only a last `#` followed by an exact canonical GUID selects a node. Native pixel
+  names, inspected directories and captured schema content refuse in that order. The internal
+  reader captures each distinct document once (16 MiB maximum); parsing, duplicate-key validation
+  and SHA-256 use those original bytes. Output paths are relative POSIX beneath the base or null.
+- Review inspection uses the shared `assetPipeline` gate. Where admitted, documents, font
+  directories and every immediate entry are checked before opening; links and special files
+  refuse. The non-admitted read path remains D-26's tracked deviation. A single immutable font
+  set records ordinal `Load`/`Skip` candidates: at most16 directories,256 entries per inspected
+  directory,8 MiB per counted font. Oversize fonts are skipped and uncounted; non-admitted
+  candidate links skip before length inspection. Distinct document bytes plus counted fonts are
+  bounded together at64 MiB, checked before reads and against actual captured bytes.
+- Review colours parse with Core's CSS rules, decide opacity on the ties-to-even alpha byte and
+  normalize to lowercase `#rrggbb`; authored document colours retain their semantics.
+  Tests: `ReviewInputTests`, `InspectedFontSetTests`. Render sessions, catalog consumption of this
+  set and CLI/MCP review-surface cutover remain subsequent D-26 increments.
+
 - Raster document colors use Core's CSS RGBA parser, including `#rgba` and `#rrggbbaa`;
   Skia's ARGB hex interpretation never overrides document semantics. Regression:
   `SkiaRendererTests.CssAlphaHexMatchesRgbaAcrossPaintAndBackground`.

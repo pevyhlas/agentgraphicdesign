@@ -11,6 +11,9 @@ full `agd --version` string when reporting a problem.
 
 ### Added
 
+- Bounded review-input foundation: document references with single-capture hashes, shared font
+  inspection, a 64 MiB aggregate budget and opaque CSS colour normalization. Review commands,
+  render sessions and catalog integration follow in later increments.
 - Shared I/O-free stage-S0 platform registry, synthetic tuple fixtures and per-capability
   gates. Availability types are a contract only; no live probe or macOS backend is added.
 - Explicit platform P0 method/case inventory and head-bound macOS 26 arm64 CI lane,
