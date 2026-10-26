@@ -177,20 +177,37 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 ## State
 
 **Step**: bounded source implemented; wider verification
-**Waiting on**: full source/installed proof, six attestations, native P0 and independent reviews.
+**Waiting on**: finish local archive/installed proof, six attestations and independent reviews;
+native P0 tests passed, but its complete gate still requires those attestations.
 **Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
 reviewed exact-head green merges. No platform expansion, release or spending authority inferred.
 **Attempts**: focused working-tree platform64 Core/2 CLI/3 MCP PASS plus24 special-file tests,
 30 claim-check and22 P0-checker fixtures PASS. Diagnostic P0 aggregate remains FAIL because all
 six attestations are intentionally pending. Initial missing-restore and two compile diagnostics
-were corrected with failed logs retained. No native P0, full source or installed run yet.
+were corrected with failed logs retained. Full local source3453 PASS/0skip. CI40306733196 passed
+Linux source/archive3453 and installed CLI66/MCP40 (synthetic merge source recorded in its logs),
+coverage and readiness. Native exact-head835bc85 P0 ran all69 cases PASS/0skip on macOS26.6.2
+arm64/runtime10.0.14 with a physical private temp root; the aggregate and repository gate
+correctly FAIL only for pending attestations. Broad advisory macOS:2968 PASS/485 FAIL;484 failures
+match the previous run, one readiness case now passes and unchanged
+`NodePageTests.Cancellation_DuringBroadTraversalIsObserved` newly failed its timing expectation.
+This observation is retained, not declared fixed or a new qualification.
+
+Remote rules require the existing repository-gates check but do not name new P0. The follow-up
+wires explicit always-run P0-result enforcement into that required check (a failed dependency
+must not become a neutral skip); checker self-tests/rules/workflow/format PASS. No remote policy
+change was made. Local exact-source archive/installed execution remains running; inspect its
+completion and provenance before attesting. All raw results remain in the change evidence cache
+and [CI40306733196](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40306733196).
 Design initial review FAIL (security2 medium, tests1
 medium; architecture/operations PASS). Fix round1 defines the evidence equivalents and P0 inventory;
 scoped security/test re-review PASS with0 findings. Parent008's existing failures/gates remain;
 the unchanged 485 advisory macOS failures are baseline context, not cleared by this child.
-**Next**: execute source/installed proof at the checkpoint, review actual evidence, record only
-observed attestations, then complete exact-head macOS P0 and final review/CI gates.
+**Next**: capture local archive completion; review actual source/installed equivalence with all
+five named lenses, record only observed attestations, then complete final exact-head macOS P0
+and review/CI gates. Required-gate wiring also needs those implementation reviews. No merge-ready
+claim; source checkpoint is public on PR16.
 
 **Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906362
 **Review**: round 1 · 3e2d3533e6cb9f49e4b0bb7d61e4de480ffd32e5..2d6eff761c4d00328d640b8749f560fe7f5162b7 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6412906787

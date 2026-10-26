@@ -264,6 +264,8 @@ jobs:
 
   repository-gates:
     name: Dependency, Security, and Format Gates
+    needs: platform-p0
+    if: ${{ always() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
@@ -304,6 +306,14 @@ jobs:
 
       - name: Check CI workflow policy
         run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- workflows .
+
+      # This job is already required by the public repository ruleset. Fail explicitly rather
+      # than letting a failed/skipped P0 dependency turn this required job into a neutral skip.
+      - name: Require successful native platform P0
+        if: always()
+        env:
+          P0_RESULT: ${{ needs.platform-p0.result }}
+        run: test "$P0_RESULT" = success
 
       - name: Check public qualification claims
         run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- qualification-evidence .

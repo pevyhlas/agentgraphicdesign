@@ -153,6 +153,9 @@ internal static partial class Program
         var gates = Regex.Match(text, @"(?ms)^  repository-gates:\r?\n(?<job>.*?)(?=^  [A-Za-z0-9_-]+:|\z)", RegexOptions.CultureInvariant, PatternTimeout).Groups["job"].Value;
         foreach (var required in new[] { "fetch-depth: 0", "qualification-evidence .", "platform-rules .", "platform-fixtures . --check" })
             if (!gates.Contains(required, StringComparison.Ordinal)) errors.Add("Repository gates missing " + required);
+        foreach (var required in new[] { "    needs: platform-p0", "    if: ${{ always() }}",
+            "P0_RESULT: ${{ needs.platform-p0.result }}", "run: test \"$P0_RESULT\" = success" })
+            if (!gates.Contains(required, StringComparison.Ordinal)) errors.Add("Required repository gate does not enforce native P0: missing " + required);
     }
     private static void ValidateGateAgreementAttribute(string source, ICollection<string> errors)
     {
@@ -229,11 +232,16 @@ internal static partial class Program
                   - run: platform-p0-check --macos
                     if: always()
               repository-gates:
+                needs: platform-p0
+                if: ${{ always() }}
                 steps:
                   - fetch-depth: 0
                   - run: qualification-evidence .
                   - run: platform-rules .
                   - run: platform-fixtures . --check
+                  - env:
+                      P0_RESULT: ${{ needs.platform-p0.result }}
+                    run: test "$P0_RESULT" = success
             """;
         foreach (var (name, text, passes) in new[]
         {
@@ -244,7 +252,10 @@ internal static partial class Program
             ("wrong checkout", workflow.Replace("ref: ${{ github.event.pull_request.head.sha || github.sha }}", "ref: main", StringComparison.Ordinal), false),
             ("no physical root", workflow.Replace("mktemp -d /private/tmp/", "mktemp -d /tmp/", StringComparison.Ordinal), false),
             ("shallow gates", workflow.Replace("fetch-depth: 0", "fetch-depth: 1", StringComparison.Ordinal), false),
-            ("no completeness check", workflow.Replace("platform-p0-check", "other-command", StringComparison.Ordinal), false)
+            ("no completeness check", workflow.Replace("platform-p0-check", "other-command", StringComparison.Ordinal), false),
+            ("P0 not a required dependency", workflow.Replace("needs: platform-p0", "needs: unrelated", StringComparison.Ordinal), false),
+            ("failed P0 skips required gate", workflow.Replace("if: ${{ always() }}", "if: ${{ success() }}", StringComparison.Ordinal), false),
+            ("required gate ignores P0 result", workflow.Replace("run: test \"$P0_RESULT\" = success", "run: true", StringComparison.Ordinal), false)
         })
         {
             var result = new List<string>();

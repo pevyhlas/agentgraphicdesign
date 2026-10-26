@@ -47,7 +47,9 @@ inherited physical private directory under `/private/tmp`. The runner retains pr
 identity, argv, exit codes, stdout/stderr, discovered identities and TRX. All expected cases
 must execute with no failures/skips/not-executed outcomes; cancelled, timed-out and partial
 runs never pass. Without `--macos`, this is local diagnostic verification, not native P0.
-The separate required CI job does not replace the broad advisory macOS lane.
+The separate P0 job does not replace the broad advisory macOS lane. The existing required
+repository-gates job waits for P0 and explicitly fails unless its outcome is success, including
+failure/cancellation/skips; this avoids relying on an unconfigured new remote check name.
 
 ## Public evidence bookkeeping
 
