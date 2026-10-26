@@ -226,6 +226,15 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 ## Your direction
 
+### Continue after Product-Kit uptake
+
+*2026-10-26 · owner · folded: 023-platform-registry*
+
+> go ahead
+
+Continues the presented registry-first roadmap after the kit upgrade. Existing qualification,
+independent review, attempt and release gates remain binding.
+
 ### Latest Product-Kit and next steps
 
 *2026-10-26 · owner · folded: 022-product-kit-120*
