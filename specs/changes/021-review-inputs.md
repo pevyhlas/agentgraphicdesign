@@ -97,12 +97,17 @@ claimed until parent012's surface increment.
 | A2 | Q-05; parent AC-04 input scope | focused reference/font link/FIFO/device refusal, bounded FIFO watchdog, non-admitted skips; AssetPipelineTests; full confinement regressions pending A5 | 1 completed focused run | PASS |
 | A3 | Q-03; T005 | exact16MiB and real64MiB plus injected aggregate boundaries, actual growth recheck,256/257 entries, ordered Load/Skip; non-admitted fonts counted | 2 completed focused runs | PASS |
 | A4 | Q-01; D-26 colours | handwritten CSS/alpha-byte/ties-to-even vectors in ReviewInputTests | 1 completed focused run | PASS |
-| A5 | Delivery | source/installed regression checks, independent lenses and exact-head required CI | 0 | NOT_RUN |
+| A5 | Source/installed regression proof | clean sourcec0269e3:3495PASS, zero failures/skips; installed CLI66/MCP40PASS; corrected test-head7c27ba9 CI3497PASS and all9 required jobs ([proof](https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428734342)) | 1 clean-archive/package run;1 test-head CI | PASS |
+
+**Independent delivery obligations (unchanged)**: all four owning review verdicts must pass,
+`check-review.sh` must pass and all nine required CI jobs must pass on the actual final head.
+A5 records evaluated source/installed proof; it does not attest its own future record, reviewers
+or final-head CI. These remain required merge gates, not waivers or inferred passes.
 
 ## State
 
-**Step**: source implemented; full verification and independent implementation review
-**Waiting on**: A5 source/installed regressions, owning reviews and exact-head required CI.
+**Step**: source/installed proof complete; scoped final review
+**Waiting on**: scoped owning reviews of test fixes and this proof record, then final-head CI.
 **Authority**: owner public-roadmap continuation and “and then continue with next steps”; the
 constitution permits feature commits, branch publication and reviewed exact-head green merges.
 **Attempts**: initial design architecture/security/test PASS, zero findings. Focused build01 stopped
@@ -114,7 +119,12 @@ implementation-derived16MiB oracle, missing font FIFO/device cases, cancellation
 conditional-return reporting). Fix round1 changes tests only: literal16MiB oracle, `x.ttf` FIFO,
 real devpts device entries without privileged fixture creation, cancellation after16 bytes and
 explicit platform skips. Focused run04:140 PASS, zero skips; production source remains c0269e3.
-A5 evidence and scoped re-review remain pending; no later verdict erases round2.
+A5 now has completed clean-archive/installed and exact test-head CI proof; scoped re-review remains
+pending. No later verdict erases round2. No production source changed after c0269e3.
+**Evidence**: [verification summary and package identities](https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428734342).
+CI40410708497 binds7c27ba9:3497 Linux tests and9 required jobs PASS; native P0 Core64/CLI2/MCP3
+and complete aggregate PASS. Broad macOS advisory3004PASS/484FAIL/7NotExecuted has exactly the
+prior484 failing identities/multiplicities. This is not platform qualification.
 **Review applicability**: code/security/test/architecture own the implementation. Ops not applicable:
 no CI, packaging, dependency or platform-admission change; installed regressions remain required.
 Product-Kit 1.2.0 is incorporated from public main `3e2d353` ([uptake #15](https://github.com/pevyhlas/agentgraphicdesign/pull/15));
@@ -126,7 +136,8 @@ implementation are now recovered in ignored evidence at
 Child023 completed source/installed proof at2293234 and full final-head CI/nativeP0 at981bc80;
 its selected evidence and reviews remain on PR16. Mac advisory484 failures and earlier transient
 cancellation failure remain parent008 observations. This change inherits no qualification claim.
-**Next**: finish source/installed regressions and required implementation reviews. Owner2026-10-26 “sounds good, continue with those” confirms this
+**Next**: finish scoped review, finalize this record in PR14 and verify the actual final head's
+required CI before merge. Parent012's render sessions follow. Owner2026-10-26 “sounds good, continue with those” confirms this
 priority alongside AgentBlender startup reliability; no broader platform/release scope is inferred.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->

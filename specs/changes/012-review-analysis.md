@@ -61,9 +61,11 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
   unpremultiply characterization (public port in child 018-review-foundation).
 - [x] PR-2a in child020-transient-builder (public PR #13): T029 pre-refactor sub-node
   characterization; T032 the builder replacing the sub-node copy; T033 its tests.
-- [ ] PR-2b in child021-review-inputs: T004 references, inspection, the inspected font set,
+- [x] PR-2b in child021-review-inputs (public PR #14): T004 references, inspection, the inspected font set,
   aggregate bound and colour parser; T005 their tests. The public008/PR-1 registry gate merged
-  in child023/PR16; input source is implemented with focused140 tests passing, delivery pending.
+  in child023/PR16; input sourcec0269e3 has clean-archive3495PASS/installed CLI66+MCP40PASS;
+  corrected test-head7c27ba9 has3497 Linux tests and all required CI PASS. Public review commands
+  and call-scoped catalog loading are still PR-2c/PR-4 obligations, not part of this foundation.
 - [ ] PR-2c: T034 the render session; T035 its tests.
 - [x] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
   `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and
