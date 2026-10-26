@@ -38,6 +38,8 @@ Missing authority is not permission; a generated plan grants none.
 Run from the repository root. CI runs them on GitHub-hosted `ubuntu-24.04` runners with the SDK
 pinned in `global.json` installed by a SHA-pinned `actions/setup-dotnet`; an advisory macOS 26
 arm64 job runs on every PR, main push, schedule and manual dispatch, retaining diagnostic results.
+A separate bounded platform-registry P0 job is non-advisory on the same events; it does not
+qualify macOS or replace the broad advisory suite (D-28, change 023).
 
 ```text
 dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode
@@ -47,6 +49,9 @@ dotnet format  FTPlus.AgentGraphicDesign.slnx --verify-no-changes --no-restore
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- coverage coverage-results 35
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- self-test
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- workflows .
+dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- qualification-evidence .
+dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-rules .
+dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-fixtures . --check
 bash scripts/check-dependencies.sh          # exact approvals and notices (D-01)
 bash scripts/check-vulnerabilities.sh       # structured NuGet audit
 bash scripts/package-smoke.sh               # pack, inspect, isolated install, run

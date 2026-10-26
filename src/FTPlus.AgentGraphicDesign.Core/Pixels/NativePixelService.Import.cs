@@ -1,5 +1,6 @@
 using FTPlus.AgentGraphicDesign.Core.Pixels.Storage;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Pixels;
 
@@ -38,7 +39,7 @@ public sealed partial class NativePixelService
         try
         {
             scope.Check();
-            AssetPaths.Inspect(file, false, required: true, scope.Caller);
+            AssetPaths.Inspect(file, false, required: true, PlatformCapability.StillImport, scope.Caller);
             bytes = NativePixelFileSystem.ReadMetadata(file, NativePixelFormat.MaxJsonBytes, scope);
         }
         catch (DocumentEngineException error) when (error.Code == EngineErrors.DocumentNotFound)
@@ -88,6 +89,10 @@ public sealed partial class NativePixelService
     {
         try
         {
+            var platform = PlatformProfile.Current;
+            if (!platform.GateAdmits(PlatformCapability.StillImport))
+                throw new NativePixelException(NativePixelErrors.AssetPlatformUnsupported,
+                    platform.RefusalMessage(PlatformCapability.StillImport));
             using var scope = NativeOperationScope.Enter(cancellationToken);
             return Task.FromResult(operation(scope));
         }

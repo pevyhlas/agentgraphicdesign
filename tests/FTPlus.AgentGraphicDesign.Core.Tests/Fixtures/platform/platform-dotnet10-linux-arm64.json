@@ -1,0 +1,54 @@
+{
+  "architecture": "arm64",
+  "capabilities": [
+    {
+      "capability": "vector",
+      "qualification": "unqualified",
+      "requires": {}
+    },
+    {
+      "capability": "rasterExport",
+      "qualification": "unqualified",
+      "requires": {}
+    },
+    {
+      "capability": "assetPipeline",
+      "qualification": "refused",
+      "requires": {}
+    },
+    {
+      "capability": "artifactVerify",
+      "qualification": "refused",
+      "requires": {}
+    },
+    {
+      "capability": "stillImport",
+      "qualification": "refused",
+      "requires": {}
+    },
+    {
+      "capability": "nativePixels",
+      "qualification": "refused",
+      "requires": {}
+    }
+  ],
+  "os": "linux",
+  "osVersion": "6.8",
+  "profile": "dotnet10-linux-arm64",
+  "qualifiedProfiles": [
+    {
+      "capabilities": [
+        "vector",
+        "rasterExport",
+        "assetPipeline",
+        "artifactVerify",
+        "stillImport",
+        "nativePixels"
+      ],
+      "minOsVersion": null,
+      "profile": "dotnet10-linux-x64",
+      "requires": {}
+    }
+  ],
+  "runtimeVersion": "10.0.0"
+}

@@ -27,6 +27,11 @@ internal static partial class Program
                 "readiness" when args.Length >= 3 => CheckReadiness(args[1], args[2]),
                 "poison-cache" when args.Length == 3 => CreatePoisonCache(args[1], args[2]),
                 "workflows" => CheckWorkflows(GetRoot(args, 1)),
+                "qualification-evidence" => CheckQualificationEvidence(GetWorkingRoot(args, 1)),
+                "platform-rules" => CheckPlatformRules(GetWorkingRoot(args, 1)),
+                "platform-fixtures" => GeneratePlatformFixtures(GetWorkingRoot(args, 1), args.Contains("--check", StringComparer.Ordinal)),
+                "platform-p0-run" when args.Length >= 4 => RunPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
+                "platform-p0-check" when args.Length >= 4 => CheckPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
                 "self-test" => RunSelfTests(),
                 _ => Usage()
             };
@@ -1010,7 +1015,9 @@ internal static partial class Program
         RunRestoreAuditSelfTests(errors);
         RunWorkflowPolicySelfTests(errors);
         RunRequiredNoticeSelfTests(errors);
-        return Report(errors, "RepoChecks self-tests passed: coverage, readiness, NuGet report validation, restore-audit qualification, workflow policy, required-notice licenses and upstream notices.");
+        RunPlatformSelfTests(errors);
+        RunP0SelfTests(errors);
+        return Report(errors, "RepoChecks self-tests passed: coverage, readiness, NuGet, workflow policy, notices, qualification evidence and platform rules.");
     }
 
     private static void RunPackageListSelfTests(ICollection<string> errors)
@@ -1186,9 +1193,15 @@ internal static partial class Program
     private static string GetRoot(string[] args, int index) =>
         Path.GetFullPath(args.Length > index ? args[index] : Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
 
+    private static string GetWorkingRoot(string[] args, int index) => Path.GetFullPath(
+        args.Length > index && !args[index].StartsWith("--", StringComparison.Ordinal) ? args[index] : Directory.GetCurrentDirectory());
+
     private static int Usage()
     {
         Console.Error.WriteLine("Usage: RepoChecks dependencies|vulnerabilities [ROOT]");
+        Console.Error.WriteLine("       RepoChecks qualification-evidence|platform-rules [ROOT]");
+        Console.Error.WriteLine("       RepoChecks platform-fixtures [ROOT] [--check]");
+        Console.Error.WriteLine("       RepoChecks platform-p0-run|platform-p0-check ROOT OUTPUT EXPECTED_SHA [--macos]");
         Console.Error.WriteLine("       RepoChecks coverage <DIRECTORY> <MINIMUM_PERCENT>");
         Console.Error.WriteLine("       RepoChecks package <NUPKG> <ID> <VERSION> <COMMAND> <ROOT> <COMMIT>");
         Console.Error.WriteLine("       RepoChecks readiness <ARTIFACTS_DIRECTORY> <EXPECTED_VERSION>");

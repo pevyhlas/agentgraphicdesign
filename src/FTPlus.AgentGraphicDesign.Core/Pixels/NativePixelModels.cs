@@ -323,7 +323,7 @@ internal static class NativePixelErrors
     public const string PixelProfileUnsupported = "PIXEL_PROFILE_UNSUPPORTED";
     public const string PixelWriteFailed = "PIXEL_WRITE_FAILED";
     public const string PixelWriteOutcomeUnknown = "PIXEL_WRITE_OUTCOME_UNKNOWN";
-    public const string AssetPlatformUnsupported = "ASSET_PLATFORM_UNSUPPORTED";
+    public const string AssetPlatformUnsupported = EngineErrors.AssetPlatformUnsupported;
 
     // Surface-only code (CLI/MCP): Core never throws it. A fully decoded, supported output PNG whose
     // dimensions and/or decoded samples differ from a fresh evaluation is a completed check result

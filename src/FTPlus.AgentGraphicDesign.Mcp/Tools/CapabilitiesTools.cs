@@ -1,24 +1,23 @@
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Pixels;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 using ModelContextProtocol.Protocol;
 using ModelContextProtocol.Server;
 
 namespace FTPlus.AgentGraphicDesign.Mcp.Tools;
 
-/// <summary>Small, I/O-free discovery over the executable registrations and supported release profile.</summary>
+/// <summary>Small, I/O-free discovery over executable registrations and Core's platform registry.</summary>
 [McpServerToolType]
 public sealed class CapabilitiesTools(PathConfinement confinement)
 {
     [McpServerTool(Title = "Get Capabilities", ReadOnly = true)]
-    [Description("Discover this executable's version, working directory, formats, supported domains, limits and CLI-only batch operations before authoring")]
+    [Description("Discover this executable's version, working directory, platform qualification, formats, supported domains, limits and CLI-only batch operations before authoring")]
     public CallToolResult GetCapabilities() => ToolResult.Success(new
     {
         version = Program.GetVersion(),
         workingDirectory = confinement.WorkingDirectory,
-        supportedPlatform = "dotnet10-linux-x64",
-        currentPlatformMatches = OperatingSystem.IsLinux() && RuntimeInformation.ProcessArchitecture == Architecture.X64 && Environment.Version.Major == 10,
+        platform = PlatformProfile.Current.ToCapabilitiesJson(),
         tools = Program.GetToolNames().ToArray(),
         templates = DocumentTemplates.All.Select(template => template.Id).ToArray(),
         formats = new { vector = 1, nativePixels = 1, providedArtifact = 1 },

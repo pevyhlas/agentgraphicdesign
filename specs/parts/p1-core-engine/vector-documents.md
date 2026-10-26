@@ -48,6 +48,8 @@
 - **P1.I-02 No partial documents**: a document file is replaced atomically under a cooperative
   lock; readers see the previous or the new content, never a mix. Power-loss durability is not
   claimed. Enforced by: `FileDocumentStoreHardeningTests`.
+  Vector storage remains unguarded on every profile and unqualified off .NET 10 Linux x64;
+  the S0 platform registry does not add a vector file gate (D-28).
 - **P1.I-03 Bounded queries**: node listing and inspection page their results and stop at
   published scan and depth limits with `RESOURCE_LIMIT`. Enforced by: `NodePageTests`, `HardeningTests`.
 
