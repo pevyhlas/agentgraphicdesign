@@ -155,7 +155,7 @@ method filters are added to installed-package verification; source-only surface 
 - [x] T004 Public pre-d10 evidence/claim checker and independent negative self-tests: missing
   record, source mismatch, unanchored or unmatched pattern, FAIL result column, failed test line,
   unknown/d10 kind, malformed/duplicate pair and invalid path. Keep all raw evidence outside specs.
-- [ ] T005 Update current contracts and cutover docs; complete Linux/installed checks and exact-head
+- [x] T005 Update current contracts and cutover docs; complete Linux/installed checks and exact-head
   macOS P0 proof, then all implementation reviews and exact-head CI/review gate before merge.
 - [x] T006 Independently review and correct AC-04 evidence sequencing, with an explicit premerge-proof
   value and negative fixtures, preserving every final exact-head merge obligation.
@@ -182,14 +182,15 @@ NOT_RUN/PASS/FAIL/BLOCKED/NOT_APPLICABLE; evidence/revision/environment go in Ch
 | A1 | D-28, P4.B-02; 008/AC-01/02/03 | exact229 archive3453 and installed CLI66/MCP40; tuple policies/bytes, host agreement and MCP cutover | 3 exact source/package observations | PASS |
 | A2 | P1.I-08/09, Q-04 | exact229 source/refusal and installed surface selections; messages/no-write boundaries preserved | 3 exact source/package observations | PASS |
 | A3 | D-28 evidence; 008/AC-32 | 38 negative/positive claim fixtures; six selected exact229 records/no-I/O tests; all five selected-record reviews PASS at05c7d58 | baseline + sequencing correction | PASS |
-| A4 | D-28 P0 | original008/T002 inventory:69 native cases PASS at229, aggregate FAIL only missing records; final attestation-bearing head pending | 3 retained diagnostic heads | BLOCKED |
-| A5 | Q-06, delivery | exact229 Linux/installed and five owning reviews PASS; final record review and exact-head required CI/review gate pending | 3 source/package heads | BLOCKED |
+| A4 | D-28 P0 | complete original008/T002 inventory and repository commands PASS at05c7d58, native69 cases/0skip; CI40333471910 and run.json exact-head/private-tmp identity | 3 diagnostic heads + 1 complete attestation-head proof | PASS |
+| A5 | Q-06, delivery | exact229 Linux/installed proof; five record reviews; all required CI40333471910 PASS at05c7d58 and review gate at0965434; final closure-only head gated before merge | 3 source/package heads + attestation integration | PASS |
 
 ## State
 
-**Step**: exact229 proof and all five selected-evidence reviews PASS
-**Waiting on**: attestation-bearing-head P0/CI, then record-only closure and final gates. Six records index
-observed Linux proof only; no future CI success has been recorded.
+**Step**: acceptance PASS; same-PR closure bookkeeping
+**Waiting on**: final closure-only head CI/review/P0 before merge. Complete attestation-bearing-head
+CI40333471910 and native P0 PASS at05c7d58. Six records retain evaluated implementation2293234;
+no future final-head success is implied.
 **Branch / PR**: 023-platform-registry, [draft #16](https://github.com/pevyhlas/agentgraphicdesign/pull/16).
 **Authority**: owner's2026-10-26 “go ahead”; constitution permits feature commit/push/PR and
 reviewed exact-head green merges. No platform expansion, release or spending authority inferred.
@@ -218,13 +219,19 @@ Design initial review FAIL (security2 medium, tests1
 medium; architecture/operations PASS). Fix round1 defines the evidence equivalents and P0 inventory;
 scoped security/test re-review PASS with0 findings. Parent008's existing failures/gates remain;
 the unchanged 485 advisory macOS failures are baseline context, not cleared by this child.
-**Next**: complete final-head P0/CI/review gate and same-PR closure. Selected records/parent bookkeeping
+**Next**: finalize this record/log on the same PR, then gate the closure-only head before merge.
+Selected records/parent bookkeeping
 passed all five reviews at05c7d58, zero findings. Exact229 archive3453/installed66+40 PASS/0skip/0fail,
 zero-warning build; 38 evidence/22P0 checker fixtures and solution/checker formatting PASS.
 CI40331570710 passed Linux/coverage/package/readiness and repository checks before refusing missing
 records; native69 PASS but aggregateFAIL. Selected local packages bind229, distinct from CI's
 synthetic-merge package identity. All five correction reviews PASS with zero findings.
 Completed proof: https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6417508798.
+Complete integration: https://github.com/pevyhlas/agentgraphicdesign/actions/runs/40333471910.
+Native05c7d58 run.json PASS with exact expected/source SHA, clean checkout, physical inherited
+private-tmp, runtime10.0.14/macOS26.6.2 arm64 and unchanged inventory digest. TRX64/2/3 all executed,
+all passed,0skip/not-executed; required repository checks PASS. Broad advisory2969PASS/484FAIL
+retained. The earlier timing-sensitive failure remains an unresolved parent diagnostic observation.
 Architecture coordination confirmed the circular AC-04 condition; generic PASS must not mean
 future CI. This is a T2 evidence-order correction within S0, not authority to waive any gate.
 Exact-source proof: https://github.com/pevyhlas/agentgraphicdesign/pull/16#issuecomment-6416910786.
