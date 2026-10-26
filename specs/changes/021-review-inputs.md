@@ -109,6 +109,12 @@ constitution permits feature commits, branch publication and reviewed exact-head
 on two test compilation mistakes (long/int count and namespace resolution); corrected build02 and
 focused136 tests PASS, zero skips. Run03 adds actual64MiB and mid-capture cancellation/disposal
 proof:138 PASS, zero skips. All logs retained; no acceptance failure relabelled.
+Implementation round2: code/architecture/security PASS; test FAIL with3 medium/2 low (A5 pending,
+implementation-derived16MiB oracle, missing font FIFO/device cases, cancellation placement and
+conditional-return reporting). Fix round1 changes tests only: literal16MiB oracle, `x.ttf` FIFO,
+real devpts device entries without privileged fixture creation, cancellation after16 bytes and
+explicit platform skips. Focused run04:140 PASS, zero skips; production source remains c0269e3.
+A5 evidence and scoped re-review remain pending; no later verdict erases round2.
 **Review applicability**: code/security/test/architecture own the implementation. Ops not applicable:
 no CI, packaging, dependency or platform-admission change; installed regressions remain required.
 Product-Kit 1.2.0 is incorporated from public main `3e2d353` ([uptake #15](https://github.com/pevyhlas/agentgraphicdesign/pull/15));
@@ -128,3 +134,7 @@ priority alongside AgentBlender startup reliability; no broader platform/release
 **Review**: round 1 · e50b1a15cc054359d654a8f692c781d36325d13c..002b6a1f74f5b15c91d57fcff8dbaffff861c1c8 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428411034
 **Review**: round 1 · e50b1a15cc054359d654a8f692c781d36325d13c..002b6a1f74f5b15c91d57fcff8dbaffff861c1c8 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428411427
 **Review**: round 1 · e50b1a15cc054359d654a8f692c781d36325d13c..002b6a1f74f5b15c91d57fcff8dbaffff861c1c8 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428411821
+**Review**: round 2 · e50b1a15cc054359d654a8f692c781d36325d13c..c0269e30386c0bf8df4f6d9c828657fe27cf1dff · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428534136
+**Review**: round 2 · e50b1a15cc054359d654a8f692c781d36325d13c..c0269e30386c0bf8df4f6d9c828657fe27cf1dff · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428534659
+**Review**: round 2 · e50b1a15cc054359d654a8f692c781d36325d13c..c0269e30386c0bf8df4f6d9c828657fe27cf1dff · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428535092
+**Review**: round 2 · e50b1a15cc054359d654a8f692c781d36325d13c..c0269e30386c0bf8df4f6d9c828657fe27cf1dff · agd-test-reviewer · FAIL · 0 critical, 0 high, 3 medium, 2 low · https://github.com/pevyhlas/agentgraphicdesign/pull/14#issuecomment-6428535557

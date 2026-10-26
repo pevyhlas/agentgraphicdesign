@@ -1,4 +1,3 @@
-using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
 using Xunit;
@@ -9,14 +8,14 @@ public sealed class InspectedFontSetTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "agd-font-input-" + Guid.NewGuid().ToString("N"));
     public InspectedFontSetTests() => Directory.CreateDirectory(_root);
-    private static bool Admitted => PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline);
+    [Fact]
+    public void NonAdmittedHandwrittenOrderLengthsAndSkips() => HandwrittenOrderLengthsAndSkips(false);
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void HandwrittenOrderLengthsAndSkips(bool inspect)
+    [InspectionFact]
+    public void AdmittedHandwrittenOrderLengthsAndSkips() => HandwrittenOrderLengthsAndSkips(true);
+
+    private void HandwrittenOrderLengthsAndSkips(bool inspect)
     {
-        if (inspect && !Admitted) return;
         var directory = Directory.CreateDirectory(Path.Combine(_root, "fonts")).FullName;
         Directory.CreateDirectory(Path.Combine(_root, "empty"));
         File.WriteAllText(Path.Combine(directory, "a.otf"), "123");
@@ -33,12 +32,14 @@ public sealed class InspectedFontSetTests : IDisposable
         Assert.Empty(typeof(InspectedFontSet).GetConstructors());
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void EntryCountBoundIsExact(bool inspect)
+    [Fact]
+    public void NonAdmittedEntryCountBoundIsExact() => EntryCountBoundIsExact(false);
+
+    [InspectionFact]
+    public void AdmittedEntryCountBoundIsExact() => EntryCountBoundIsExact(true);
+
+    private void EntryCountBoundIsExact(bool inspect)
     {
-        if (inspect && !Admitted) return;
         for (var i = 0; i < 256; i++) File.WriteAllText(Path.Combine(_root, $"{i:D3}.ttf"), "x");
         Assert.Equal(256, InspectedFontSet.Inspect([_root], _root, inspect, default).Entries.Length);
         File.WriteAllText(Path.Combine(_root, inspect ? "other.txt" : "other.ttf"), "x");
@@ -62,10 +63,9 @@ public sealed class InspectedFontSetTests : IDisposable
         Assert.Throws<ArgumentException>(() => InspectedFontSet.Inspect(["linked"], _root, false, default));
     }
 
-    [Fact]
+    [InspectionFact]
     public void InspectionRefusesEvenNonFontLinksAndDoesNotRecurse()
     {
-        if (!Admitted) return;
         var child = Directory.CreateDirectory(Path.Combine(_root, "child")).FullName;
         File.CreateSymbolicLink(Path.Combine(child, "hidden.ttf"), Path.Combine(_root, "absent"));
         Assert.Empty(InspectedFontSet.Inspect([_root], _root, true, default).Entries);

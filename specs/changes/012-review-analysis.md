@@ -63,7 +63,7 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
   characterization; T032 the builder replacing the sub-node copy; T033 its tests.
 - [ ] PR-2b in child021-review-inputs: T004 references, inspection, the inspected font set,
   aggregate bound and colour parser; T005 their tests. The public008/PR-1 registry gate merged
-  in child023/PR16; input source is implemented with focused138 tests passing, delivery pending.
+  in child023/PR16; input source is implemented with focused140 tests passing, delivery pending.
 - [ ] PR-2c: T034 the render session; T035 its tests.
 - [x] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
   `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and

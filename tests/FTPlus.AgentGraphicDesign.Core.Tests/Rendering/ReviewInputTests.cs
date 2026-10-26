@@ -2,7 +2,6 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using FTPlus.AgentGraphicDesign.Core.Documents;
-using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
@@ -102,11 +101,11 @@ public sealed class ReviewInputTests : IDisposable
         using (var file = File.Create(Path.Combine(_root, "doc.json")))
         {
             file.Write(bytes);
-            var padding = Enumerable.Repeat((byte)' ', checked((int)FileDocumentStore.DefaultMaxDocumentBytes - bytes.Length)).ToArray();
+            var padding = Enumerable.Repeat((byte)' ', 16 * 1024 * 1024 - bytes.Length).ToArray();
             file.Write(padding);
         }
         var result = await Reader().ReadAsync([new("doc.json")], [], _root);
-        Assert.Equal(FileDocumentStore.DefaultMaxDocumentBytes, result.CountedBytes);
+        Assert.Equal(16 * 1024 * 1024, result.CountedBytes);
         File.AppendAllText(Path.Combine(_root, "doc.json"), " ");
         _opens = 0;
         await Error("INPUT_TOO_LARGE", () => Reader().ReadAsync([new("doc.json")], [], _root));
@@ -144,15 +143,21 @@ public sealed class ReviewInputTests : IDisposable
     public async Task CancellationDuringCaptureDisposesTheOnlyOpenedStream()
     {
         Write("doc.json", Json());
+        Write("later.json", Json());
         using var cancellation = new CancellationTokenSource();
-        var stream = new TrackingStream(Encoding.UTF8.GetBytes(Json()));
+        var stream = new PausingStream(Encoding.UTF8.GetBytes(Json()));
         var reader = new ReferenceReader(false, ReferenceReader.MaxInputBytes, _ =>
         {
-            cancellation.Cancel();
+            _opens++;
             return stream;
         });
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => reader.ReadAsync([new("doc.json")], [], _root, cancellation.Token));
+        var read = reader.ReadAsync([new("doc.json"), new("later.json")], [], _root, cancellation.Token);
+        await stream.SecondRead.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        cancellation.Cancel();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => read);
+        Assert.Equal(16, stream.BytesReturned);
         Assert.True(stream.Disposed);
+        Assert.Equal(1, _opens);
     }
 
     [Fact]
@@ -203,10 +208,9 @@ public sealed class ReviewInputTests : IDisposable
         Assert.Equal("sub/doc.json", ReferenceReader.RelativePath(_root, Path.Combine(_root, "sub", "doc.json")));
     }
 
-    [Fact]
+    [InspectionFact]
     public async Task AdmittedReferencesRejectLinksIncludingHiddenTraversalAndNativeChildLinks()
     {
-        if (!InspectionAdmitted) return;
         Write("doc.json", Json());
         File.CreateSymbolicLink(Path.Combine(_root, "link.json"), Path.Combine(_root, "doc.json"));
         await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("link.json")], [], _root));
@@ -218,23 +222,35 @@ public sealed class ReviewInputTests : IDisposable
         Assert.Equal(0, _opens);
     }
 
-    [Fact]
+    [LinuxInspectionFact]
     public async Task LinuxDeviceIsRejectedBeforeOpen()
     {
-        if (!OperatingSystem.IsLinux() || !InspectionAdmitted) return;
         await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("/dev/null")], [], _root));
         Assert.Equal(0, _opens);
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task FifoReferenceAndNonFontEntryRefuseWithBoundedWatchdog(bool fontEntry)
+    [LinuxInspectionFact]
+    public async Task GenuineDeviceFontDirectoryEntriesRefuseBeforeDocumentOpen()
     {
-        if (!OperatingSystem.IsLinux() || !InspectionAdmitted) return;
+        // devpts contains real character devices, including ptmx, without requiring CAP_MKNOD
+        // to create a device fixture. No device is opened; the all-entry font pre-pass refuses it.
+        Assert.Contains("/dev/pts/ptmx", Directory.EnumerateFileSystemEntries("/dev/pts"));
+        Assert.All(Directory.EnumerateFileSystemEntries("/dev/pts"), path =>
+            Assert.Equal((FileAttributes)0, File.GetAttributes(path) & (FileAttributes.Directory | FileAttributes.ReparsePoint)));
+        Write("doc.json", Json());
+        await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("doc.json")], ["/dev/pts"], _root));
+        Assert.Equal(0, _opens);
+    }
+
+    [LinuxInspectionTheory]
+    [InlineData(false, "pipe.txt")]
+    [InlineData(true, "pipe.txt")]
+    [InlineData(true, "x.ttf")]
+    public async Task FifoReferenceAndFontEntriesRefuseWithBoundedWatchdog(bool fontEntry, string name)
+    {
         Write("doc.json", Json());
         var fonts = Directory.CreateDirectory(Path.Combine(_root, "fonts")).FullName;
-        var path = Path.Combine(fontEntry ? fonts : _root, "pipe.txt");
+        var path = Path.Combine(fontEntry ? fonts : _root, name);
         Assert.Equal(0, MakeFifo(path, 0x180));
         // O_RDWR|O_NONBLOCK keeps a write end alive. A mistaken read can be cancelled rather
         // than hanging in open(2), and the independent open-count assertion still fails it.
@@ -243,7 +259,7 @@ public sealed class ReviewInputTests : IDisposable
         try
         {
             using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new(fontEntry ? "doc.json" : "pipe.txt")], fontEntry ? ["fonts"] : [], _root, cancellation.Token));
+            await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new(fontEntry ? "doc.json" : name)], fontEntry ? ["fonts"] : [], _root, cancellation.Token));
             Assert.Equal(0, _opens);
         }
         finally { Close(fd); }
@@ -269,6 +285,27 @@ public sealed class ReviewInputTests : IDisposable
     private sealed class TrackingStream(byte[] bytes) : MemoryStream(bytes)
     {
         public bool Disposed { get; private set; }
+        protected override void Dispose(bool disposing) { Disposed = true; base.Dispose(disposing); }
+    }
+
+    private sealed class PausingStream(byte[] bytes) : MemoryStream(bytes)
+    {
+        public TaskCompletionSource SecondRead { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public int BytesReturned { get; private set; }
+        public bool Disposed { get; private set; }
+
+        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (BytesReturned == 0)
+            {
+                BytesReturned = await base.ReadAsync(buffer[..16], cancellationToken);
+                return BytesReturned;
+            }
+            SecondRead.TrySetResult();
+            await Task.Delay(Timeout.Infinite, cancellationToken);
+            return 0;
+        }
+
         protected override void Dispose(bool disposing) { Disposed = true; base.Dispose(disposing); }
     }
 
