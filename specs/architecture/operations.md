@@ -31,8 +31,21 @@
   `THIRD-PARTY-NOTICES.txt` and the verbatim upstream `THIRD-PARTY-NOTICES-SKIASHARP.txt`. Code:
   `scripts/RepoChecks/`.
 - **Readiness**: `scripts/check-readiness.sh` regenerates and checks the readiness artifacts.
-- **Product-Kit**: public v1.2.0 vendored in copy mode, with the upstream revision and manifest
-  hash in `.prdkit/memory/config.md`; no kit checkout is needed to build or run CI.
+- **Product-Kit**: public v1.2.1 vendored in copy mode, with the upstream revision and manifest
+  hash in `.prdkit/memory/config.md`; no kit checkout is needed to build or run CI. Owner request
+  2026-10-27: "please uptake product kit 1.2.1 for both AGD and AB"; supersedes the2026-10-26
+  "please uptake the latest product kit and then see what are the next steps" request
+  (`c900ca9:specs/inbox.md`, Latest Product-Kit and next steps; implemented in PR15).
+- **Public-workflow direction**: on2026-10-24 the owner selected "work on the public repos",
+  "very succint and to the point readme", public Product-Kit, fixes/roadmap continuation and
+  "generate logos for AGD and AB via their respective workflows". Full source:
+  `c900ca9:specs/inbox.md`, Public projects, fixes and logos. README, constitution and
+  [PRs8–10](../log.md) enact the delivered portions; continuing domains remain changes013/014,
+  and artwork adoption/release gates are not inferred. On2026-10-25, "go ahead - we should setup
+  github CI for mac os" selected hosted CI (same source, GitHub macOS CI); PR12 implemented it,
+  with full platform qualification retained in change008.
+  On2026-10-26, "go ahead" selected the registry-first roadmap (same source, Continue after
+  Product-Kit uptake); PR16 delivered that increment, with remaining work/failures retained in008.
 - **Local tooling**: `scripts/install-local.sh` and `scripts/uninstall-local.sh` install or remove
   the tools from a local build; `scripts/validate-local.sh` runs the CI gates locally.
 - **Contributor telemetry**: `scripts/claude-with-telemetry.sh` is an opt-in launcher for a

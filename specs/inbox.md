@@ -1,9 +1,7 @@
 # Owner inbox
 
-<!-- Sections: open agent questions, then the owner's direction, then deferred and declined agent
-items; oldest first within each. Each item is a `###` heading, then one line
-*<YYYY-MM-DD> · <owner|agent> · <disposition>*: open, folded: <where>, declined: <why> or
-deferred: <until>.
+<!-- Open items only: questions, then owner direction awaiting incorporation; oldest first within
+each. Each item is a `###` heading, then `*<YYYY-MM-DD> · <owner|agent> · open*`.
 
 An agent question: a heading that names the decision, a sentence or two of context with links,
 numbered options as `**<label>**: <what it means>`, the recommended one first and marked
@@ -13,7 +11,9 @@ answers with an option number or their own words.
 An owner item: a short heading, the owner's words verbatim as a `>` quote (also when relayed
 verbatim by another session), and one line on what it answers.
 
-Name roles, never people. Delete a folded item once its change has landed. -->
+Name roles, never people. Incorporate resolved answers and provenance in canonical spec/policy,
+transfer remaining work/holds, then remove the item in the same edit. Partial answers remain open;
+deferrals belong at their canonical destination with a revisit trigger. -->
 
 ## Waiting for you
 
@@ -122,10 +122,10 @@ component wins.
 
 Product-Kit is vendored only: copies under `.prdkit/` and the harness command folders, with no
 submodule or adoption pin, so the adoption check verifies the manifest hash and command surface
-but cannot check pin drift. Product-Kit 1.1.0 is now publicly released, and the vendored notice
+but cannot check pin drift. Product-Kit 1.2.1 is now publicly released, and the vendored notice
 reproduces its license verbatim.
 
-1. **Re-add a submodule pinned to the public v1.1.0** (Recommended after this repository is
+1. **Re-add a submodule pinned to the public v1.2.1** (Recommended after this repository is
    public): restores pin-drift checks; a clone then fetches the kit repository.
 2. **Stay vendored only**: no outside dependency in a clone.
 
@@ -224,74 +224,3 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
 ## Your direction
-
-### Continue review inputs and startup reliability
-
-*2026-10-26 · owner · folded: 021-review-inputs*
-
-> sounds good, continue with those
-
-Confirms the presented immediate priorities: AGD's bounded review-input foundation after the
-registry merge, alongside AgentBlender startup reliability in its own repository. Existing design,
-verification and release gates remain binding.
-
-### Continue after Product-Kit uptake
-
-*2026-10-26 · owner · folded: 023-platform-registry*
-
-> go ahead
-
-Continues the presented registry-first roadmap after the kit upgrade. Existing qualification,
-independent review, attempt and release gates remain binding.
-
-### Latest Product-Kit and next steps
-
-*2026-10-26 · owner · folded: 022-product-kit-120*
-
-> please uptake the latest product kit and then see what are the next steps
-
-Updates the public vendored kit and assesses roadmap readiness under the existing action policy.
-
-### Continue after CI setup
-
-*2026-10-25 · owner · folded: 020-transient-builder*
-
-> and then continue with next steps
-
-Continues the reviewed capability increments after the macOS CI merges; acceptance and review
-gates still apply to the capability PRs.
-
-### GitHub macOS CI
-
-*2026-10-25 · owner · folded: 019-macos-ci*
-
-> go ahead - we should setup github CI for mac os
-
-Selects a standard GitHub-hosted Apple silicon runner for public CI; implemented on macOS 26.
-The complete qualification and required-check promotion remain under change 008.
-
-### Continue the next capabilities
-
-*2026-10-25 · owner · folded: 018-review-foundation*
-
-> please continue on next capabilities
-
-Continues the public roadmap with the reviewed raw-render foundation of change 012; existing
-review, platform qualification and release gates still apply.
-
-### Public projects, fixes and logos
-
-*2026-10-24 · owner · folded: 016-render-fidelity*
-
-> so both repos are now public and the app should have access to it to merge PRs - I have added both - so lets work on the public repos now - also here is what we need to do - 1. make sure we have very succint and to the point readme for both - also that public product kit is adopted - see product kit readme for inspiration it is quite to the point (not that much but not bad) - next we should identify any issues in both AGD and AB and then fix them, next proceed with roadmap - next we want to generate logos for AGD and AB via their respective workflows - please proceed with all of that
-
-Answers continuation on public history; existing review and qualification gates still apply.
-
-The owner direction is folded into C-01, C-03, C-06 to C-09 and C-11, D-01, D-08 and D-09,
-R-05, R-06 and R-09 to R-13, Q-05, changes 013 and 014 and the constitution's Action policy.
-
-## Deferred and declined
-
-Hosted and multi-user modes are deferred under D-02; atlas packing waits for a named consumer
-use case under change 014. Target adapters are intended scope (change 013 slice S06), not
-deferred.

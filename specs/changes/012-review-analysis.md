@@ -13,6 +13,12 @@ consumer project did this with image scripts, a restarted local web server and j
 Slice S05 of change 013; implements D-26 and depends on 007 and 010, whose token copy its shared
 transient-document builder takes over.
 
+Continuation provenance: owner2026-10-25 "please continue on next capabilities" and "and then
+continue with next steps", then2026-10-26 "sounds good, continue with those" selected the
+raw-render/builder/input increments now delivered in PRs11/13/14. Source: `c900ca9:specs/inbox.md`,
+Continue the next capabilities, Continue after CI setup, and Continue review inputs and startup
+reliability. Remaining tasks and platform/release gates below retain their existing scope.
+
 ## Spec edits
 
 | Level | ID | Edit | Note |
