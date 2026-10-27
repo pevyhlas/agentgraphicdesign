@@ -53,13 +53,17 @@ than adding mirrors. Application source remains unchanged; full required CI rema
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | C-01; operations | source589589ae, manifestc26db47e;72 installed files byte-identical, both MIT notices verbatim; install/adoption8groups/policy hashes PASS | 1 | PASS |
-| A2 | owner authority; C-10 | destination map below, identical-upstream9suites/804assertions PASS; actual package preflight pending commit | 1 | NOT_RUN |
-| A3 | constitution; Q-06 | required independent lenses, adoption/doctor and exact-head required CI | 0 | NOT_RUN |
+| A2 | owner authority; C-10 | destination map, upstream804 assertions, actual round1 package inventory/preflight and7 synchronized race scenarios PASS; fixture failure retained | 1 | PASS |
+| A3 | constitution; Q-06 | source1f4cdb1 required9CI jobs PASS; code/security/ops PASS, test review1medium FAIL pending new evidence re-review; final-headCI still required | 1 | FAIL |
 
 ## State
 
 **Step**: review preparation
-**Waiting on**: revision-bound package, required reviews and CI
+**Waiting on**: scoped verification re-review and final-head required CI
+**Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451863652
+**Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451864364
+**Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451865335
+**Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451866314
 **Authority**: explicit owner uptake request; existing branch/PR/reviewed-green merge policy.
 Full macOS qualification remains open with prior failures retained; Windows deviation, native/backend
 capability limits and release gates are unchanged. No new capability or qualification allocation.
@@ -74,7 +78,17 @@ upgrade/check-after, adoption8groups, doctor/status and policy hashes. The share
 pass804 assertions at589589ae; copied completed results identify their AB driving checkout and
 byte-identical installed helpers in both consumers. App source/CI/projections/ledger backend remain
 unchanged. Doctor retains pre-existing budget/archive/open-question advisories. No qualification is
-inferred. Required CI and the actual review-package preflight remain pending gates.
-**Next**: commit/publish, package completed evidence and obtain required independent lenses/CI.
+inferred. Actual round1 dispatch preflight passed byte/hash recomputation and accessible input checks.
+**Verification correction1**: test review found absent during-copy/during-observation race proof.
+Shared AB021 private verification now synchronizes at real Git hash boundaries with FIFO barriers:
+evidence changes before copy and after copy cause refusal with retained incomplete round; changed
+manifest yields unknown version/blob with attribution intact. Seven scenarios pass including two
+guard-bypass negative controls. Driver/helper hashes and environment are in copied completed
+`race-guards/`; `race-evidence.md` retains the first driver's stdin-EOF fixture error (five passed,
+barrier timeout) and its bounded repair. No installed helper changed; no application run allocated.
+**CI**: source1f4cdb1 required nine jobs PASS in run40570677521, including native P0; broad macOS
+advisory FAIL remains disclosed. This does not close008 or retry its outcome. Final metadata head
+will still require fresh exact-head CI. Unaffected code/security/ops approvals retain applicability.
+**Next**: review the completed race evidence and record delta, then finalize this PR and await exact-head CI.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
