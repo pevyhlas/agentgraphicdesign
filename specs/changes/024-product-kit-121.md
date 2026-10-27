@@ -39,7 +39,7 @@ wording and gate applicability; product CI/CD, packaging behavior and platform p
 
 - [x] T001 Upgrade pinned copy/provenance/notices and prove policy/projections preserved.
 - [x] T002 Reconcile answered inbox items with a destination map; preserve remaining domain/platform gates.
-- [ ] T003 Run changed-helper regressions and consumer gates, independent required reviews and exact-head
+- [x] T003 Run changed-helper regressions and consumer gates, independent required reviews and exact-head
   required CI; finalize on this PR.
 
 ## Checks
@@ -54,16 +54,17 @@ than adding mirrors. Application source remains unchanged; full required CI rema
 |------|--------|-------|----------|--------|
 | A1 | C-01; operations | source589589ae, manifestc26db47e;72 installed files byte-identical, both MIT notices verbatim; install/adoption8groups/policy hashes PASS | 1 | PASS |
 | A2 | owner authority; C-10 | destination map, upstream804 assertions, actual round1 package inventory/preflight and7 synchronized race scenarios PASS; fixture failure retained | 1 | PASS |
-| A3 | constitution; Q-06 | source1f4cdb1 required9CI jobs PASS; code/security/ops PASS, test review1medium FAIL pending new evidence re-review; final-headCI still required | 1 | FAIL |
+| A3 | constitution; Q-06 | source1f4cdb1 required9CI jobs PASS; code/security/ops PASS; scoped test re-review7b7f586 PASS0 resolves prior FAIL; final metadata-head CI is a merge condition | 1 | PASS |
 
 ## State
 
-**Step**: review preparation
-**Waiting on**: scoped verification re-review and final-head required CI
+**Step**: finalization
+**Waiting on**: final metadata-head required CI and matched-head merge
 **Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451863652
 **Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451864364
 **Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-test-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451865335
 **Review**: round 1 · c900ca90186402b5afadfb70a85da63c22b627f0..1f4cdb13eaa72508d6e9f416d035b998d6393ed2 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451866314
+**Review**: round 2 · 1f4cdb13eaa72508d6e9f416d035b998d6393ed2..7b7f586f957afd65f39de88881c9ffc0b5f876eb · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451930355
 **Authority**: explicit owner uptake request; existing branch/PR/reviewed-green merge policy.
 Full macOS qualification remains open with prior failures retained; Windows deviation, native/backend
 capability limits and release gates are unchanged. No new capability or qualification allocation.
@@ -89,6 +90,7 @@ barrier timeout) and its bounded repair. No installed helper changed; no applica
 **CI**: source1f4cdb1 required nine jobs PASS in run40570677521, including native P0; broad macOS
 advisory FAIL remains disclosed. This does not close008 or retry its outcome. Final metadata head
 will still require fresh exact-head CI. Unaffected code/security/ops approvals retain applicability.
-**Next**: review the completed race evidence and record delta, then finalize this PR and await exact-head CI.
+**Next**: finalize the record/log on PR17, verify final-head required CI and check-review, then matched-head merge.
+Durable evidence: https://github.com/pevyhlas/agentgraphicdesign/pull/17#issuecomment-6451920050.
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
