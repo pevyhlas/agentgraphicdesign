@@ -48,7 +48,7 @@ fewer failures is a hypothesis until measured, not an acceptance shortcut.
 ## Tasks
 
 - [x] T001 Adopt pinned original fonts, test-only hash helper, approvals/notices and four fixture edits.
-- [ ] T002 Verify Linux, exact native two-mode progress against acceptedbase, durable replacement.
+- [x] T002 Verify Linux, exact native two-mode progress against acceptedbase, durable replacement.
 - [ ] T003 Owning reviews, final exact-head gates, source delivery and same-PR closure.
 
 ## Checks
@@ -62,15 +62,15 @@ complete discovery/non-regression with no new skips, and required CI at exact fi
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 |C-01/D-01|pinned original bytes, OFL license, test scopes/notices and package exclusion|0|NOT_RUN|
-| A2 |P1.B-16/Q-01|two retained Skia153PASS/1FAIL runs; measured glyph-sensitive probe pending at unchanged threshold|2|FAIL|
-| A3 |D-28/P0/Q-05|two-mode complete records, latest-base non-regression and four fixed identities|0|NOT_RUN|
+| A1 |C-01/D-01|upstream bytes/license match; clean-archive package smoke221e14a; both packages exclude fonts/fixtures and contain updated notice|1|PASS|
+| A2 |P1.B-16/Q-01|Linux3510PASS/0FAIL/0SKIP and exact discovery; width/RTL/concurrency assertions pass; two prior failures retained|3|PASS|
+| A3 |D-28/P0/Q-05|40718432005 complete both3508case modes; latest-base comparison PASS; exactly four failed-to-passed cases, no other change|1|PASS|
 | A4 |source delivery|required CI, owning reviews, final native equivalence and review gate|0|NOT_RUN|
 
 ## State
 
-**Step**: implementation of accepted test-portability increment
-**Branch**:027-portable-fonts; no PR yet.
+**Step**: independent review and final native equivalence
+**Branch**:027-portable-fonts; [PR20](https://github.com/pevyhlas/agentgraphicdesign/pull/20), draft.
 **Authority**: same owner request and standing source delivery policy; earlier AGD nativeverification
 extension remains scoped, AB019 native hold remains untouched. No release/deployment.
 **Evidence**: pinned candidates prepared under026/followup-fonts;027 evidence stays in ignored cache.
@@ -80,4 +80,11 @@ Initial Linux Skia run retains genuine width-probe failure (128.6719 versus128.1
 also fail (398.4844 versus397.875). Actual C#shaping diagnostic measured narrow-glyph probes before
 the third test attempt: appended16`i` yields233.90625 versus227.875. Keep font size/policy/threshold;
 this diagnostic is input selection, not acceptance. Both failures retained in linux-01/02.
-**Next**: fixture/notice edits and Linux proof, then full native comparison and reviews.
+Third source verification passes3510cases with exact identities; clean-archive source3510 and
+installed CLI66/MCP40pass at221e14a, warning-free build, format and package/provenance checks pass.
+Native40718432005 and its required source gates pass: default742fail/private480fail,8skips each.
+Comparator reads acceptedindex at verifiedbase82c4d9d and passes; exactly the four intended cases
+improve, no other identity/outcome change. Durable manifest6473706712 retains both full records;
+fresh APIretrieval reproduces indexed bytes/digests. Index replacement is proposed for owning
+review, not automatically accepted. Final head must reproduce accepted case/outcome bodies.
+**Next**: owning reviews, exact-head native equivalence, then source delivery; aliases/backend follow.
