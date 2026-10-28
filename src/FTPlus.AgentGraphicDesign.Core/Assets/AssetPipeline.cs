@@ -27,23 +27,25 @@ public sealed class AssetPipeline
     private readonly IDocumentEngine _engine;
     private readonly IAssetProducer<VectorAssetRequest> _producer;
     private readonly Func<string, FileStreamOptions, Stream> _open;
+    private readonly Func<AssetPathPolicy> _pathPolicyFactory;
 
     public AssetPipeline(IDocumentEngine engine, IAssetProducer<VectorAssetRequest> producer)
         : this(engine, producer, LeafFileIO.Open) { }
 
     internal AssetPipeline(IDocumentEngine engine, IAssetProducer<VectorAssetRequest> producer,
-        Func<string, FileStreamOptions, Stream> open)
+        Func<string, FileStreamOptions, Stream> open, Func<AssetPathPolicy>? pathPolicyFactory = null)
     {
         _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _producer = producer ?? throw new ArgumentNullException(nameof(producer));
         _open = open;
+        _pathPolicyFactory = pathPolicyFactory ?? (() => new AssetPathPolicy());
     }
 
     public async Task<AssetPipelineResult> RunAsync(string manifestPath, bool check, CancellationToken cancellationToken = default)
     {
         var ct = cancellationToken;
         ct.ThrowIfCancellationRequested();
-        var paths = new AssetPathPolicy();
+        var paths = _pathPolicyFactory();
         try
         {
             if (string.IsNullOrWhiteSpace(manifestPath))
@@ -58,8 +60,7 @@ public sealed class AssetPipeline
             var manifest = AssetManifest.Parse(await ReadBoundedAsync(manifestPath, MaxManifestBytes, ct));
             var outputRoot = AssetPaths.Resolve(directory, manifest.OutputRoot);
             AssetPaths.Inspect(outputRoot, directory: true, required: false, PlatformCapability.AssetPipeline, ct);
-            AssetPaths.RejectCaseAliases(directory, outputRoot, PlatformCapability.AssetPipeline, ct);
-            paths.Check(outputRoot, ct);
+            paths.CheckOutputAliases(directory, outputRoot, ct);
             var plans = new List<PlannedAsset>();
             var outputs = new HashSet<string>(AssetPathPolicy.Comparer);
             var outputComponents = new Dictionary<string, string>(AssetPathPolicy.Comparer);
@@ -83,8 +84,7 @@ public sealed class AssetPipeline
                     outputComponents[component] = component;
                 }
                 AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
-                AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
-                paths.Check(output, ct);
+                paths.CheckOutputAliases(directory, output, ct);
                 var format = Path.GetExtension(output).ToLowerInvariant() switch
                 {
                     ".svg" => "svg",
@@ -226,8 +226,7 @@ public sealed class AssetPipeline
             {
                 ct.ThrowIfCancellationRequested();
                 var output = plans[index].Output;
-                AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
-                paths.Check(output, ct);
+                paths.CheckOutputAliases(directory, output, ct);
                 var status = "missing";
                 if (inventory.Contains(output))
                 {

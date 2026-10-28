@@ -114,19 +114,22 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 0 | NOT_RUN |
-| A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 0 | NOT_RUN |
-| A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 0 | NOT_RUN |
-| A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 0 | NOT_RUN |
+| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 1 | FAIL |
+| A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 1 | PARTIAL |
+| A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 1 | FAIL |
+| A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 1 | FAIL |
 
 ## State
 
-**Step**: implementation — S1 candidate, native proof pending
+**Step**: corrective implementation — first native comparison and implementation review findings
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
 **Baseline**: merged028 atbb035ef, acceptedS0 sourcee62b4dc:3074PASS/480FAIL/8SKIP per mode.
-No029 native attempt yet. Failed predecessor attempts remain on their PRs.
+Attempt1 at5443648/run40754002135 completed both3624-case modes:3403PASS/221FAIL/0SKIP default,
+3408PASS/216FAIL/0SKIP private. All8former skips execute/pass; default has1new host-gate failure
+(direct probe got raw/var), plus4old canonical-expectation failures private already fixes. Full
+comparison FAIL; original records/artifacts retained. Core-onlyCI lacks CLI/MCP build prerequisites.
 **Owner decision**: 2026-10-28 conversation, question "May S1 enable assetPipeline and artifactVerify
 on .NET 10 Apple-silicon macOS 26+ after native safety tests and all review/CI gates pass, while still
 reporting them as unqualified?" Answer: "Allow S1 (Recommended)". This resolves the conflict raised
@@ -142,7 +145,11 @@ Linux3624PASS/0FAIL/0SKIP (Core2753, Skia154, CLI357, MCP360); stage/capture/CLI
 Later deadline/oracle refinements receive focused rechecks. Original failed build/fixture attempts
 are retained. Bare FIFO discovery plus three original argument cases are preserved; raw-format
 refusal now follows S1's gate with independent literal registry expectations. No tolerance weakened.
-Next: exact-source archive/installed proof, complete two-mode native attempt and independent reviews.
+Archive/package5443648PASS; implementation architecturePASS0, security1MEDIUM(missing host build
+prerequisites), code1MEDIUM(legacy alias scans bypass aggregate budget). Fix uses build-only tool
+references, one operation-local alias policy/cache, pipeline-level4096-entry/256-output proof and
+canonical expected/probed paths without weakening assertions. Next: clean Core-only proof, scoped
+reviews and native attempt2; installed special-file proof and closing gates remain outstanding.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368

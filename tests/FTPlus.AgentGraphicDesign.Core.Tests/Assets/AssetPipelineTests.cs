@@ -6,6 +6,7 @@ using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Export;
 using FTPlus.AgentGraphicDesign.Core.Platform;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Skia;
 using SkiaSharp;
@@ -257,7 +258,7 @@ public sealed class AssetPipelineTests : IDisposable
         Assert.Equal(2, inherited.Scale);
         Assert.Equal(40, inherited.Width);
         Assert.Equal(10, inherited.Height);
-        Assert.Equal([Full("fonts")], inherited.FontDirectories);
+        Assert.Equal([PlatformPaths.FullPath(Full("fonts"))], inherited.FontDirectories);
         Assert.True(inherited.SystemFonts);
         Assert.False(inherited.StrictFonts);
         var cleared = renderOptions[1];
@@ -279,7 +280,7 @@ public sealed class AssetPipelineTests : IDisposable
         var engine = new DocumentEngine(renderer: new TestRenderer(options =>
         {
             calls++;
-            Assert.Equal([Full("fonts/second"), Full("fonts/first")], options.FontDirectories);
+            Assert.Equal([PlatformPaths.FullPath(Full("fonts/second")), PlatformPaths.FullPath(Full("fonts/first"))], options.FontDirectories);
             return [1];
         }));
         var manifest = SingleManifest(output: "generated/icon.png", options: """

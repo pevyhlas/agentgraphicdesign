@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using FTPlus.AgentGraphicDesign.Core.Assets;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Validation;
 using Xunit;
@@ -47,7 +48,7 @@ public sealed class AssetProducerPipelineTests : IDisposable
             var index = calls++;
             Assert.Equal(formats[index], request.Format);
             Assert.Equal(names[index], request.Document.Name);
-            Assert.Equal(Full($"inputs/{names[index]}.json"), request.SourceName);
+            Assert.Equal(PlatformPaths.FullPath(Full($"inputs/{names[index]}.json")), request.SourceName);
             Assert.Equal(index >= 5, request.AsSymbol);
             Assert.True(request.Strict);
             Assert.Equal(ValidationProfile.Default, request.Profile);
@@ -108,7 +109,7 @@ public sealed class AssetProducerPipelineTests : IDisposable
                     Assert.Equal(40, request.Width);
                     Assert.Equal(10, request.Height);
                     acceptedFonts = request.FontDirectories;
-                    Assert.Equal([Full("fonts/second"), Full("fonts/first")], acceptedFonts.ToArray());
+                    Assert.Equal([PlatformPaths.FullPath(Full("fonts/second")), PlatformPaths.FullPath(Full("fonts/first"))], acceptedFonts.ToArray());
                     var list = (IList<string>)request.FontDirectories;
                     Assert.True(list.IsReadOnly);
                     Assert.Throws<NotSupportedException>(() => list[0] = "changed");
@@ -146,7 +147,7 @@ public sealed class AssetProducerPipelineTests : IDisposable
 
         Assert.True((await new AssetPipeline(_engine, producer).RunAsync(manifest, false)).Success);
         Assert.Equal(3, calls);
-        Assert.Equal([Full("fonts/second"), Full("fonts/first")], acceptedFonts.ToArray());
+        Assert.Equal([PlatformPaths.FullPath(Full("fonts/second")), PlatformPaths.FullPath(Full("fonts/first"))], acceptedFonts.ToArray());
     }
 
     [Fact]

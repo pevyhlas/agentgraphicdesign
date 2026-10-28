@@ -1,4 +1,5 @@
 using System.Text;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Assets;
@@ -32,7 +33,7 @@ internal sealed class AssetPathPolicy
         _inspectDirectory = inspectDirectory;
     }
 
-    internal void Check(string path, CancellationToken ct)
+    internal void Check(string path, CancellationToken ct, bool outputAliases = false)
     {
         ct.ThrowIfCancellationRequested();
         if (!_mac) return;
@@ -55,6 +56,9 @@ internal sealed class AssetPathPolicy
                 _parents.Add(parent, names);
             }
             var current = Path.Combine(parent, part);
+            if (outputAliases && names.FirstOrDefault(name => !name.Equals(part, StringComparison.Ordinal)
+                    && name.Equals(part, StringComparison.OrdinalIgnoreCase)) is { } alias)
+                throw AssetManifest.Invalid($"On-disk case alias for asset output '{path}': {Path.Combine(parent, alias)}");
             if (names.Any(name => !name.Equals(part, StringComparison.Ordinal) && MacComparer.Equals(name, part)))
                 throw AssetPaths.Unsafe(current);
             var exact = names.Contains(part, StringComparer.Ordinal);
@@ -70,6 +74,36 @@ internal sealed class AssetPathPolicy
 
     // AGD's mkdir/rename changes parent inventories, even in an otherwise quiescent workspace.
     internal void Invalidate() => _parents.Clear();
+
+    internal void CheckOutputAliases(string directory, string path, CancellationToken ct)
+    {
+        if (_mac)
+        {
+            Check(path, ct, outputAliases: true);
+            return;
+        }
+        // Other platforms retain the existing case-only policy. macOS must never perform this
+        // second, uncharged component walk alongside its operation-local inventory above.
+        var current = directory;
+        foreach (var part in PlatformPaths.RelativePath(directory, path).Split(Path.DirectorySeparatorChar))
+        {
+            if (!AssetPaths.Inspect(current, true, false, PlatformCapability.AssetPipeline, ct)) return;
+            var count = 0;
+            var found = false;
+            foreach (var entry in _enumerate(current))
+            {
+                ct.ThrowIfCancellationRequested();
+                if (++count > AssetPaths.MaxInventoryEntries) throw AssetManifest.Limit();
+                var name = Path.GetFileName(entry);
+                if (!name.Equals(part, StringComparison.OrdinalIgnoreCase)) continue;
+                if (!name.Equals(part, StringComparison.Ordinal))
+                    throw AssetManifest.Invalid($"On-disk case alias for asset output '{path}': {entry}");
+                found = true;
+            }
+            if (!found) return;
+            current = Path.Combine(current, part);
+        }
+    }
 
     private static bool Exists(string path)
     {

@@ -1,5 +1,6 @@
 using FTPlus.AgentGraphicDesign.Core.Assets;
 using FTPlus.AgentGraphicDesign.Core.Pixels;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Tests.Pixels;
 using Xunit;
@@ -19,7 +20,7 @@ public sealed class PlatformGateAgreementTests : IDisposable
         File.WriteAllText(Path.Combine(_root, "input.txt"), "x");
         foreach (var capability in new[] { PlatformCapability.AssetPipeline, PlatformCapability.ArtifactVerify, PlatformCapability.StillImport, PlatformCapability.NativePixels })
         {
-            var error = Record.Exception(() => AssetPaths.Inspect(Path.Combine(_root, "input.txt"), false, true, capability, CancellationToken.None));
+            var error = Record.Exception(() => AssetPaths.Inspect(PlatformPaths.FullPath(Path.Combine(_root, "input.txt")), false, true, capability, CancellationToken.None));
             if (platform.GateAdmits(capability)) Assert.Null(error);
             else
             {

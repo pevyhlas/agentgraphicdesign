@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FTPlus.AgentGraphicDesign.Core.Assets;
 using FTPlus.AgentGraphicDesign.Core.Paths;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
 using FTPlus.AgentGraphicDesign.Core.Tests.Rendering;
 using FTPlus.AgentGraphicDesign.Skia;
@@ -14,6 +15,52 @@ public sealed class AssetNormalizationTests : IDisposable
     private readonly DocumentEngine _engine = new(renderer: new SkiaRenderer());
     public AssetNormalizationTests() => Directory.CreateDirectory(_root);
     public void Dispose() => Directory.Delete(_root, true);
+
+    [InspectionFact]
+    public async Task SharedParentInventories_AreChargedOncePerPhaseAcrossTheWholePipeline()
+    {
+        File.WriteAllText(Path.Combine(_root, "source.json"), DocumentSerializer.Serialize(_engine.CreateDocument("icon", 16, 16)));
+        Directory.CreateDirectory(Path.Combine(_root, "generated"));
+        var manifest = Path.Combine(_root, "manifest.json");
+        File.WriteAllText(manifest, JsonSerializer.Serialize(new
+        {
+            version = 1,
+            outputRoot = "generated",
+            assets = Enumerable.Range(0, 256).Select(i => new { source = "source.json", output = $"generated/{i}.svg" })
+        }));
+        for (var i = 0; i < 4093; i++) File.WriteAllText(Path.Combine(_root, "f" + i), "");
+        var roots = 0;
+        var scanned = 0;
+        var writers = 0;
+        IEnumerable<string> Enumerate(string parent)
+        {
+            if (parent == _root) roots++;
+            foreach (var entry in Directory.EnumerateFileSystemEntries(parent)) { scanned++; yield return entry; }
+        }
+        // Real source loading, inspection, planning and comparison; only the inventory observer
+        // and explicit macOS policy selection are injected so this regression also runs on Linux.
+        AssetPathPolicy Policy() => new(true, Enumerate, path => File.Exists(path) || Directory.Exists(path),
+            (path, ct) => AssetPaths.Inspect(path, true, true, PlatformCapability.AssetPipeline, ct));
+        var pipeline = new AssetPipeline(_engine, new VectorAssetProducer(_engine), (path, options) =>
+        {
+            if (options.Access != FileAccess.Read) writers++;
+            return LeafFileIO.Open(path, options);
+        }, Policy);
+        var before = Snapshot(_root);
+        var result = await pipeline.RunAsync(manifest, true);
+        Assert.Equal(256, result.Files.Count);
+        Assert.All(result.Files, file => Assert.Equal("missing", file.Status));
+        Assert.Equal(2, roots); // planning and fresh comparison, not once per output
+        Assert.InRange(scanned, 8192, AssetPathPolicy.MaxScannedEntries);
+        Assert.Equal(0, writers);
+        Assert.Equal(before, Snapshot(_root));
+        File.WriteAllText(Path.Combine(_root, "too-many"), "");
+        before = Snapshot(_root);
+        Assert.Equal(EngineErrors.ResourceLimit,
+            (await Assert.ThrowsAsync<DocumentEngineException>(() => pipeline.RunAsync(manifest, false))).Code);
+        Assert.Equal(0, writers);
+        Assert.Equal(before, Snapshot(_root));
+    }
 
     [InspectionFact]
     public async Task CanonicalEquivalentPlansAndExistingNames_PreserveSourcesBeforeAnyPublication()

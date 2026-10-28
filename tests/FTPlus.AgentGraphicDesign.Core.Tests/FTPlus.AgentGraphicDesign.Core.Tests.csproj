@@ -26,6 +26,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Core\FTPlus.AgentGraphicDesign.Core.csproj" />
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
+    <!-- Real surface probes need freshly built hosts even in the Core-only CI job. -->
+    <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Cli\FTPlus.AgentGraphicDesign.Cli.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" ExcludeAssets="all" />
+    <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Mcp\FTPlus.AgentGraphicDesign.Mcp.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" ExcludeAssets="all" />
   </ItemGroup>
 
 </Project>
