@@ -235,6 +235,68 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  macos-progress:
+    name: macOS portability progress (${{ matrix.mode }})
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: macos-26
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [default-tmpdir, private-tmp]
+    env:
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+      PROGRESS_MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Select the explicit inherited temporary-root mode
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test "$(uname -m)" = arm64
+          test "$(sw_vers -productVersion | cut -d. -f1)" = 26
+          if [ "$PROGRESS_MODE" = default-tmpdir ]; then
+            root="$(getconf DARWIN_USER_TEMP_DIR)"
+          else
+            umask 077
+            root="$(mktemp -d /private/tmp/agd-progress.XXXXXX)/"
+          fi
+          printf 'TMPDIR=%s\n' "$root" >> "$GITHUB_ENV"
+
+      - name: Restore locked graph and build exact source
+        run: |
+          dotnet restore FTPlus.AgentGraphicDesign.slnx --locked-mode
+          dotnet build FTPlus.AgentGraphicDesign.slnx --configuration Release --no-restore
+          dotnet build scripts/RepoChecks/RepoChecks.csproj --configuration Release
+
+      - name: Discover and run all four suites
+        timeout-minutes: 25
+        run: >-
+          dotnet scripts/RepoChecks/bin/Release/net10.0/RepoChecks.dll macos-progress run
+          . "$RUNNER_TEMP/progress/$PROGRESS_MODE" "$EXPECTED_HEAD" "$PROGRESS_MODE"
+
+      - name: Independently reconcile completed cases
+        run: >-
+          dotnet scripts/RepoChecks/bin/Release/net10.0/RepoChecks.dll macos-progress check
+          "$RUNNER_TEMP/progress/$PROGRESS_MODE" "$EXPECTED_HEAD"
+
+      - name: Retain failures, commands and complete records
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: macos-progress-${{ matrix.mode }}
+          path: ${{ runner.temp }}/progress
+          if-no-files-found: error
+          retention-days: 30
+
   coverage:
     name: Coverage Gate
     runs-on: ubuntu-24.04
@@ -321,6 +383,9 @@ jobs:
       - name: Check platform test and narrowing rules
         run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-rules .
 
+      - name: Check reasoned portability migration inventory
+        run: dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- portability-rules .
+
       - name: Check explicit platform fixtures
         run: |
           dotnet restore src/FTPlus.AgentGraphicDesign.Core/FTPlus.AgentGraphicDesign.Core.csproj --locked-mode
@@ -355,6 +420,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 1
           persist-credentials: false
 

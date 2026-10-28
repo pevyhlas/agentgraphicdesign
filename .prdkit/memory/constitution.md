@@ -51,6 +51,7 @@ dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Releas
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- workflows .
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- qualification-evidence .
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-rules .
+dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- portability-rules .
 dotnet run --project scripts/RepoChecks/RepoChecks.csproj --configuration Release -- platform-fixtures . --check
 bash scripts/check-dependencies.sh          # exact approvals and notices (D-01)
 bash scripts/check-vulnerabilities.sh       # structured NuGet audit

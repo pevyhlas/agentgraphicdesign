@@ -70,11 +70,11 @@ covers this adaptation before implementation.
 
 ## Tasks
 
-- [ ] T001 Capture baseline failure classification, recovered scope and design review.
-- [ ] T002 Implement bounded progress records/run/compare with adversarial synthetic TRX and
+- [x] T001 Capture baseline failure classification, recovered scope and design review.
+- [x] T002 Implement bounded progress records/run/compare with adversarial synthetic TRX and
   record tests: shrinking/new/growing failure, missing test/suite, new skip/return, rename,
   timeout, incomplete discovery, checksum/source mismatch and stale/wrong predecessor.
-- [ ] T003 Implement exact migration inventories and source/Bash/workflow checks with self-tests;
+- [x] T003 Implement exact migration inventories and source/Bash/workflow checks with self-tests;
   preserve existing platform and qualification checks.
 - [ ] T004 Required source checks; native two-mode progress run and completeness review. Existing
   failures remain failures. Publish branch/PR, owning implementation reviews and exact-head gates.
@@ -90,18 +90,23 @@ own T013a increment; native backend and final qualification remain008.
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | D-28/P0, Q-05 | complete head-bound two-mode source progress records, honest existing failures | 0 | NOT_RUN |
-| A2 | Q-01/Q-05 | adversarial comparison/completeness/source/hash tests reject hidden regressions | 0 | NOT_RUN |
-| A3 | D-28/D4/D7 | path, return and Bash inventories plus hosted-workflow positive/negative tests | 0 | NOT_RUN |
+| A2 | Q-01/Q-05 | 54record/comparison/predecessor/TRX fixtures, checker-02 evidence | 1 | PASS |
+| A3 | D-28/D4/D7 | 28source/inventory/workflow fixtures and45 exact migration entries, checker-02 | 1 | PASS |
 | A4 | source delivery | Linux required CI, independent reviews and exact-head delivery gate | 0 | NOT_RUN |
 
 ## State
 
-**Step**: design confirmation
+**Step**: implementation
 **Branch**: `026-macos-progress`; no PR yet.
 **Authority**: owner2026-10-28 request to fix macOS advisory; constitution commit/push/PR/green
 reviewed merge. Earlier AGD macOS verification extension remains in scope; no AB native profiling.
 **Attempts**: latest484-failure run is retained inherited evidence, not a new repair attempt.
-No026 execution yet; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
+No026 native execution yet; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
 found2mediums (accepted predecessor binding and package-smoke head checkout), addressed in the
-design above; scoped design re-review pending, first fix round.
-**Next**: design review, T003 tooling and complete native baseline, then T013a portable fonts.
+design above; scoped ops design re-review PASS0 at ddd2d0c, first fix round.
+Local first checker invocation exposed a self-test root-resolution mistake; retained checker-01,
+corrected before checker-02 PASS (54progress and28portability fixtures). Build has0warnings/errors.
+**Evidence**: `.prdkit/cache/evidence/026-macos-progress/verification/`; native baseline/index and
+implementation reviews remain pending. No macOS failures cleared by this prerequisite.
+**Next**: complete native baseline, retain/index both records, implementation review and exact-head
+gates, then T013a portable fonts.

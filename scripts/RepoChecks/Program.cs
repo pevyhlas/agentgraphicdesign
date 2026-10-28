@@ -32,6 +32,9 @@ internal static partial class Program
                 "platform-fixtures" => GeneratePlatformFixtures(GetWorkingRoot(args, 1), args.Contains("--check", StringComparer.Ordinal)),
                 "platform-p0-run" when args.Length >= 4 => RunPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
                 "platform-p0-check" when args.Length >= 4 => CheckPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
+                "macos-progress" => MacosProgress(args[1..]),
+                "portability-rules" => CheckPortabilityRules(GetWorkingRoot(args, 1)),
+                "bash32-lint" => CheckPortabilityRules(GetWorkingRoot(args, 1), bashOnly: true),
                 "self-test" => RunSelfTests(),
                 _ => Usage()
             };
@@ -1017,6 +1020,8 @@ internal static partial class Program
         RunRequiredNoticeSelfTests(errors);
         RunPlatformSelfTests(errors);
         RunP0SelfTests(errors);
+        RunProgressSelfTests(errors);
+        RunPortabilitySelfTests(errors);
         return Report(errors, "RepoChecks self-tests passed: coverage, readiness, NuGet, workflow policy, notices, qualification evidence and platform rules.");
     }
 
@@ -1200,6 +1205,9 @@ internal static partial class Program
     {
         Console.Error.WriteLine("Usage: RepoChecks dependencies|vulnerabilities [ROOT]");
         Console.Error.WriteLine("       RepoChecks qualification-evidence|platform-rules [ROOT]");
+        Console.Error.WriteLine("       RepoChecks portability-rules|bash32-lint [ROOT]");
+        Console.Error.WriteLine("       RepoChecks macos-progress run ROOT FRESH_OUTPUT HEAD_SHA MODE | check OUTPUT HEAD_SHA");
+        Console.Error.WriteLine("       RepoChecks macos-progress compare ROOT ACTUAL_PR_BASE_SHA PREVIOUS_DIR CURRENT_DIR HEAD_SHA");
         Console.Error.WriteLine("       RepoChecks platform-fixtures [ROOT] [--check]");
         Console.Error.WriteLine("       RepoChecks platform-p0-run|platform-p0-check ROOT OUTPUT EXPECTED_SHA [--macos]");
         Console.Error.WriteLine("       RepoChecks coverage <DIRECTORY> <MINIMUM_PERCENT>");
