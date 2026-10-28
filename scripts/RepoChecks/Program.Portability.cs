@@ -16,7 +16,7 @@ internal static partial class Program
         var rules = new List<string>();
         bool Has(string pattern) => Regex.IsMatch(text, pattern, RegexOptions.CultureInvariant, PatternTimeout);
         if (path.StartsWith("src/", StringComparison.Ordinal) && path.EndsWith(".cs", StringComparison.Ordinal)
-            && path != "src/FTPlus.AgentGraphicDesign.Core/Platform/PlatformPaths.cs")
+            && path != "src/FTPlus.AgentGraphicDesign.Core/Paths/PlatformPaths.cs")
         {
             if (Has(@"\b(?:GetFullPath|GetRelativePath)\s*\(")) rules.Add("canonical-path");
             if (Has(@"\.\s*FullName\b")) rules.Add("fileinfo-fullname");
@@ -117,6 +117,7 @@ internal static partial class Program
         {
             ("src/Test.cs", "Path.\nGetFullPath(x)", "canonical-path"), ("src/Test.cs", "using static System.IO.Path; GetRelativePath(a,b)", "canonical-path"),
             ("src/Test.cs", "directory.\n FullName", "fileinfo-fullname"),
+            ("src/FTPlus.AgentGraphicDesign.Core/Platform/PlatformPaths.cs", "Path.GetFullPath(x)", "canonical-path"),
             ("tests/Test.cs", "if (!OperatingSystem.IsLinux()) return;", "os-return"),
             ("tests/Test.cs", "if (x &&\n RuntimeInformation.IsOSPlatform(OSPlatform.Windows))\n {\n return; }", "os-return"),
             ("tests/Test.cs", "bool skip = OperatingSystem.IsWindows();\n if (skip) return;", "os-return"),
@@ -132,7 +133,7 @@ internal static partial class Program
             if (!PortabilityRules(path, source).Contains(rule)) errors.Add("Portability lint missed " + source);
             count++;
         }
-        if (PortabilityRules("src/FTPlus.AgentGraphicDesign.Core/Platform/PlatformPaths.cs", "Path.GetFullPath(x)").Length != 0
+        if (PortabilityRules("src/FTPlus.AgentGraphicDesign.Core/Paths/PlatformPaths.cs", "Path.GetFullPath(x)").Length != 0
             || PortabilityRules("scripts/test.sh", "lower=$(printf '%s' \"$x\" | tr '[:upper:]' '[:lower:]')").Length != 0) errors.Add("Portability positive fixture rejected");
         foreach (var source in new[] { "sed -i.bak 's/a/b/' file", "sed -i '' 's/a/b/' file", "sed -i \"\" 's/a/b/' file", "sed -i  '' 's/a/b/' file", "readlink file" })
         {

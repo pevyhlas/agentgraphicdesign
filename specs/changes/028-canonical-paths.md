@@ -112,7 +112,7 @@ silently weakening021's lexical inspection, moving IO into PlatformProfile, or f
 
 ## Tasks
 
-- [ ] T001 Architecture/security design review of current-tree integration and recovered acceptance.
+- [x] T001 Architecture/security design review of current-tree integration and recovered acceptance.
 - [ ] T002 Core canonicalizer/verifier seam and all surface migrations; tighten exact inventory.
 - [ ] T003 Negative/alias/mixed-spelling/lexical-inspection tests, native full comparison and package proof.
 - [ ] T004 Owning reviews, reviewed baseline replacement, final native/CI gates and same-PR source closure.
@@ -138,7 +138,7 @@ checks and required CI remain mandatory. Future qualification and S1/S2 integrat
 
 ## State
 
-**Step**: pre-implementation design integration review
+**Step**: shared canonicalizer implementation, then caller migration
 **Authority**: owner's2026-10-28 fix request and standing feature commit/push/PR/green-reviewed-merge
 policy. AGD verification extension inherited; AB019 profiling hold and Dossier015 other-session work unchanged.
 **Baseline**: merged027 at0852352; accepted221e14a progress source default742/private480 failures,
@@ -149,4 +149,11 @@ final algorithm, original-prefix lexical prechecks and strict inspection of the 
 A1–A4 remain NOT_RUN; this is a design correction, not an implementation or native attempt.
 **Review**: round 1 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..89cc3fa560fa1bd99c62345ff0ce10526150a27a · agd-security-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474584185
 **Review**: round 1 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..89cc3fa560fa1bd99c62345ff0ce10526150a27a · agd-architecture-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474584666
-**Next**: scoped design re-review of the identity correction; no production edits yet.
+**Review**: round 2 · 89cc3fa560fa1bd99c62345ff0ce10526150a27a..5ab53078af707fe8fe429fccc628dfd050c3eb74 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474675986
+**Review**: round 2 · 89cc3fa560fa1bd99c62345ff0ce10526150a27a..5ab53078af707fe8fe429fccc628dfd050c3eb74 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474676492
+**Implementation checkpoint**: shared path resolver, PAL metadata declaration and44focused helper/host
+cases added. Linux helper/registry selection49PASS/0FAIL/0SKIP; checker self-tests, portability lint,
+warning-free builds and format pass. Host alias tests have not run on macOS yet. Existing callers
+still await migration, so A1–A4 remain NOT_RUN rather than claiming integrated acceptance.
+**Next**: verify helper/seam cases, migrate callers without changing S0, then full native comparison
+and owning implementation reviews. Design approvals do not approve future implementation.
