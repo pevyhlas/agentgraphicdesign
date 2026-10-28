@@ -37,8 +37,8 @@ and descriptor; enumerate lazily with cancellation and reject unexpected entries
 without materializing unbounded listings.
 
 Use existing Core asset path inspection on the trusted, quiescent local filesystem.
-Initial qualification is .NET 10 Linux x64. The S0 `artifactVerify` gate also admits
-Windows x64 .NET 10 unqualified; Windows arm64, other runtime majors and other Unix
+Initial qualification is .NET 10 Linux x64. The S1 `artifactVerify` gate also admits
+Windows x64 .NET10 and macOS26+ arm64 .NET10 unqualified; Windows arm64, other runtime majors and other Unix
 configurations fail closed with the registry's unchanged refusal text. Checks/open are
 separate operations, not hostile replacement-safe confinement. Source hard links
 are not ownership: only freshly read private bytes are used for subsequent checks.

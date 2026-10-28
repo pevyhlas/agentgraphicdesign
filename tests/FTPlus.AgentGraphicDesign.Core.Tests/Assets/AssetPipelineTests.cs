@@ -15,7 +15,7 @@ namespace FTPlus.AgentGraphicDesign.Core.Tests.Assets;
 
 public sealed class AssetPipelineTests : IDisposable
 {
-    private readonly string _directory = Path.Combine(Path.GetTempPath(), $"agd-assets-{Guid.NewGuid():N}");
+    private readonly string _directory = FileProbeWorker.FixtureRoot ?? Path.Combine(Path.GetTempPath(), $"agd-assets-{Guid.NewGuid():N}");
     private readonly DocumentEngine _engine = new(renderer: new SkiaRenderer());
 
     public AssetPipelineTests() => Directory.CreateDirectory(_directory);
@@ -522,6 +522,11 @@ public sealed class AssetPipelineTests : IDisposable
     {
         if (OperatingSystem.IsWindows())
             return;
+        if (!FileProbeWorker.IsChild)
+        {
+            await FileProbeWorker.RunAsync("pipeline-fifo", relative);
+            return;
+        }
         Save("source.json", Document("icon"));
         var manifest = SingleManifest();
         Directory.CreateDirectory(Path.GetDirectoryName(Full(relative))!);
@@ -553,6 +558,11 @@ public sealed class AssetPipelineTests : IDisposable
     {
         if (OperatingSystem.IsWindows())
             return;
+        if (!FileProbeWorker.IsChild)
+        {
+            await FileProbeWorker.RunAsync("pipeline-socket");
+            return;
+        }
         using var socket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.Unix,
             System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Unspecified);
         socket.Bind(new System.Net.Sockets.UnixDomainSocketEndPoint(Full("s")));
@@ -832,8 +842,7 @@ public sealed class AssetPipelineTests : IDisposable
 
         var error = await Assert.ThrowsAsync<DocumentEngineException>(() => pipeline.RunAsync(manifest, false));
 
-        var admitted = OperatingSystem.IsWindows() || OperatingSystem.IsLinux() &&
-            RuntimeInformation.ProcessArchitecture == Architecture.X64 && Environment.Version.Major == 10;
+        var admitted = PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline);
         Assert.Equal(admitted ? EngineErrors.ExportUnsupported : "ASSET_PLATFORM_UNSUPPORTED", error.Code);
         Assert.False(Directory.Exists(Full("generated")));
         // No manifest format maps to the raw buffer: VectorAssetFormat gains no member (plan C1).

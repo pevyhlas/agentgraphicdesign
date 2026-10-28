@@ -338,7 +338,7 @@ multi-asset atomicity or process-crash outcome ledger is promised.
 Existing [AssetPaths type probes](../../src/FTPlus.AgentGraphicDesign.Core/Assets/AssetPaths.cs)
 provide source/type-inspection context only: Linux regular-file inspection uses a
 qualified runtime-specific `System.Native` ABI, and check/open are separate. This
-contract does not newly qualify Windows or other Unix configurations. The S0
+contract does not newly qualify Windows or other Unix configurations. The S1
 `nativePixels` gate refuses all native operations off .NET 10 Linux x64, including
 Windows inspect/validate/region reads that formerly passed the shared probe. Existing
 [vector write helpers](../../src/FTPlus.AgentGraphicDesign.Core/Persistence/FileDocumentStore.cs)

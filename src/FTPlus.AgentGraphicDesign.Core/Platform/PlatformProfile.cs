@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 
 namespace FTPlus.AgentGraphicDesign.Core.Platform;
 
-/// <summary>The I/O-free D-28 S0 registry. No filesystem, native calls or live availability probes.</summary>
+/// <summary>The I/O-free D-28 S1 registry. No filesystem, native calls or live availability probes.</summary>
 public sealed class PlatformProfile
 {
     private const CapabilityQualification Q = CapabilityQualification.Qualified;
@@ -16,7 +16,7 @@ public sealed class PlatformProfile
     private static readonly RegistryRow[] Rows =
     [
         new("linux", "x64", 10, null, [Q, Q, Q, Q, Q, Q]),
-        new("osx", "arm64", 10, new Version(26, 0), [U, U, R, R, R, R]),
+        new("osx", "arm64", 10, new Version(26, 0), [U, U, U, U, R, R]),
         new("windows", "x64", 10, null, [U, U, U, U, R, R]),
     ];
     private static readonly CapabilityQualification[] FallbackRow = [U, U, R, R, R, R];

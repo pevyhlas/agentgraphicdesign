@@ -36,6 +36,12 @@ a sandbox against commands deliberately escaping their session.
 Download both artifacts and run `check` on each mode directory. Retain original failed attempts.
 The TSV is sorted by ordinal suite/case identity, carries explicit skips and binds counts, mode,
 source commit, stage, profile, SDK/runtime and a SHA-256 of its body.
+New runs perform a captured locked restore and nonincremental Release build, verify all eight
+platform fixtures against built Core, and derive S0/S1 from the committed macOS26 fixture.
+Assembly hashes must agree before/after testing, copied Core assemblies must match, TRX must
+name the captured test assemblies, and the running checker's MVID must match the fresh build.
+Build/fixture logs, command identity and exits are required by `check`; historic predecessor
+TSVs remain readable without inventing new captures.
 
 ## Compare against the accepted predecessor
 
@@ -53,7 +59,11 @@ The comparator reads the **committed target-base index**, not the proposed worki
 It verifies the base against the public remote `main` and requires a clean exact head descended
 from that base. A moved base requires fetch/rebase and recomparison. Before merge also verify
 the actual PR targets that base and the tested head. SDK/runtime, profile, stage and mode must
-match; a toolchain change needs explicitly reviewed baseline replacement.
+match; a toolchain change needs explicitly reviewed baseline replacement. For the owner-approved
+S0→S1 admission only, append `--stage-transition S0:S1`: the committed base/head fixtures must
+classify as S0/S1 and both records must agree. Reverse, unknown, same-stage-with-flag or header-only
+transitions fail. All other comparison rules remain mandatory. Once the accepted base is S1,
+use ordinary same-stage comparison again.
 
 Failures may only shrink; a previously fixed failure cannot return. Old cases may not disappear.
 `.config/macos-progress-exceptions.json` can explicitly name a reasoned new skip or a one-to-one

@@ -42,6 +42,7 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
   architecture, capabilities, OS/version, profile, qualified profiles and runtime version,
   ordinal keys and enum/table array order. `supportedPlatform` and `currentPlatformMatches`
   are removed, without aliases; there is no top-level qualified boolean or live probe.
+  S1 reports macOS26+ arm64 .NET10 pipeline/artifact admission as unqualified, never qualified.
   Test: `ProtocolTests` (including the three explicit platform methods).
 - **P4.B-03 Small previews**: vector previews default to a thumbnail no larger than 512 px
   without upscaling, explicit sizes are bounded, and every inline image is a valid base64 PNG.

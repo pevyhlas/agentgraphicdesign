@@ -34,8 +34,8 @@ internal static partial class Program
             ["run", var root, var output, var sha, var mode] => RunMacosProgress(Path.GetFullPath(root), Path.GetFullPath(output), sha, mode),
             ["check", var directory, var sha] => CheckMacosProgress(directory, sha),
             ["check-trx", var suite, var trx, var discovery, var exit] => CheckProgressTrx(suite, trx, discovery, int.Parse(exit, CultureInfo.InvariantCulture)),
-            ["compare", var root, var baseSha, var previous, var current, var headSha] => CompareMacosProgress(Path.GetFullPath(root), baseSha, previous, current, headSha),
-            _ => throw new ArgumentException("macos-progress run ROOT FRESH_OUTPUT HEAD_SHA MODE | check OUTPUT HEAD_SHA | compare ROOT ACTUAL_PR_BASE_SHA PREVIOUS_DIR CURRENT_DIR HEAD_SHA")
+            ["compare", var root, var baseSha, var previous, var current, var headSha, .. var options] => CompareMacosProgress(Path.GetFullPath(root), baseSha, previous, current, headSha, ProgressStageTransition(options)),
+            _ => throw new ArgumentException("macos-progress run ROOT FRESH_OUTPUT HEAD_SHA MODE | check OUTPUT HEAD_SHA | compare ROOT ACTUAL_PR_BASE_SHA PREVIOUS_DIR CURRENT_DIR HEAD_SHA [--stage-transition S0:S1]")
         };
     }
 
@@ -86,7 +86,7 @@ internal static partial class Program
         const string prefix = "#agd-macos-progress\t";
         if (!lines[0].StartsWith(prefix, StringComparison.Ordinal) || lines.Length > 30003) throw new InvalidDataException("Unknown progress format");
         var h = ProgressDeserialize<ProgressHeader>(lines[0][prefix.Length..]);
-        if (h.Version != 1 || !IsFullCommit(expectedSha) || h.SourceCommit != expectedSha || h.Stage != "S0"
+        if (h.Version != 1 || !IsFullCommit(expectedSha) || h.SourceCommit != expectedSha || h.Stage is not ("S0" or "S1")
             || !ProgressModes.Contains(expectedMode) || h.Mode != expectedMode || h.Profile != "dotnet10-osx-arm64-macos26"
             || !Version.TryParse(h.Runtime, out var runtime) || runtime.Major != 10
             || !Version.TryParse(h.Sdk, out var sdk) || sdk.Major != 10
@@ -194,6 +194,15 @@ internal static partial class Program
                     throw new InvalidDataException("Private root permissions must be 0700");
             }
             var sdk = Required("sdk", "dotnet", "--version");
+            var executingMvid = typeof(Program).Module.ModuleVersionId.ToString("D");
+            Required("restore", "dotnet", "restore", "FTPlus.AgentGraphicDesign.slnx", "--locked-mode");
+            Required("build", "dotnet", "build", "FTPlus.AgentGraphicDesign.slnx", "--configuration", "Release", "--no-restore", "--no-incremental");
+            Required("checker-build", "dotnet", "build", "scripts/RepoChecks/RepoChecks.csproj", "--configuration", "Release", "--no-incremental");
+            var build = CaptureProgressBuild(root, sha, executingMvid);
+            File.WriteAllText(Path.Combine(output, "build-before.json"), JsonSerializer.Serialize(build));
+            Required("fixture-check", "dotnet", typeof(Program).Assembly.Location, "platform-fixtures", root, "--check");
+            var fixture = Required("stage-fixture", "git", "--no-replace-objects", "show", sha + ":" + ProgressFixture);
+            var stage = ProgressStage(fixture);
             Required("dotnet-info", "dotnet", "--info");
             Required("sw-vers", "/usr/bin/sw_vers");
             if (Required("uname", "/usr/bin/uname", "-m") != "arm64") throw new InvalidDataException("Wrong kernel architecture");
@@ -218,10 +227,14 @@ internal static partial class Program
                 var execution = ProgressCommand(root, output, suite + "-tests", "dotnet", [.. common, "--results-directory", output,
                     "--logger", $"trx;LogFileName={suite}.trx", "--blame-hang-timeout", "4m", "--blame-hang-dump-type", "none", "--", "RunConfiguration.TreatNoTestsAsError=true"]);
                 cases.AddRange(ReadProgressTrx(Path.Combine(output, suite + ".trx"), suite, discovery, execution.Exit));
+                ValidateProgressTestAssembly(Path.Combine(output, suite + ".trx"), suite, build);
             }
+            var finalBuild = CaptureProgressBuild(root, sha, executingMvid);
+            File.WriteAllText(Path.Combine(output, "build-after.json"), JsonSerializer.Serialize(finalBuild));
+            if (JsonSerializer.Serialize(build) != JsonSerializer.Serialize(finalBuild)) throw new InvalidDataException("Tested binaries changed during run");
             if (Required("final-head", "git", "rev-parse", "HEAD") != sha || Required("final-state", "git", "status", "--porcelain", "--untracked-files=all").Length != 0)
                 throw new InvalidDataException("Source changed during run");
-            var header = new ProgressHeader(1, sha, "S0", mode, "dotnet10-osx-arm64-macos26", Environment.Version.ToString(), sdk, Environment.OSVersion.Version.ToString(), 0, 0, 0, "");
+            var header = new ProgressHeader(1, sha, stage, mode, "dotnet10-osx-arm64-macos26", Environment.Version.ToString(), sdk, Environment.OSVersion.Version.ToString(), 0, 0, 0, "");
             var record = SerializeProgress(new(header, cases.ToArray()));
             _ = ParseProgress(record, sha, mode);
             File.WriteAllText(Path.Combine(output, mode + ".tsv"), record);
@@ -245,12 +258,25 @@ internal static partial class Program
         var mode = env.RootElement.GetProperty("mode").GetString()!;
         if (!ProgressModes.Contains(mode) || env.RootElement.GetProperty("sha").GetString() != sha) throw new InvalidDataException("Wrong run identity");
         var record = ParseProgress(ProgressText(Path.Combine(directory, mode + ".tsv")), sha, mode);
-        foreach (var label in new[] { "head", "source-state", "sdk", "dotnet-info", "sw-vers", "uname", "final-head", "final-state" }.Concat(mode == "default-tmpdir" ? ["default-root"] : Array.Empty<string>()))
+        foreach (var label in new[] { "head", "source-state", "sdk", "restore", "build", "checker-build", "fixture-check", "stage-fixture", "dotnet-info", "sw-vers", "uname", "final-head", "final-state" }.Concat(mode == "default-tmpdir" ? ["default-root"] : Array.Empty<string>()))
             if (ProgressText(Path.Combine(directory, label + ".exit")).Trim() != "0") throw new InvalidDataException(label + " failed");
         foreach (var label in new[] { "head", "final-head" })
             if (ProgressText(Path.Combine(directory, label + ".stdout.log")).Trim() != sha) throw new InvalidDataException("Wrong checked-out head");
         foreach (var label in new[] { "source-state", "final-state" })
             if (ProgressText(Path.Combine(directory, label + ".stdout.log")).Trim().Length != 0) throw new InvalidDataException("Dirty source");
+        if (ProgressStage(ProgressText(Path.Combine(directory, "stage-fixture.stdout.log"))) != record.Header.Stage)
+            throw new InvalidDataException("Captured fixture and stage differ");
+        var buildText = ProgressText(Path.Combine(directory, "build-before.json"));
+        if (buildText != ProgressText(Path.Combine(directory, "build-after.json"))) throw new InvalidDataException("Captured binary identities changed");
+        var build = ProgressDeserialize<ProgressBuild>(buildText);
+        ValidateProgressBuild(build, sha);
+        ValidateProgressCommand(directory, "restore", build.Root, "dotnet", ["restore", "FTPlus.AgentGraphicDesign.slnx", "--locked-mode"]);
+        ValidateProgressCommand(directory, "build", build.Root, "dotnet", ["build", "FTPlus.AgentGraphicDesign.slnx", "--configuration", "Release", "--no-restore", "--no-incremental"]);
+        ValidateProgressCommand(directory, "checker-build", build.Root, "dotnet", ["build", "scripts/RepoChecks/RepoChecks.csproj", "--configuration", "Release", "--no-incremental"]);
+        ValidateProgressCommand(directory, "fixture-check", build.Root, "dotnet", [Path.Combine(build.Root, ProgressAssemblyPaths()["checker"]), "platform-fixtures", build.Root, "--check"]);
+        ValidateProgressCommand(directory, "stage-fixture", build.Root, "git", ["--no-replace-objects", "show", sha + ":" + ProgressFixture]);
+        if (ProgressText(Path.Combine(directory, "fixture-check.stdout.log")).Trim() != "Eight platform fixtures match the registry.")
+            throw new InvalidDataException("Fixture check did not confirm the built registry");
         if (ProgressText(Path.Combine(directory, "sdk.stdout.log")).Trim() != record.Header.Sdk
             || ProgressText(Path.Combine(directory, "uname.stdout.log")).Trim() != "arm64"
             || env.RootElement.GetProperty("runtime").GetString() != record.Header.Runtime
@@ -268,15 +294,17 @@ internal static partial class Program
             var identities = DiscoveryIdentities(ProgressText(Path.Combine(directory, suite + "-discovery.stdout.log")));
             var exit = int.Parse(ProgressText(Path.Combine(directory, suite + "-tests.exit")), CultureInfo.InvariantCulture);
             cases.AddRange(ReadProgressTrx(Path.Combine(directory, suite + ".trx"), suite, identities, exit));
+            ValidateProgressTestAssembly(Path.Combine(directory, suite + ".trx"), suite, build);
         }
         if (SerializeProgress(new(record.Header, cases.ToArray())) != SerializeProgress(record)) throw new InvalidDataException("TRX differs from progress record");
         Console.WriteLine("Complete discovery/TRX record at " + sha + "; failures remain failures.");
         return 0;
     }
 
-    private static void CompareProgress(ProgressRecord previous, ProgressRecord current, ProgressOverrides exceptions)
+    private static void CompareProgress(ProgressRecord previous, ProgressRecord current, ProgressOverrides exceptions, bool stageTransition = false)
     {
-        if (previous.Header.Mode != current.Header.Mode || previous.Header.Stage != current.Header.Stage || previous.Header.Profile != current.Header.Profile
+        ValidateProgressStages(previous.Header.Stage, current.Header.Stage, previous.Header.Stage, current.Header.Stage, stageTransition);
+        if (previous.Header.Mode != current.Header.Mode || previous.Header.Profile != current.Header.Profile
             || previous.Header.Sdk != current.Header.Sdk || previous.Header.Runtime != current.Header.Runtime)
             throw new InvalidDataException("Incomparable progress mode/profile/toolchain");
         if (exceptions.Version != 1 || exceptions.Renames is null || exceptions.Skips is null) throw new InvalidDataException("Malformed progress exceptions");
@@ -313,7 +341,7 @@ internal static partial class Program
         if (current.Header.Failed > previous.Header.Failed) throw new InvalidDataException("Failure count grew");
     }
 
-    private static int CompareMacosProgress(string root, string baseSha, string previousDirectory, string currentDirectory, string headSha)
+    private static int CompareMacosProgress(string root, string baseSha, string previousDirectory, string currentDirectory, string headSha, bool stageTransition = false)
     {
         if (!IsFullCommit(baseSha) || !IsFullCommit(headSha)) throw new ArgumentException("Exact PR base and head required");
         var capture = Path.Combine(root, ".prdkit/cache/evidence/026-macos-progress/compare-" + Guid.NewGuid().ToString("N"));
@@ -331,6 +359,8 @@ internal static partial class Program
         // Never load the proposed index from the working tree: the accepted target-base index owns comparison.
         var index = ProgressDeserialize<ProgressIndexData>(Git("baseline", "show", baseSha + ":" + ProgressIndex));
         ValidateProgressIndex(index);
+        var baseStage = ProgressStage(Git("base-stage", "show", baseSha + ":" + ProgressFixture));
+        var headStage = ProgressStage(Git("head-stage", "show", headSha + ":" + ProgressFixture));
         var exceptions = ProgressDeserialize<ProgressOverrides>(ProgressText(Path.Combine(root, ProgressExceptions)));
         foreach (var entry in index.Records)
         {
@@ -338,7 +368,8 @@ internal static partial class Program
             ValidateProgressPredecessor(entry, previousText);
             var previous = ParseProgress(previousText, entry.SourceCommit, entry.Mode);
             var current = ParseProgress(ProgressText(Path.Combine(currentDirectory, entry.Mode + ".tsv")), headSha, entry.Mode);
-            CompareProgress(previous, current, exceptions);
+            ValidateProgressStages(previous.Header.Stage, current.Header.Stage, baseStage, headStage, stageTransition);
+            CompareProgress(previous, current, exceptions, stageTransition);
         }
         Console.WriteLine($"Progress comparison passed against accepted index at {baseSha}, head {headSha}. Recheck the live PR base before merge; moved base requires recomparison. Not qualification.");
         return 0;

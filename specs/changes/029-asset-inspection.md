@@ -121,7 +121,7 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 ## State
 
-**Step**: implementation — path safety and observable I/O checkpoint
+**Step**: implementation — S1 candidate, native proof pending
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
@@ -136,12 +136,13 @@ is removed. No review, runtime proof or later-stage authorization is implied by 
 (eight stable identities and observable no-open proof). Reports retained verbatim onPR22. Corrective
 design adds alias protection, Darwin fixtures/stable wrapper, IO traps/killable workers and explicit
 build/hash captures. All four scoped round2 design reviews PASS0; source/native acceptance remains open.
-**Checkpoint**: bounded macOS alias policy and pipeline integration, call-local leaf IO traps,
-Darwin device prepass and stable FIFO wrapper implemented; S0 admission unchanged. Linux138path/
-pipeline cases PASS, then365selected cases PASS plus2corrected alias-fixture cases PASS; warning-free
-solution build/format PASS. Failed local build (xUnit rejects overloaded test names) and fixture
-setup failures remain retained; explicit DisplayName preserves the accepted bare identity instead.
-Discovery confirms bare and all three original FIFO rows. Killable workers, S1 and stage proof pending.
+**Checkpoint**: S1 registry/fixture, bounded alias policy, observable leaf IO, stable FIFO identity,
+killable Core/CLI/MCP special-file workers and source/binary-bound stage tooling implemented. Full
+Linux3624PASS/0FAIL/0SKIP (Core2753, Skia154, CLI357, MCP360); stage/capture/CLI/self-tests PASS.
+Later deadline/oracle refinements receive focused rechecks. Original failed build/fixture attempts
+are retained. Bare FIFO discovery plus three original argument cases are preserved; raw-format
+refusal now follows S1's gate with independent literal registry expectations. No tolerance weakened.
+Next: exact-source archive/installed proof, complete two-mode native attempt and independent reviews.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368
