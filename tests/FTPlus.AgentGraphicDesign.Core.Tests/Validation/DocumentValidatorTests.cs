@@ -74,9 +74,12 @@ public class DocumentValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(AllErrorCodes))]
-    public void Validator_CoversAllErrorCodes(string errorCode, Document doc, string expectedPath)
+    [MemberData(nameof(AllErrorCaseKeys))]
+    public void Validator_CoversAllErrorCodes(string errorCode, string expectedPath)
     {
+        // Documents are not xUnit-serializable. Discover stable code/path keys and create the
+        // same negative fixture during execution; TEXT006 has two distinct path cases.
+        var doc = (Document)AllErrorCodes().Single(row => (string)row[0] == errorCode && (string)row[2] == expectedPath)[1];
         var result = DocumentValidator.Validate(doc);
 
         var error = result.Errors.FirstOrDefault(e => e.Code == errorCode);
@@ -125,6 +128,8 @@ public class DocumentValidatorTests
 
         Assert.Contains(result.Errors, e => e.Code == "STYLE012" && e.Path!.EndsWith(".style.fillRule", StringComparison.Ordinal));
     }
+
+    public static IEnumerable<object[]> AllErrorCaseKeys() => AllErrorCodes().Select(row => new[] { row[0], row[2] });
 
     public static IEnumerable<object[]> AllErrorCodes()
     {
@@ -1032,13 +1037,16 @@ public class DocumentValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(AllWarningCodes))]
-    public void Validator_CoversAllWarningCodes(string warningCode, Document doc)
+    [MemberData(nameof(AllWarningCaseKeys))]
+    public void Validator_CoversAllWarningCodes(string warningCode)
     {
+        var doc = (Document)AllWarningCodes().Single(row => (string)row[0] == warningCode)[1];
         var result = DocumentValidator.Validate(doc);
 
         Assert.Contains(result.Warnings, w => w.Code == warningCode);
     }
+
+    public static IEnumerable<object[]> AllWarningCaseKeys() => AllWarningCodes().Select(row => new[] { row[0] });
 
     public static IEnumerable<object[]> AllWarningCodes()
     {

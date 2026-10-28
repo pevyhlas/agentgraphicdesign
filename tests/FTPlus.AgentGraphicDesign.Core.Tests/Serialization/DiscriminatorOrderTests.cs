@@ -13,11 +13,12 @@ public class DiscriminatorOrderTests
     private const string Last = """{"id":"00000000-0000-0000-0000-000000000004","width":16,"height":8,"type":"rectangle"}""";
 
     [Theory]
-    [InlineData(First)]
-    [InlineData(Middle)]
-    [InlineData(Last)]
-    public void FullDocument_NestedDiscriminatorsAcceptAnyPosition(string child)
+    [InlineData("first")]
+    [InlineData("middle")]
+    [InlineData("last")]
+    public void FullDocument_NestedDiscriminatorsAcceptAnyPosition(string position)
     {
+        var child = position switch { "first" => First, "middle" => Middle, "last" => Last, _ => throw new ArgumentOutOfRangeException(nameof(position)) };
         var json = Document(child);
         foreach (var result in new[]
         {
@@ -51,10 +52,16 @@ public class DiscriminatorOrderTests
     }
 
     [Theory]
-    [InlineData("""{"id":"00000000-0000-0000-0000-000000000004","type":"rectangle","type":"ellipse"}""")]
-    [InlineData("""{"id":"00000000-0000-0000-0000-000000000004","type":"rectangle","\u0074ype":"ellipse"}""")]
-    public void FullDocument_DuplicateDiscriminatorStillRejected(string child)
+    [InlineData("literal")]
+    [InlineData("escaped")]
+    public void FullDocument_DuplicateDiscriminatorStillRejected(string spelling)
     {
+        var child = spelling switch
+        {
+            "literal" => """{"id":"00000000-0000-0000-0000-000000000004","type":"rectangle","type":"ellipse"}""",
+            "escaped" => """{"id":"00000000-0000-0000-0000-000000000004","type":"rectangle","\u0074ype":"ellipse"}""",
+            _ => throw new ArgumentOutOfRangeException(nameof(spelling))
+        };
         var json = Document(child);
         foreach (var result in new[]
         {

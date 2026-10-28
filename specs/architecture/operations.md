@@ -16,6 +16,11 @@
   The advisory job retains runner/image/SDK identity, console output and TRX for seven days;
   its summary reports the real test outcome. These artifacts are excluded from Linux coverage.
   The hosted runner choice implements the public-CI direction; qualification remains change 008.
+- **macOS progress**: manual CI dispatch additionally runs both default and physical-private
+  temporary-root modes at the exact head. `RepoChecks macos-progress` reconciles every discovered
+  and executed case and compares against the accepted target-base index; complete failed suites
+  remain failed cases. Durable PR records outlive30-day artifacts. `portability-rules` gates exact,
+  reasoned migration entries and progress/package checkout policy ([procedure](../../docs/macos-progress.md)).
 - **Release bundle**: `scripts/release-bundle.sh` builds from an isolated `git archive` of one
   clean commit with locked restore and a non-incremental Release build, tests and packs without
   rebuilding, installs and checks the staged packages from a cleared local feed, reproduces the

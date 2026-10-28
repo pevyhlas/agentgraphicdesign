@@ -13,20 +13,26 @@ namespace FTPlus.AgentGraphicDesign.Mcp.Tests;
 /// </summary>
 public class DocumentResourcesTests
 {
-    public static TheoryData<string, string, string, Func<ReadResourceResult>> Resources => new()
+    public static TheoryData<string, string, string> Resources => new()
     {
-        { "agd://schema", "application/schema+json", Path.Combine("schemas", "agd-document.schema.json"), DocumentResources.Schema },
-        { "agd://format", "text/markdown", Path.Combine("docs", "format.md"), DocumentResources.Format },
-        { "agd://agent-guide", "text/markdown", Path.Combine("docs", "agent-guide.md"), DocumentResources.AgentGuide },
+        { "agd://schema", "application/schema+json", Path.Combine("schemas", "agd-document.schema.json") },
+        { "agd://format", "text/markdown", Path.Combine("docs", "format.md") },
+        { "agd://agent-guide", "text/markdown", Path.Combine("docs", "agent-guide.md") },
     };
 
     [Theory]
     [MemberData(nameof(Resources))]
-    public void Read_ReturnsRepositoryFileContent(string uri, string mimeType, string relativeSource, Func<ReadResourceResult> read)
+    public void Read_ReturnsRepositoryFileContent(string uri, string mimeType, string relativeSource)
     {
         var expected = File.ReadAllText(Path.Combine(RepositoryPaths.Root, relativeSource));
 
-        var result = read();
+        var result = uri switch
+        {
+            "agd://schema" => DocumentResources.Schema(),
+            "agd://format" => DocumentResources.Format(),
+            "agd://agent-guide" => DocumentResources.AgentGuide(),
+            _ => throw new ArgumentOutOfRangeException(nameof(uri))
+        };
 
         var contents = Assert.Single(result.Contents);
         var text = Assert.IsType<TextResourceContents>(contents);

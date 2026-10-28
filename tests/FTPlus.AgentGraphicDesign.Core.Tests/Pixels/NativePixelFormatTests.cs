@@ -553,12 +553,22 @@ public sealed class NativePixelFormatTests
     }
 
     [Theory]
-    [InlineData("{\"op\":\"removeLayer\",\"layer\":\"@later\"},{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"later\"}", 0)]
-    [InlineData("{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"addLayer\",\"name\":\"y\",\"alias\":\"x\"}", 1)]
-    [InlineData("{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"removeLayer\",\"layer\":\"@x\"},{\"op\":\"removeMask\",\"layer\":\"@x\"}", 2)]
-    [InlineData("{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"removeLayer\",\"layer\":\"@x\"},{\"op\":\"addLayer\",\"name\":\"y\",\"alias\":\"x\"}", 2)]
-    public void AliasesAreOrderedUniqueAndNeverReusedAfterRemoval(string operations, int index)
-        => Assert.Equal(index, AssertCode("INVALID_ARGUMENTS", () => ParseEdit(operations)).OperationIndex);
+    [InlineData("forward-reference", 0)]
+    [InlineData("duplicate", 1)]
+    [InlineData("removed-reference", 2)]
+    [InlineData("removed-reuse", 2)]
+    public void AliasesAreOrderedUniqueAndNeverReusedAfterRemoval(string scenario, int index)
+    {
+        var operations = scenario switch
+        {
+            "forward-reference" => "{\"op\":\"removeLayer\",\"layer\":\"@later\"},{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"later\"}",
+            "duplicate" => "{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"addLayer\",\"name\":\"y\",\"alias\":\"x\"}",
+            "removed-reference" => "{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"removeLayer\",\"layer\":\"@x\"},{\"op\":\"removeMask\",\"layer\":\"@x\"}",
+            "removed-reuse" => "{\"op\":\"addLayer\",\"name\":\"x\",\"alias\":\"x\"},{\"op\":\"removeLayer\",\"layer\":\"@x\"},{\"op\":\"addLayer\",\"name\":\"y\",\"alias\":\"x\"}",
+            _ => throw new ArgumentOutOfRangeException(nameof(scenario))
+        };
+        Assert.Equal(index, AssertCode("INVALID_ARGUMENTS", () => ParseEdit(operations)).OperationIndex);
+    }
 
     [Theory]
     [InlineData("\"target\":\"pixels\"", "\"target\":\"Pixels\"")]

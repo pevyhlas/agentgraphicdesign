@@ -25,6 +25,7 @@ dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration 
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- workflows "$ROOT_DIR"
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- qualification-evidence "$ROOT_DIR"
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- platform-rules "$ROOT_DIR"
+dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- portability-rules "$ROOT_DIR"
 dotnet run --project "$SCRIPT_DIR/RepoChecks/RepoChecks.csproj" --configuration Release -- platform-fixtures "$ROOT_DIR" --check
 bash "$SCRIPT_DIR/test-claude-with-telemetry.sh"
 bash "$SCRIPT_DIR/check-dependencies.sh"
