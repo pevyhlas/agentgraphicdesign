@@ -118,28 +118,28 @@ internal static partial class Program
         Directory.CreateDirectory(dir);
         try
         {
+            const string publish = "sleep 60 & printf '%s %s' \"$$\" \"$!\" > \"$1\"; : > \"$2\"; ";
             var descendant = Path.Combine(dir, "descendant.pid");
             var result = ProgressCommandBounded(dir, dir, "descendant", "/bin/sh",
-                ["-c", "sleep 60 & printf '%s' \"$!\" > \"$1\"; printf done", "fixture", descendant], 10000, 1024);
+                ["-c", publish + "printf done", "fixture", descendant, Path.Combine(dir, "descendant.ready")], 10000, 1024);
             if (result != (0, "done")) errors.Add("Direct command exit/output was not preserved");
-            var pid = int.Parse(File.ReadAllText(descendant), CultureInfo.InvariantCulture);
-            using (var ps = Process.Start(new ProcessStartInfo("/bin/ps") { ArgumentList = { "-o", "stat=", "-p", pid.ToString(CultureInfo.InvariantCulture) }, RedirectStandardOutput = true, UseShellExecute = false })!)
-            {
-                var state = ps.StandardOutput.ReadToEnd();
-                if (!ps.WaitForExit(2000) || state.Trim() is { Length: > 0 } value && !value.StartsWith('Z')) errors.Add("Pipe-holding descendant still executes after its direct parent exits");
-            }
-            var timeout = ProgressCommandBounded(dir, dir, "timeout", "/bin/sh", ["-c", "sleep 60"], 1000, 1024);
+            AssertProgressFixtureStopped(descendant, errors);
+            var timeoutPids = Path.Combine(dir, "timeout.pids");
+            var timeout = ProgressCommandBounded(dir, dir, "timeout", "/bin/sh", ["-c", publish + "wait", "fixture", timeoutPids, Path.Combine(dir, "timeout.ready")], 3000, 1024);
             if (timeout.Exit != 124) errors.Add("Command timeout was not classified explicitly");
-            var cancelledReady = Path.Combine(dir, "cancelled.group");
+            AssertProgressFixtureStopped(timeoutPids, errors);
+            var cancelledReady = Path.Combine(dir, "cancelled.child-ready");
+            var cancelledPids = Path.Combine(dir, "cancelled.pids");
             using (var helper = Process.Start(new ProcessStartInfo("dotnet")
             {
-                ArgumentList = { typeof(Program).Assembly.Location, "_progress-exec", cancelledReady, Path.Combine(dir, "cancelled.command-exit"), "/bin/sh", "-c", "sleep 60" },
+                ArgumentList = { typeof(Program).Assembly.Location, "_progress-exec", Path.Combine(dir, "cancelled.group"), Path.Combine(dir, "cancelled.command-exit"), "/bin/sh", "-c", publish + "wait", "fixture", cancelledPids, cancelledReady },
                 RedirectStandardInput = true,
                 UseShellExecute = false
             })!)
             {
                 var deadline = Stopwatch.StartNew();
                 while (!File.Exists(cancelledReady) && !helper.HasExited && deadline.ElapsedMilliseconds < 10000) helper.WaitForExit(20);
+                if (!File.Exists(cancelledReady)) errors.Add("Cancellation fixture never started its command/grandchild");
                 helper.StandardInput.Close();
                 if (!helper.WaitForExit(2000))
                 {
@@ -148,6 +148,7 @@ internal static partial class Program
                 }
                 if (File.Exists(Path.Combine(dir, "cancelled.command-exit"))) errors.Add("Cancelled command reported normal completion");
             }
+            AssertProgressFixtureStopped(cancelledPids, errors);
             Directory.CreateDirectory(Path.Combine(dir, "sink.stdout.log"));
             var marker = Path.Combine(dir, "should-not-start");
             try
@@ -159,14 +160,41 @@ internal static partial class Program
             if (File.Exists(marker) || File.Exists(Path.Combine(dir, "sink.group"))) errors.Add("Command started before log sinks were created");
             try
             {
-                _ = ProgressCommandBounded(dir, dir, "overflow", "/bin/sh", ["-c", "while :; do printf 0123456789; done"], 10000, 64);
+                _ = ProgressCommandBounded(dir, dir, "overflow", "/bin/sh", ["-c", publish + "while :; do printf 0123456789; done", "fixture", Path.Combine(dir, "overflow.pids"), Path.Combine(dir, "overflow.ready")], 10000, 64);
                 errors.Add("Log overflow unexpectedly succeeded");
             }
             catch (Exception ex) when (ex is InvalidDataException or AggregateException) { }
             if (new FileInfo(Path.Combine(dir, "overflow.stdout.log")).Length > 64 || !File.Exists(Path.Combine(dir, "overflow.exit")))
                 errors.Add("Log overflow bound/exit evidence missing");
+            AssertProgressFixtureStopped(Path.Combine(dir, "overflow.pids"), errors);
         }
         finally { Directory.Delete(dir, recursive: true); }
         Console.WriteLine("Progress subprocess fixtures: orphaned pipe holder, deadline, parent cancellation, prelaunch sink failure and bounded log overflow.");
+    }
+
+    private static void AssertProgressFixtureStopped(string file, ICollection<string> errors)
+    {
+        if (!File.Exists(file)) { errors.Add("Lifecycle fixture did not publish started child/grandchild PIDs: " + Path.GetFileName(file)); return; }
+        var pids = File.ReadAllText(file).Split(' ').Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+        if (pids.Length != 2 || pids.Distinct().Count() != 2 || pids.Any(p => p <= 1)) throw new InvalidDataException("Bad lifecycle fixture identities");
+        foreach (var pid in pids)
+        {
+            var deadline = Stopwatch.StartNew();
+            var running = true;
+            while (deadline.ElapsedMilliseconds < 2000)
+            {
+                using var ps = Process.Start(new ProcessStartInfo("/bin/ps") { ArgumentList = { "-o", "stat=", "-p", pid.ToString(CultureInfo.InvariantCulture) }, RedirectStandardOutput = true, UseShellExecute = false })!;
+                if (!ps.WaitForExit(1000)) { ps.Kill(); break; }
+                var state = ps.StandardOutput.ReadToEnd().Trim();
+                running = state.Length != 0 && !state.StartsWith('Z');
+                if (!running) break;
+                Thread.Sleep(20);
+            }
+            if (running)
+            {
+                _ = ProgressKill(pid, 9); // clean up the fixture even when the implementation regresses
+                errors.Add("Lifecycle descendant remains executing: " + Path.GetFileName(file));
+            }
+        }
     }
 }

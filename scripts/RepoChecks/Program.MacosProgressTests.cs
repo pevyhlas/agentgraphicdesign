@@ -95,10 +95,18 @@ internal static partial class Program
                 """;
             string[] discovery = ["FTPlus.AgentGraphicDesign.Core.Tests.Example.A(x: 1)", "FTPlus.AgentGraphicDesign.Core.Tests.Example.A(x: 2)", "FTPlus.AgentGraphicDesign.Core.Tests.Example.B"];
             var path = Path.Combine(dir, "test.trx");
+            var adapterFailure = "<RunInfos><RunInfo outcome=\"Error\"><Text>[xUnit.net 00:00:01.23]     FTPlus.AgentGraphicDesign.Core.Tests.Example.A(x: 2) [FAIL]</Text></RunInfo></RunInfos>";
+            var completedWithDiagnostic = valid.Replace("</ResultSummary>", adapterFailure + "</ResultSummary>", StringComparison.Ordinal);
             foreach (var (name, xml, exit, passes) in new[]
             {
                 ("completed failed with xunit skips", valid, 1, true),
                 ("observed UTF8 XML BOM", "\uFEFF" + valid, 1, true),
+                ("observed adapter failure", completedWithDiagnostic, 1, true),
+                ("diagnostic unknown case", completedWithDiagnostic.Replace("x: 2) [FAIL]", "x: 3) [FAIL]", StringComparison.Ordinal), 1, false),
+                ("diagnostic passed case", completedWithDiagnostic.Replace("x: 2) [FAIL]", "x: 1) [FAIL]", StringComparison.Ordinal), 1, false),
+                ("diagnostic skipped case", completedWithDiagnostic.Replace("Example.A(x: 2) [FAIL]", "Example.B [FAIL]", StringComparison.Ordinal), 1, false),
+                ("diagnostic partial match", completedWithDiagnostic.Replace("[FAIL]</Text>", "[FAIL] extra</Text>", StringComparison.Ordinal), 1, false),
+                ("diagnostic multiline", completedWithDiagnostic.Replace("]     FTPlus", "]\nFTPlus", StringComparison.Ordinal), 1, false),
                 ("explicit skipped count", valid.Replace("notExecuted=\"0\"", "notExecuted=\"1\"", StringComparison.Ordinal), 1, true),
                 ("all passed", valid.Replace("outcome=\"Failed\"", "outcome=\"Passed\"", StringComparison.Ordinal).Replace("ResultSummary outcome=\"Passed\"", "ResultSummary outcome=\"Completed\"", StringComparison.Ordinal).Replace("passed=\"1\" failed=\"1\"", "passed=\"2\" failed=\"0\"", StringComparison.Ordinal), 0, true),
                 ("wrong exit", valid, 0, false), ("timeout", valid, 124, false), ("crash", valid, 139, false),

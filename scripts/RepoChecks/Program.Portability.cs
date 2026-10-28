@@ -26,7 +26,8 @@ internal static partial class Program
         if (path.StartsWith("scripts/", StringComparison.Ordinal) && path.EndsWith(".sh", StringComparison.Ordinal))
         {
             if (Has(@"\b(?:mapfile|readarray)\b|\b(?:declare|local|typeset)\s+-[A-Za-z]*[An]|\$\{[^}\r\n]*[,^]{2}|\bwait\s+-[A-Za-z]*n")) rules.Add("bash32");
-            if (Has(@"\breadlink\s+-[A-Za-z]*f|\brealpath\b|\b(?:mv|cp)\s+-[A-Za-z]*T|\bstat\s+-[A-Za-z]*c|\bgrep\s+-[A-Za-z]*P|\bsort\s+-[A-Za-z]*[zV]|\bfind\b[^\r\n]*-printf")) rules.Add("bsd-tools");
+            if (Has(@"\breadlink\s+-[A-Za-z]*[ef]|\brealpath\b|\b(?:mv|cp)\s+-[A-Za-z]*T|\bstat\s+-[A-Za-z]*c|\bgrep\s+-[A-Za-z]*P|\bsort\s+-[A-Za-z]*[zV]|\bfind\b[^\r\n]*-printf")
+                || Has("\\bsed\\b[^\\r\\n;]*?\\s-i(?:[ \\t]+(?![ \\t]|''(?:\\s|$)|\"\"(?:\\s|$))|[ \\t]*(?=;|\\r?\\n|$))")) rules.Add("bsd-tools");
         }
         return rules.ToArray();
     }
@@ -67,14 +68,27 @@ internal static partial class Program
         var actual = ScanPortability(root);
         var allowed = ProgressDeserialize<PortabilityAllowlist>(ProgressText(Path.Combine(root, PortabilityInventory)));
         ValidatePortabilityInventory(actual, allowed, bashOnly);
+        var syntaxOutput = Path.Combine(root, ".prdkit/cache/evidence/026-macos-progress/bash-syntax-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(syntaxOutput);
+        var scripts = Directory.EnumerateFiles(Path.Combine(root, "scripts"), "*.sh", SearchOption.AllDirectories)
+            .Where(p => !p.Contains("/obj/", StringComparison.Ordinal) && !p.Contains("/bin/", StringComparison.Ordinal)).Order(StringComparer.Ordinal).ToArray();
+        for (var i = 0; i < scripts.Length; i++)
+            CheckBashSyntax(root, scripts[i], syntaxOutput, "syntax-" + i);
         if (!bashOnly)
         {
+            ValidateProgressIndex(ProgressDeserialize<ProgressIndexData>(ProgressText(Path.Combine(root, ProgressIndex))));
             var errors = new List<string>();
             ValidateProgressWorkflow(File.ReadAllText(Path.Combine(root, ".github/workflows/ci.yml")), errors);
             if (errors.Count != 0) return Report(errors, "");
         }
         Console.WriteLine($"Portability lint passed with {actual.Count(e => !bashOnly || e.Rule is "bash32" or "bsd-tools")} exact migration entries; not platform qualification.");
         return 0;
+    }
+
+    private static void CheckBashSyntax(string root, string file, string output, string label)
+    {
+        var syntax = ProgressCommandBounded(root, output, label, "/bin/bash", ["-n", "--", file], 10000, ProgressMaxBytes);
+        if (syntax.Exit != 0) throw new InvalidDataException("Bash syntax check failed: " + file);
     }
 
     private static void ValidateProgressWorkflow(string text, ICollection<string> errors)
@@ -109,6 +123,9 @@ internal static partial class Program
             ("scripts/test.sh", "mapfile -t list < file", "bash32"), ("scripts/test.sh", "declare -Ar data", "bash32"),
             ("scripts/test.sh", "local -n ref=other", "bash32"), ("scripts/test.sh", "echo ${name,,}", "bash32"),
             ("scripts/test.sh", "echo ${name^^}", "bash32"), ("scripts/test.sh", "readlink -f file", "bsd-tools"),
+            ("scripts/test.sh", "readlink -e file", "bsd-tools"), ("scripts/test.sh", "sed -i 's/a/b/' file", "bsd-tools"),
+            ("scripts/test.sh", "sed -E -i -e 's/a/b/' file", "bsd-tools"),
+            ("scripts/test.sh", "sed -i\necho next", "bsd-tools"),
             ("scripts/test.sh", "mv -fT a b", "bsd-tools"), ("scripts/test.sh", "find . -printf '%p'", "bsd-tools")
         })
         {
@@ -117,6 +134,24 @@ internal static partial class Program
         }
         if (PortabilityRules("src/FTPlus.AgentGraphicDesign.Core/Platform/PlatformPaths.cs", "Path.GetFullPath(x)").Length != 0
             || PortabilityRules("scripts/test.sh", "lower=$(printf '%s' \"$x\" | tr '[:upper:]' '[:lower:]')").Length != 0) errors.Add("Portability positive fixture rejected");
+        foreach (var source in new[] { "sed -i.bak 's/a/b/' file", "sed -i '' 's/a/b/' file", "sed -i \"\" 's/a/b/' file", "sed -i  '' 's/a/b/' file", "readlink file" })
+        {
+            if (PortabilityRules("scripts/test.sh", source).Length != 0) errors.Add("Supported BSD alternative rejected: " + source);
+            count++;
+        }
+        var syntaxDir = Path.Combine(Path.GetTempPath(), "agd-bash-syntax-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(syntaxDir);
+        try
+        {
+            foreach (var (name, source, passes) in new[] { ("valid", "if true; then\n echo ok\nfi\n", true), ("invalid", "if true; then\n echo bad\n", false) })
+            {
+                var file = Path.Combine(syntaxDir, name + ".sh"); File.WriteAllText(file, source);
+                try { CheckBashSyntax(syntaxDir, file, syntaxDir, name); if (!passes) errors.Add("Invalid shell syntax accepted"); }
+                catch (InvalidDataException) { if (passes) errors.Add("Valid shell syntax rejected"); }
+                count++;
+            }
+        }
+        finally { Directory.Delete(syntaxDir, recursive: true); }
         var entry = new PortabilityEntry("tests/Test.cs", "os-return", new string('a', 64), "008/T013: convert existing early return to explicit platform fixture.");
         foreach (var (name, actual, allowed, passes) in new (string, PortabilityEntry[], PortabilityEntry[], bool)[]
         {

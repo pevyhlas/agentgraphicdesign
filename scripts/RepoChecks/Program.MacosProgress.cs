@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -119,9 +120,19 @@ internal static partial class Program
         var summary = doc.Root.Elements(ns + "ResultSummary").Single();
         var failed = cases.Count(c => c.Outcome == "Failed");
         var passed = cases.Count(c => c.Outcome == "Passed");
-        if (exit != (failed > 0 ? 1 : 0) || summary.Attribute("outcome")?.Value != (failed > 0 ? "Failed" : "Completed")
-            || summary.Descendants(ns + "RunInfo").Any(r => r.Attribute("outcome")?.Value is not ("Information" or "Warning")))
+        if (exit != (failed > 0 ? 1 : 0) || summary.Attribute("outcome")?.Value != (failed > 0 ? "Failed" : "Completed"))
             throw new InvalidDataException(suite + ": test exit/summary indicates abort, timeout, crash or inconsistent completion");
+        var failedNames = cases.Where(c => c.Outcome == "Failed").Select(c => c.Name).ToHashSet(StringComparer.Ordinal);
+        foreach (var info in summary.Descendants(ns + "RunInfo"))
+        {
+            if (info.Attribute("outcome")?.Value is "Information" or "Warning") continue;
+            var message = info.Element(ns + "Text")?.Value ?? "";
+            var match = Regex.Match(message, @"\A\[xUnit\.net [0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}\][ \t]+(?<name>[^\r\n]+) \[FAIL\]\z", RegexOptions.CultureInvariant, PatternTimeout);
+            // The pinned adapter emits Error RunInfos for normal failed cases. Only its exact
+            // whole-line shape, bound to an actual failed result, is a test diagnostic.
+            if (info.Attribute("outcome")?.Value != "Error" || !match.Success || !failedNames.Contains(match.Groups["name"].Value))
+                throw new InvalidDataException(suite + ": unmatched infrastructure RunInfo");
+        }
         var counters = summary.Elements(ns + "Counters").Single();
         foreach (var (name, value) in new[] { ("total", cases.Length), ("executed", passed + failed), ("passed", passed), ("failed", failed) })
             if (counters.Attribute(name)?.Value != value.ToString(CultureInfo.InvariantCulture)) throw new InvalidDataException(suite + ": inconsistent " + name);

@@ -99,9 +99,9 @@ own T013a increment; native backend and final qualification remain008.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/P0, Q-05 |40703639791: both modes INVALID at Core TRX BOM; all failed artifacts retained | 1 | FAIL |
-| A2 | Q-01/Q-05 |60record/comparison/predecessor/TRX fixtures,5real process lifecycle fixtures; repeated exact Core2644/MCP358 identities | 2 | PASS |
-| A3 | D-28/D4/D7 | 28source/inventory/workflow fixtures and45 exact migration entries, checker-02 | 1 | PASS |
+| A1 | D-28/P0, Q-05 |40703639791 BOM INVALID;40707681528 known test-failure RunInfo INVALID; both attempts retained | 2 | FAIL |
+| A2 | Q-01/Q-05 |66record/comparison/predecessor/TRX fixtures,5started-process lifecycle fixtures; both actual native2 Core captures replay correctly | 3 | PASS |
+| A3 | D-28/D4/D7 |39source/inventory/workflow fixtures,15actual Bash syntax checks and45migration entries; bootstrap index required before final gate | 2 | BLOCKED |
 | A4 | source delivery | Linux required CI, independent reviews and exact-head delivery gate | 0 | NOT_RUN |
 
 ## State
@@ -111,7 +111,7 @@ own T013a increment; native backend and final qualification remain008.
 **Authority**: owner2026-10-28 request to fix macOS advisory; constitution commit/push/PR/green
 reviewed merge. Earlier AGD macOS verification extension remains in scope; no AB native profiling.
 **Attempts**: latest484-failure run is retained inherited evidence, not a new repair attempt.
-First026 native execution invalid; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
+First two026 native executions invalid; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
 found2mediums (accepted predecessor binding and package-smoke head checkout), addressed in the
 design above; scoped ops design re-review PASS0 at ddd2d0c, first fix round.
 Local first checker invocation exposed a self-test root-resolution mistake; retained checker-01,
@@ -127,8 +127,17 @@ Test-design correction PASS0 atcd954a5; all six fixture repairs preserve row cou
 Owned POSIX groups now cover direct exits, orphan pipe holders, deadlines, parent cancellation,
 prelaunch sink failure and log overflow. Mode-scoped skip fixtures cover asymmetric outcomes.
 First combined format command hit its120s tool deadline; longer format-only verification passed.
+At04ed4a4, code/security/architecture scoped re-reviews PASS0. Full test review found3mediums:
+completed-failure RunInfo classification (native2 observed), missing Bash syntax/sed/readlink rules,
+and insufficient descendant liveness proof in cancellation/timeout/overflow fixtures. Fixround2
+implements them; actual native2 Core captures replay with2642unique names each, strict outcomes
+retained. Fresh complete native attempt3 is next. Repository gate intentionally requires the first
+accepted two-mode index before bootstrap can close; no generated empty baseline bypass.
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-code-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471718957
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471719532
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471720207
+**Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472051194
+**Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472051757
+**Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472052301
 **Next**: complete native baseline, retain/index both records, implementation review and exact-head
 gates, then T013a portable fonts.

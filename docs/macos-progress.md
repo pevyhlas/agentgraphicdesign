@@ -26,6 +26,8 @@ valid progress record; a crash, timeout, incomplete discovery, missing suite or 
 does not. Each command has a five-minute deadline, each input/log a32MiB limit and records a30000
 case limit. Unknown outcomes and duplicate cases fail closed. The pinned VSTest/xUnit combination
 reports skipped rows as `NotExecuted` even when its aggregate skip counter is zero.
+It also emits Error RunInfos for ordinary failures; only the whole-line pinned-adapter message
+bound to an actual failed case is accepted. Other infrastructure errors invalidate the run.
 An owned POSIX helper keeps its process-group identity until the direct exit is recorded, then
 the parent terminates the group, including descendants retaining output pipes. Log setup happens
 before launch; timeout and overflow retain failure exits. This is cleanup on a trusted host, not
@@ -68,6 +70,8 @@ to the latest accepted predecessor and review. Post each full record as a durabl
 update the index with the uncompressed TSV SHA-256 and the exact comment URL. Actions artifacts
 expire after30days; they are not the baseline's sole location. A retrieval must decode the record
 and reproduce its indexed digest. No command automatically resets the baseline.
+The repository gate requires a valid two-mode index. During the initial draft bootstrap it stays
+red until the first complete native records have been retained and indexed.
 
 An index-only finalization still requires native runs at the final head. They must reproduce the
 accepted case identities/outcomes, including failure and skip sets. Review the intervening diff
@@ -88,6 +92,8 @@ parser or portability proof. Multiline/compound guards, aliases in the same file
 within an inventoried file cannot silently inherit an older allowance. Changes must migrate the
 site or update its reason under review; removed sites must remove stale entries. Tasks008/T006,
 T013 andT014 tighten this inventory as the corresponding implementations land.
+Every supported `scripts/**/*.sh` also runs through `/bin/bash -n`; syntax errors fail even when
+a file has a migration entry. Static checks include suffix-less `sed -i` and `readlink -e`.
 
 For diagnostics on any host, `macos-progress check-trx SUITE TRX DISCOVERY_LOG EXIT_CODE`
 validates one suite's completion/identity without issuing a native record. Existing theories
