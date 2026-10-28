@@ -34,13 +34,16 @@ public sealed class SvgSpriteComposerTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidFragmentEncodings))]
-    public void NonUtf8BomAndMalformedEncoding_AreRejected(byte[] fragment)
+    [MemberData(nameof(InvalidFragmentEncodingKeys))]
+    public void NonUtf8BomAndMalformedEncoding_AreRejected(string encodingKey)
     {
+        var fragment = (byte[])InvalidFragmentEncodings().Single(row => (string)row[0] == encodingKey)[1];
         var error = Assert.Throws<DocumentEngineException>(() => SvgSpriteComposer.Compose([fragment]));
         Assert.Equal("ASSET_EXPORT_FAILED", error.Code);
         Assert.Contains("BOM-free UTF-8", error.Message);
     }
+
+    public static IEnumerable<object[]> InvalidFragmentEncodingKeys() => InvalidFragmentEncodings().Select(row => new[] { row[0] });
 
     public static IEnumerable<object[]> InvalidFragmentEncodings()
     {
@@ -51,16 +54,16 @@ public sealed class SvgSpriteComposerTests
             new UTF32Encoding(false, true), new UTF32Encoding(true, true), new UTF8Encoding(true)
         })
         {
-            yield return [encoding.GetPreamble().Concat(encoding.GetBytes(fragment)).ToArray()];
+            yield return [encoding.WebName + "-bom", encoding.GetPreamble().Concat(encoding.GetBytes(fragment)).ToArray()];
             if (encoding.CodePage != Encoding.UTF8.CodePage)
-                yield return [encoding.GetBytes(fragment)];
+                yield return [encoding.WebName + "-bare", encoding.GetBytes(fragment)];
         }
         foreach (var invalid in new byte[][]
         {
             [0x80], [0xc0, 0xaf], [0xed, 0xa0, 0x80], [0xf4, 0x90, 0x80, 0x80], [0xe2, 0x82]
         })
         {
-            yield return ["<symbol id='one'><desc>"u8.ToArray().Concat(invalid)
+            yield return ["invalid-" + Convert.ToHexString(invalid), "<symbol id='one'><desc>"u8.ToArray().Concat(invalid)
                 .Concat("</desc></symbol>"u8.ToArray()).ToArray()];
         }
     }

@@ -33,6 +33,7 @@ internal static partial class Program
                 "platform-p0-run" when args.Length >= 4 => RunPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
                 "platform-p0-check" when args.Length >= 4 => CheckPlatformP0(Path.GetFullPath(args[1]), args[2], args[3], args.Contains("--macos", StringComparer.Ordinal)),
                 "macos-progress" => MacosProgress(args[1..]),
+                "_progress-exec" when args.Length >= 4 => ProgressExec(args[1], args[2], args[3], args[4..]),
                 "portability-rules" => CheckPortabilityRules(GetWorkingRoot(args, 1)),
                 "bash32-lint" => CheckPortabilityRules(GetWorkingRoot(args, 1), bashOnly: true),
                 "self-test" => RunSelfTests(),

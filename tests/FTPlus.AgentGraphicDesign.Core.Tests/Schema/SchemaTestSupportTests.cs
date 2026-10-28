@@ -26,8 +26,8 @@ public class SchemaTestSupportTests
     [InlineData("{\"propertyNames\":{\"pattern\":\"^[a-z]+$\"}}", "{\"X\":0}", false)]
     [InlineData("{\"minLength\":1}", "\"\"", false)]
     [InlineData("{\"maxLength\":1}", "\"aa\"", false)]
-    [InlineData("{\"minLength\":1,\"maxLength\":1}", "\"\uD83D\uDE00\"", true)]
-    [InlineData("{\"minLength\":2}", "\"\uD83D\uDE00\"", false)]
+    [InlineData("{\"minLength\":1,\"maxLength\":1}", "@emoji-json", true)]
+    [InlineData("{\"minLength\":2}", "@emoji-json", false)]
     [InlineData("{\"pattern\":\"[a-z]\"}", "\"0a0\"", true)]
     [InlineData("{\"pattern\":\"^[a-z]+$\"}", "\"0a0\"", false)]
     [InlineData("{\"format\":\"uuid\"}", "\"10000000-0000-0000-0000-000000000001\"", true)]
@@ -42,6 +42,9 @@ public class SchemaTestSupportTests
     [InlineData("{\"minItems\":1,\"minProperties\":1,\"minLength\":1,\"minimum\":1}", "null", true)]
     public void Assertions_ApplyToTheirInstanceTypes(string schema, string instance, bool valid)
     {
+        // VSTest escapes non-BMP display names differently in discovery and TRX. Keep the
+        // identical JSON input behind an ASCII key, not a global identity-normalization rule.
+        if (instance == "@emoji-json") instance = "\"\uD83D\uDE00\"";
         Assert.Equal(valid, Validate(schema, instance).Count == 0);
     }
 

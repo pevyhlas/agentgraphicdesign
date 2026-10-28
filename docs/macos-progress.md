@@ -26,6 +26,10 @@ valid progress record; a crash, timeout, incomplete discovery, missing suite or 
 does not. Each command has a five-minute deadline, each input/log a32MiB limit and records a30000
 case limit. Unknown outcomes and duplicate cases fail closed. The pinned VSTest/xUnit combination
 reports skipped rows as `NotExecuted` even when its aggregate skip counter is zero.
+An owned POSIX helper keeps its process-group identity until the direct exit is recorded, then
+the parent terminates the group, including descendants retaining output pipes. Log setup happens
+before launch; timeout and overflow retain failure exits. This is cleanup on a trusted host, not
+a sandbox against commands deliberately escaping their session.
 
 Download both artifacts and run `check` on each mode directory. Retain original failed attempts.
 The TSV is sorted by ordinal suite/case identity, carries explicit skips and binds counts, mode,
@@ -53,6 +57,8 @@ Failures may only shrink; a previously fixed failure cannot return. Old cases ma
 `.config/macos-progress-exceptions.json` can explicitly name a reasoned new skip or a one-to-one
 rename, reviewed on the same PR. Duplicate, stale or unreasoned exceptions fail. Exceptions do
 not authorize a new failing case.
+Skip entries require `Mode`, `Suite`, `Name` and `Reason`; each mode can have different outcomes.
+Rename entries require `Suite`, `From`, `To` and `Reason` and apply to both modes.
 
 ## Accept and retain a baseline
 
@@ -82,3 +88,8 @@ parser or portability proof. Multiline/compound guards, aliases in the same file
 within an inventoried file cannot silently inherit an older allowance. Changes must migrate the
 site or update its reason under review; removed sites must remove stale entries. Tasks008/T006,
 T013 andT014 tighten this inventory as the corresponding implementations land.
+
+For diagnostics on any host, `macos-progress check-trx SUITE TRX DISCOVERY_LOG EXIT_CODE`
+validates one suite's completion/identity without issuing a native record. Existing theories
+use stable serializable keys where complex objects or truncated display names would hide cases;
+all original input construction and assertions remain inside the tests.

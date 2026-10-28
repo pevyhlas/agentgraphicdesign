@@ -22,7 +22,7 @@ internal static partial class Program
     private sealed record ProgressRecord(ProgressHeader Header, ProgressCase[] Cases);
     private sealed record ProgressBaseline(string Mode, string SourceCommit, string Sha256, string Evidence);
     private sealed record ProgressIndexData(int Version, ProgressBaseline[] Records);
-    private sealed record ProgressReason(string Suite, string Name, string Reason);
+    private sealed record ProgressReason(string Mode, string Suite, string Name, string Reason);
     private sealed record ProgressRename(string Suite, string From, string To, string Reason);
     private sealed record ProgressOverrides(int Version, ProgressReason[] Skips, ProgressRename[] Renames);
 
@@ -32,6 +32,7 @@ internal static partial class Program
         {
             ["run", var root, var output, var sha, var mode] => RunMacosProgress(Path.GetFullPath(root), Path.GetFullPath(output), sha, mode),
             ["check", var directory, var sha] => CheckMacosProgress(directory, sha),
+            ["check-trx", var suite, var trx, var discovery, var exit] => CheckProgressTrx(suite, trx, discovery, int.Parse(exit, CultureInfo.InvariantCulture)),
             ["compare", var root, var baseSha, var previous, var current, var headSha] => CompareMacosProgress(Path.GetFullPath(root), baseSha, previous, current, headSha),
             _ => throw new ArgumentException("macos-progress run ROOT FRESH_OUTPUT HEAD_SHA MODE | check OUTPUT HEAD_SHA | compare ROOT ACTUAL_PR_BASE_SHA PREVIOUS_DIR CURRENT_DIR HEAD_SHA")
         };
@@ -105,6 +106,7 @@ internal static partial class Program
     private static ProgressCase[] ReadProgressTrx(string path, string suite, string[] discovery, int exit)
     {
         var text = ProgressText(path);
+        if (text.StartsWith('\uFEFF')) text = text[1..]; // Observed VSTest UTF-8 transport BOM, XML only.
         using var reader = XmlReader.Create(new StringReader(text), new XmlReaderSettings { DtdProcessing = DtdProcessing.Prohibit, XmlResolver = null, MaxCharactersInDocument = ProgressMaxBytes });
         var doc = XDocument.Load(reader);
         XNamespace ns = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
@@ -137,37 +139,12 @@ internal static partial class Program
         return cases;
     }
 
-    private static (int Exit, string Output) ProgressCommand(string root, string output, string label, string exe, params string[] args)
+    private static int CheckProgressTrx(string suite, string trx, string discovery, int exit)
     {
-        var info = new ProcessStartInfo(exe) { WorkingDirectory = root, RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false };
-        foreach (var arg in args) info.ArgumentList.Add(arg);
-        File.WriteAllText(Path.Combine(output, label + ".command.json"), JsonSerializer.Serialize(new { exe, args, info.WorkingDirectory }));
-        using var process = Process.Start(info) ?? throw new IOException("Cannot start " + exe);
-        using var stdout = File.Create(Path.Combine(output, label + ".stdout.log"));
-        using var stderr = File.Create(Path.Combine(output, label + ".stderr.log"));
-        // Drain to files, not unbounded in-memory strings. The workflow also has a hard deadline.
-        var copy = Task.WhenAll(CopyProgressLog(process.StandardOutput.BaseStream, stdout), CopyProgressLog(process.StandardError.BaseStream, stderr));
-        var done = process.WaitForExit(300_000);
-        if (!done) { process.Kill(entireProcessTree: true); process.WaitForExit(10_000); }
-        var exit = done ? process.ExitCode : 124;
-        File.WriteAllText(Path.Combine(output, label + ".exit"), exit.ToString(CultureInfo.InvariantCulture));
-        if (!copy.Wait(10_000)) throw new TimeoutException("Subprocess output did not close: " + label);
-        stdout.Dispose(); stderr.Dispose();
-        Console.WriteLine($"macos-progress {label}: exit {exit}");
-        return (exit, ProgressText(Path.Combine(output, label + ".stdout.log")));
-    }
-
-    private static async Task CopyProgressLog(Stream input, Stream output)
-    {
-        var buffer = new byte[8192];
-        var total = 0;
-        int read;
-        while ((read = await input.ReadAsync(buffer)) != 0)
-        {
-            total = checked(total + read);
-            if (total > ProgressMaxBytes) throw new InvalidDataException("Subprocess log exceeded 32 MiB; run invalid");
-            await output.WriteAsync(buffer.AsMemory(0, read));
-        }
+        if (!ProgressSuites.Contains(suite)) throw new ArgumentException("Unknown suite");
+        var cases = ReadProgressTrx(trx, suite, DiscoveryIdentities(ProgressText(discovery)), exit);
+        Console.WriteLine($"{suite}: {cases.Length} unique discovery/TRX identities agree. Diagnostic only, no native record.");
+        return 0;
     }
 
     private static int RunMacosProgress(string root, string output, string sha, string mode)
@@ -305,8 +282,12 @@ internal static partial class Program
             var value = old[from]; old.Remove(from); old.Add(to, value with { Name = rename.To });
         }
         var skips = new HashSet<string>(StringComparer.Ordinal);
+        if (exceptions.Skips.Any(skip => !ProgressModes.Contains(skip.Mode))
+            || exceptions.Skips.Select(skip => skip.Mode + "\t" + skip.Suite + "\t" + skip.Name).Distinct(StringComparer.Ordinal).Count() != exceptions.Skips.Length)
+            throw new InvalidDataException("Skip exceptions require unique explicit root modes");
         foreach (var skip in exceptions.Skips)
         {
+            if (skip.Mode != current.Header.Mode) continue;
             var key = skip.Suite + "\t" + skip.Name;
             if (!UsableValue(skip.Reason) || !skips.Add(key) || !now.TryGetValue(key, out var c) || c.Outcome != "NotExecuted"
                 || old.TryGetValue(key, out var p) && p.Outcome == "NotExecuted") throw new InvalidDataException("Skip exception is duplicate, stale, unreasoned or not a new skip");

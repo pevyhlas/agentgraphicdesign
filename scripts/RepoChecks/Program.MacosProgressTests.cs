@@ -23,6 +23,7 @@ internal static partial class Program
         var text = SerializeProgress(baseline);
         Check("valid record", true, () => ParseProgress(text, sha, "private-tmp"));
         Check("truncated", false, () => ParseProgress(text[..^1], sha, "private-tmp"));
+        Check("TSV BOM refused", false, () => ParseProgress("\uFEFF" + text, sha, "private-tmp"));
         Check("tampered", false, () => ParseProgress(text.Replace("Failed\n", "Passed\n", StringComparison.Ordinal), sha, "private-tmp"));
         Check("wrong source", false, () => ParseProgress(text, new string('f', 40), "private-tmp"));
         Check("wrong mode", false, () => ParseProgress(text, sha, "default-tmpdir"));
@@ -41,10 +42,24 @@ internal static partial class Program
         Check("failure moved", false, () => CompareProgress(baseline, Current(cases.Select(c => c with { Outcome = c.Suite == "Cli" ? "Failed" : "Passed" }).ToArray()), empty));
         var skipped = cases.Select(c => c.Suite == "Core" ? c with { Outcome = "NotExecuted" } : c).ToArray();
         Check("new skip", false, () => CompareProgress(baseline, Current(skipped), empty));
-        var reason = new ProgressReason("Core", cases[0].Name, "Reviewed platform fixture conversion, 008/T013");
+        var reason = new ProgressReason("private-tmp", "Core", cases[0].Name, "Reviewed platform fixture conversion, 008/T013");
         Check("reasoned skip", true, () => CompareProgress(baseline, Current(skipped), new(1, [reason], [])));
         Check("blank skip reason", false, () => CompareProgress(baseline, Current(skipped), new(1, [reason with { Reason = "" }], [])));
         Check("stale skip reason", false, () => CompareProgress(baseline, baseline, new(1, [reason], [])));
+        var otherMode = baseline with { Header = baseline.Header with { Mode = "default-tmpdir" } };
+        Check("asymmetric skip both modes", true, () =>
+        {
+            CompareProgress(baseline, Current(skipped), new(1, [reason], []));
+            CompareProgress(otherMode, otherMode, new(1, [reason], []));
+        });
+        Check("preexisting skip in other mode", true, () =>
+        {
+            var priorSkip = Current(skipped) with { Header = Current(skipped).Header with { Mode = "default-tmpdir" } };
+            CompareProgress(baseline, Current(skipped), new(1, [reason], []));
+            CompareProgress(priorSkip, priorSkip, new(1, [reason], []));
+        });
+        Check("unknown skip mode", false, () => CompareProgress(baseline, Current(skipped), new(1, [reason with { Mode = "both" }], [])));
+        Check("duplicate scoped skip", false, () => CompareProgress(baseline, Current(skipped), new(1, [reason, reason], [])));
         var renamed = cases.Select(c => c.Suite == "Core" ? c with { Name = c.Name + "Renamed" } : c).ToArray();
         var rename = new ProgressRename("Core", cases[0].Name, renamed[0].Name, "Reviewed test rename");
         Check("unmapped disappearance", false, () => CompareProgress(baseline, Current(renamed), empty));
@@ -83,6 +98,7 @@ internal static partial class Program
             foreach (var (name, xml, exit, passes) in new[]
             {
                 ("completed failed with xunit skips", valid, 1, true),
+                ("observed UTF8 XML BOM", "\uFEFF" + valid, 1, true),
                 ("explicit skipped count", valid.Replace("notExecuted=\"0\"", "notExecuted=\"1\"", StringComparison.Ordinal), 1, true),
                 ("all passed", valid.Replace("outcome=\"Failed\"", "outcome=\"Passed\"", StringComparison.Ordinal).Replace("ResultSummary outcome=\"Passed\"", "ResultSummary outcome=\"Completed\"", StringComparison.Ordinal).Replace("passed=\"1\" failed=\"1\"", "passed=\"2\" failed=\"0\"", StringComparison.Ordinal), 0, true),
                 ("wrong exit", valid, 0, false), ("timeout", valid, 124, false), ("crash", valid, 139, false),
@@ -108,6 +124,7 @@ internal static partial class Program
             Check("oversized TRX", false, () => ReadProgressTrx(Path.Combine(dir, "huge.trx"), "Core", discovery, 1));
         }
         finally { Directory.Delete(dir, recursive: true); }
+        RunProgressProcessSelfTests(errors);
         Console.WriteLine($"macOS progress self-tests: {count} record/comparison/predecessor/TRX fixtures.");
     }
 }
