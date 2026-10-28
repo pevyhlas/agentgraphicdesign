@@ -81,7 +81,7 @@ architecture review (C-09).
 **Step**: approach
 **Waiting on**: remaining review/analysis/gallery capabilities and separate macOS qualification.
 User directed continuation on the public repositories. Change012 PR-1/2 foundations are delivered
-through020 (RGBA/characterization),021 (inputs/builder),023 (platform registry) and025 (render sessions).
+through018 (RGBA/characterization),020 (builder),021 (inputs),023 (platform registry) and025 (render sessions).
 **Next**: change012 PR-3 matrix layout/compositor, then PR-4 public sheet/session integration.
 006 and 010 already merged publicly in PRs #5 and #4 with green Linux CI; their records now
 reflect that. Do not port those changes again. Change 016 fixes the known CSS alpha defect;
