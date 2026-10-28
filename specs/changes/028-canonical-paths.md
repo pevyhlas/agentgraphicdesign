@@ -114,7 +114,7 @@ silently weakening021's lexical inspection, moving IO into PlatformProfile, or f
 
 - [x] T001 Architecture/security design review of current-tree integration and recovered acceptance.
 - [x] T002 Core canonicalizer/verifier seam and all surface migrations; tighten exact inventory.
-- [ ] T003 Negative/alias/mixed-spelling/lexical-inspection tests, native full comparison and package proof.
+- [x] T003 Negative/alias/mixed-spelling/lexical-inspection tests, native full comparison and package proof.
 - [ ] T004 Owning reviews, reviewed baseline replacement, final native/CI gates and same-PR source closure.
 
 ## Checks
@@ -131,9 +131,9 @@ checks and required CI remain mandatory. Future qualification and S1/S2 integrat
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/D4, AC-20 | d15b97f: all helper/host alias cases pass in both native modes; full checks retained in run40731235328 | 1 | PASS |
-| A2 | AC-18 path portion, AC-19/21, P1.I-02/P4.I-01 | cross-surface canonical paths and strict-link/lexical negatives; S0 preserved | 0 | NOT_RUN |
-| A3 | AC-22, Q-01/Q-03/Q-04 | run40731235328 COMPLETE but default-mode comparison fails on three raw-spelling expectations; correction pending | 1 | FAIL |
+| A1 | D-28/D4, AC-20 | e62b4dc: all helper/host alias cases pass in both native modes, run40732952769 | 2 | PASS |
+| A2 | AC-18 path portion, AC-19/21, P1.I-02/P4.I-01 | e62b4dc: source and both native modes; store/CLI/MCP mixed spelling, strict-link/lexical negatives PASS; installed3CLI/2MCP PASS, S0 preserved | 2 | PASS |
+| A3 | AC-22, Q-01/Q-03/Q-04 | run40732952769 complete comparison PASS;262default fixes, all54newcases pass; archive3564PASS, installed66CLI/40MCP and final requiredCI PASS | 2 | PASS |
 | A4 | source delivery | all owning reviews, reviewed baseline index, final native equivalence and exact-head CI/review gate | 0 | NOT_RUN |
 
 ## State
@@ -173,3 +173,18 @@ reviews PASS0 atd15b97f; no acceptance or future-head approval implied.
 **Correction**: four canonical expectations and the fixed-root fixture pass171 targeted Linux
 cases; hygiene/self-test, warning-free build and format PASS. Production source unchanged since
 d15b97f. Next native attempt must clear the original comparison before any baseline replacement.
+**Native attempt2**: run40732952769 ate62b4dc passes all9requiredCIjobs and bothmodejobs. Both
+records reconcile3562cases:3074PASS/480FAIL/8SKIP, byte-identical case/outcome bodies. Exactly262
+olddefaultfailures fixed; alloldprivateoutcomes unchanged, all54newcasesPASS. Current-base0852352
+comparisonPASS; durablemanifest6475697063 and4payloadcomments retrieved with exactbyte/digest
+matches. Proposedindex replacementawaits evidence-owner review; native1FAIL remains retained.
+**Packages**: cleanarchived15b97f3564PASS/0FAIL/0SKIP, installed66CLI/40MCPPASS and focused3CLI/
+2MCPrealwirePASS against pinnedpackages. No production/packaging/CLI/MCPtestdelta toe62b4dc;
+its exact-headCIpackage smoke alsoPASS. Publicpackageevidence6475597210. No publishedrelease.
+**Review**: round 3 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..d15b97f16f507fea5877f4671e12b97c43e0f4f3 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6475401944
+**Review**: round 3 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..d15b97f16f507fea5877f4671e12b97c43e0f4f3 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6475438157
+**Review**: round 3 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..d15b97f16f507fea5877f4671e12b97c43e0f4f3 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6475437709
+**Review**: round 4 · d15b97f16f507fea5877f4671e12b97c43e0f4f3..e62b4dc6b62cfa4af268a976e034346f7b546e22 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6475596802
+**Next**: test/operations source/evidence/index review, then finalmetadata-only nativeequivalence,
+allrequiredCI and review/deliverygates at the actualclosinghead before merge.480failures/8skips
+permode remain parent008qualification work; T007assetinspection follows028source delivery.
