@@ -68,28 +68,14 @@ policies: S0=`[U,U,R,R,R,R]`, S1=`[U,U,U,U,R,R]`. Reject unknown, duplicate/miss
 nonempty requires or any qualified macOS capability. This classifier is tool-only, outside the
 I/O-free Core registry, and is not a second admission decision.
 
-For new runs, capture locked exact-head restore/build and stable hashes of the checker/Core/four
-test assemblies, then `platform-fixtures ROOT --check`, all with bounded command/exit/output capture.
-Capture the tracked macOS26 fixture
-from the checked source and derive the record's Stage from it. `check` validates the captured
-fixture and successful fixture check, then demands header-stage agreement. Historic S0 records
-used as predecessors remain parseable; they do not acquire fabricated capture files. New-run
-verification requires the capture irrespective of stage. Exact clean source checks still bracket
-every run, and all four discovery/TRX reconciliations remain mandatory.
-
-Comparison reads each committed fixture through Git at the authenticated current target base and
-exact head; both record stages must match their respective source-bound fixture classification.
-Default comparison still requires equal stages. Add explicit CLI option `--stage-transition S0:S1`
-for this reviewed transition only: require base fixture S0, head fixture S1 and both mode records
-in that direction. Reject reverse, unknown, same-stage-with-flag and header-only transitions.
-The option cannot alter case identity, failure, skip, profile, SDK/runtime or current-base checks.
-No persistent exception or automatic baseline reset is introduced. Manual durable replacement
-and actual closing-head equivalence remain mandatory; once the accepted target base is S1,
-ordinary same-stage comparison resumes without a transition flag.
-
-Reject alternatives: S0-labelled S1 evidence, a general ignore-stage switch, an automatic baseline
-reset, embedding file IO in PlatformProfile, or admitting native pixels before their backend.
-Architecture/security review must approve this tooling integration before implementation.
+New runs capture exact-head locked builds, actual executed checker/Core/test-assembly identities,
+stable hashes and `platform-fixtures --check`; header stage must match the captured source fixture.
+Historic S0 predecessors remain readable without fabricated captures. Four-suite discovery/TRX,
+clean-source brackets, bounded logs/exits and source/fixture/binary mismatch negatives are mandatory.
+Comparison binds stages to committed live-base/head fixtures; only explicit `--stage-transition
+S0:S1` permits that forward transition. Reverse/unknown/same-stage-with-flag/header-only changes
+fail closed. All original identity/failure/skip/toolchain/current-base checks, manual durable
+replacement and final-head equivalence remain. No generic ignore-stage or automatic reset.
 
 ### Proof scope
 
@@ -110,7 +96,7 @@ qualification remain parent008 obligations; do not count their refusal as editin
 
 ## Tasks
 
-- [ ] T001 Record owner reconciliation of C-11 versus D-28 S1; complete independent design review.
+- [x] T001 Record owner reconciliation of C-11 versus D-28 S1; complete independent design review.
 - [ ] T002 Registry/fixture admission, file-probe native cases and bounded progress-stage migration.
 - [ ] T003 Complete Linux and two-mode native comparison; source/archive/installed proof and durable baseline.
 - [ ] T004 All five owning reviews, final exact-head gates and same-PR source closure.
@@ -135,12 +121,12 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 ## State
 
-**Step**: design review — owner resolved bounded S1 admission
+**Step**: implementation — path safety and observable I/O checkpoint
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
 **Baseline**: merged028 atbb035ef, acceptedS0 sourcee62b4dc:3074PASS/480FAIL/8SKIP per mode.
-No029 implementation or native attempt yet. Failed predecessor attempts remain on their PRs.
+No029 native attempt yet. Failed predecessor attempts remain on their PRs.
 **Owner decision**: 2026-10-28 conversation, question "May S1 enable assetPipeline and artifactVerify
 on .NET 10 Apple-silicon macOS 26+ after native safety tests and all review/CI gates pass, while still
 reporting them as unqualified?" Answer: "Allow S1 (Recommended)". This resolves the conflict raised
@@ -149,4 +135,18 @@ is removed. No review, runtime proof or later-stage authorization is implied by 
 **Design round1**: architecture/ops PASS0; security1HIGH (APFS normalization aliases), tests2MEDIUM
 (eight stable identities and observable no-open proof). Reports retained verbatim onPR22. Corrective
 design adds alias protection, Darwin fixtures/stable wrapper, IO traps/killable workers and explicit
-build/hash captures; it has no implementation/native proof yet. Next: scoped re-review before code.
+build/hash captures. All four scoped round2 design reviews PASS0; source/native acceptance remains open.
+**Checkpoint**: bounded macOS alias policy and pipeline integration, call-local leaf IO traps,
+Darwin device prepass and stable FIFO wrapper implemented; S0 admission unchanged. Linux138path/
+pipeline cases PASS, then365selected cases PASS plus2corrected alias-fixture cases PASS; warning-free
+solution build/format PASS. Failed local build (xUnit rejects overloaded test names) and fixture
+setup failures remain retained; explicit DisplayName preserves the accepted bare identity instead.
+Discovery confirms bare and all three original FIFO rows. Killable workers, S1 and stage proof pending.
+**Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
+**Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
+**Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368
+**Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477538551
+**Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477731138
+**Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477713018
+**Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477722702
+**Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477751084

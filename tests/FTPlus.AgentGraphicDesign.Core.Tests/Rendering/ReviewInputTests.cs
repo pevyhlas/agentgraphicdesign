@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using FTPlus.AgentGraphicDesign.Core.Documents;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
@@ -222,27 +223,54 @@ public sealed class ReviewInputTests : IDisposable
         Assert.Equal(0, _opens);
     }
 
-    [LinuxInspectionFact]
+    [UnixInspectionFact]
     public async Task LinuxDeviceIsRejectedBeforeOpen()
     {
-        await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("/dev/null")], [], _root));
+        Assert.Equal(0, UnixFileMetadata.LStat("/dev/null", out var metadata));
+        Assert.Equal(0x2000, metadata.Mode & UnixFileMetadata.TypeMask);
+        await Error(EngineErrors.PathEscape, () => Reader(trapOpens: true).ReadAsync([new("/dev/null")], [], _root));
         Assert.Equal(0, _opens);
     }
 
-    [LinuxInspectionFact]
+    [UnixInspectionFact]
     public async Task GenuineDeviceFontDirectoryEntriesRefuseBeforeDocumentOpen()
     {
-        // devpts contains real character devices, including ptmx, without requiring CAP_MKNOD
-        // to create a device fixture. No device is opened; the all-entry font pre-pass refuses it.
-        Assert.Contains("/dev/pts/ptmx", Directory.EnumerateFileSystemEntries("/dev/pts"));
-        Assert.All(Directory.EnumerateFileSystemEntries("/dev/pts"), path =>
-            Assert.Equal((FileAttributes)0, File.GetAttributes(path) & (FileAttributes.Directory | FileAttributes.ReparsePoint)));
-        Write("doc.json", Json());
-        await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("doc.json")], ["/dev/pts"], _root));
-        Assert.Equal(0, _opens);
+        if (OperatingSystem.IsMacOS())
+        {
+            var entry = Assert.Single(Directory.EnumerateFileSystemEntries("/dev"), path => path == "/dev/null");
+            Assert.Equal(0, UnixFileMetadata.LStat(entry, out var metadata));
+            Assert.Equal(0x2000, metadata.Mode & UnixFileMetadata.TypeMask);
+            Assert.Equal((FileAttributes)0, File.GetAttributes(entry) & (FileAttributes.Directory | FileAttributes.ReparsePoint));
+            Write("doc.json", Json());
+            await Error(EngineErrors.PathEscape, () => Reader(fontEntries: _ => [entry], trapOpens: true)
+                .ReadAsync([new("doc.json")], ["/dev"], _root));
+            Assert.Equal(0, _opens);
+        }
+        else
+        {
+            // devpts contains real character devices, including ptmx, without requiring CAP_MKNOD
+            // to create a device fixture. No device is opened; the all-entry font pre-pass refuses it.
+            Assert.Contains("/dev/pts/ptmx", Directory.EnumerateFileSystemEntries("/dev/pts"));
+            Assert.All(Directory.EnumerateFileSystemEntries("/dev/pts"), path =>
+                Assert.Equal((FileAttributes)0, File.GetAttributes(path) & (FileAttributes.Directory | FileAttributes.ReparsePoint)));
+            Write("doc.json", Json());
+            await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new("doc.json")], ["/dev/pts"], _root));
+            Assert.Equal(0, _opens);
+        }
     }
 
-    [LinuxInspectionTheory]
+    // The formerly skipped theory has this bare discovery identity on macOS. Keep it executable
+    // alongside the original argument-qualified rows; xUnit forbids overloaded test method names.
+    [UnixInspectionFact(DisplayName = "FTPlus.AgentGraphicDesign.Core.Tests.Rendering.ReviewInputTests.FifoReferenceAndFontEntriesRefuseWithBoundedWatchdog")]
+    public async Task AllFifoReferenceAndFontEntriesRefuseWithBoundedWatchdog()
+    {
+        await FifoReferenceAndFontEntriesRefuseWithBoundedWatchdog(false, "pipe.txt");
+        await FifoReferenceAndFontEntriesRefuseWithBoundedWatchdog(true, "pipe.txt");
+        File.Delete(Path.Combine(_root, "fonts", "pipe.txt"));
+        await FifoReferenceAndFontEntriesRefuseWithBoundedWatchdog(true, "x.ttf");
+    }
+
+    [UnixInspectionTheory]
     [InlineData(false, "pipe.txt")]
     [InlineData(true, "pipe.txt")]
     [InlineData(true, "x.ttf")]
@@ -252,24 +280,37 @@ public sealed class ReviewInputTests : IDisposable
         var fonts = Directory.CreateDirectory(Path.Combine(_root, "fonts")).FullName;
         var path = Path.Combine(fontEntry ? fonts : _root, name);
         Assert.Equal(0, MakeFifo(path, 0x180));
-        // O_RDWR|O_NONBLOCK keeps a write end alive. A mistaken read can be cancelled rather
-        // than hanging in open(2), and the independent open-count assertion still fails it.
-        var fd = Open(path, 2 | 0x800);
-        Assert.True(fd >= 0);
-        try
-        {
-            using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            await Error(EngineErrors.PathEscape, () => Reader().ReadAsync([new(fontEntry ? "doc.json" : name)], fontEntry ? ["fonts"] : [], _root, cancellation.Token));
-            Assert.Equal(0, _opens);
-        }
-        finally { Close(fd); }
+        // An attempted leaf open trips a sentinel rather than risking a blocked FIFO open.
+        using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await Error(EngineErrors.PathEscape, () => Reader(trapOpens: true).ReadAsync([new(fontEntry ? "doc.json" : name)], fontEntry ? ["fonts"] : [], _root, cancellation.Token));
+        Assert.Equal(0, _opens);
     }
 
-    private ReferenceReader Reader(long limit = ReferenceReader.MaxInputBytes) => new(InspectionAdmitted, limit, path =>
+    private ReferenceReader Reader(long limit = ReferenceReader.MaxInputBytes,
+        Func<string, IEnumerable<string>>? fontEntries = null, bool trapOpens = false) => new(InspectionAdmitted, limit, path =>
     {
         _opens++;
+        if (trapOpens) throw new UnexpectedLeafOpenException();
         return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-    });
+    }, fontEntries);
+
+    private sealed class UnexpectedLeafOpenException : Exception;
+
+    [InspectionFact]
+    public async Task ReferenceOpenOracle_TripsThroughTheRealCaptureBoundary()
+    {
+        Write("doc.json", Json());
+        await Assert.ThrowsAsync<UnexpectedLeafOpenException>(() => Reader(trapOpens: true).ReadAsync([new("doc.json")], [], _root));
+        Assert.Equal(1, _opens);
+    }
+
+    [UnixInspectionFact]
+    public async Task ActualDeviceDirectoryEnumeration_RefusesBeforeDocumentOpen()
+    {
+        Write("doc.json", Json());
+        await Error(EngineErrors.PathEscape, () => Reader(trapOpens: true).ReadAsync([new("doc.json")], ["/dev"], _root));
+        Assert.Equal(0, _opens);
+    }
 
     private async Task Error(string code, Func<Task<ReferenceInputs>> operation)
     {
@@ -311,8 +352,4 @@ public sealed class ReviewInputTests : IDisposable
 
     [DllImport("libc", EntryPoint = "mkfifo", SetLastError = true)]
     private static extern int MakeFifo([MarshalAs(UnmanagedType.LPUTF8Str)] string path, uint mode);
-    [DllImport("libc", EntryPoint = "open", SetLastError = true)]
-    private static extern int Open([MarshalAs(UnmanagedType.LPUTF8Str)] string path, int flags);
-    [DllImport("libc", EntryPoint = "close")]
-    private static extern int Close(int fd);
 }

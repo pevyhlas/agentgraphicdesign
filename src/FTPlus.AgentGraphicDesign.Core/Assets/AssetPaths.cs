@@ -31,11 +31,11 @@ internal static class AssetPaths
     }
 
     internal static bool Within(string path, string directory) =>
-        path.StartsWith(Path.EndsInDirectorySeparator(directory) ? directory : directory + Path.DirectorySeparatorChar,
+        AssetPathPolicy.Key(path).StartsWith(AssetPathPolicy.Key(Path.EndsInDirectorySeparator(directory) ? directory : directory + Path.DirectorySeparatorChar),
             StringComparison.OrdinalIgnoreCase);
 
     internal static bool Overlaps(string first, string second) =>
-        first.Equals(second, StringComparison.OrdinalIgnoreCase) || Within(first, second) || Within(second, first);
+        AssetPathPolicy.Comparer.Equals(first, second) || Within(first, second) || Within(second, first);
 
     internal static void RejectCaseAliases(string directory, string path, PlatformCapability capability, CancellationToken ct)
     {

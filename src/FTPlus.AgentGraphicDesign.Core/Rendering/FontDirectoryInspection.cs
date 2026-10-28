@@ -6,11 +6,12 @@ namespace FTPlus.AgentGraphicDesign.Core.Rendering;
 /// <summary>Shared, bounded pre-pass. Does not open files or decide the caller's size policy.</summary>
 internal static class FontDirectoryInspection
 {
-    internal static IReadOnlyList<string> Inspect(string directory, CancellationToken ct)
+    internal static IReadOnlyList<string> Inspect(string directory, CancellationToken ct,
+        Func<string, IEnumerable<string>>? enumerate = null)
     {
         AssetPaths.Inspect(directory, directory: true, required: true, PlatformCapability.AssetPipeline, ct);
         var entries = new List<string>();
-        foreach (var path in Directory.EnumerateFileSystemEntries(directory))
+        foreach (var path in (enumerate ?? Directory.EnumerateFileSystemEntries)(directory))
         {
             ct.ThrowIfCancellationRequested();
             if (entries.Count == FontDirectoryRules.MaxFilesPerDirectory)

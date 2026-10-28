@@ -26,17 +26,24 @@ public sealed class AssetPipeline
 
     private readonly IDocumentEngine _engine;
     private readonly IAssetProducer<VectorAssetRequest> _producer;
+    private readonly Func<string, FileStreamOptions, Stream> _open;
 
     public AssetPipeline(IDocumentEngine engine, IAssetProducer<VectorAssetRequest> producer)
+        : this(engine, producer, LeafFileIO.Open) { }
+
+    internal AssetPipeline(IDocumentEngine engine, IAssetProducer<VectorAssetRequest> producer,
+        Func<string, FileStreamOptions, Stream> open)
     {
         _engine = engine ?? throw new ArgumentNullException(nameof(engine));
         _producer = producer ?? throw new ArgumentNullException(nameof(producer));
+        _open = open;
     }
 
     public async Task<AssetPipelineResult> RunAsync(string manifestPath, bool check, CancellationToken cancellationToken = default)
     {
         var ct = cancellationToken;
         ct.ThrowIfCancellationRequested();
+        var paths = new AssetPathPolicy();
         try
         {
             if (string.IsNullOrWhiteSpace(manifestPath))
@@ -46,14 +53,16 @@ public sealed class AssetPipeline
                 throw AssetPaths.Unsafe(manifestPath);
             manifestPath = PlatformPaths.FullPath(manifestPath);
             AssetPaths.Inspect(manifestPath, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
+            paths.Check(manifestPath, ct);
             var directory = Path.GetDirectoryName(manifestPath)!;
             var manifest = AssetManifest.Parse(await ReadBoundedAsync(manifestPath, MaxManifestBytes, ct));
             var outputRoot = AssetPaths.Resolve(directory, manifest.OutputRoot);
             AssetPaths.Inspect(outputRoot, directory: true, required: false, PlatformCapability.AssetPipeline, ct);
             AssetPaths.RejectCaseAliases(directory, outputRoot, PlatformCapability.AssetPipeline, ct);
+            paths.Check(outputRoot, ct);
             var plans = new List<PlannedAsset>();
-            var outputs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var outputComponents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var outputs = new HashSet<string>(AssetPathPolicy.Comparer);
+            var outputComponents = new Dictionary<string, string>(AssetPathPolicy.Comparer);
             var fontPathComparer = OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
             var fontDirectories = new HashSet<string>(fontPathComparer);
             long inputBytes = 0;
@@ -75,6 +84,7 @@ public sealed class AssetPipeline
                 }
                 AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
                 AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
+                paths.Check(output, ct);
                 var format = Path.GetExtension(output).ToLowerInvariant() switch
                 {
                     ".svg" => "svg",
@@ -89,9 +99,10 @@ public sealed class AssetPipeline
                 var sources = entry.Sources.Select(source => AssetPaths.Resolve(directory, source)).ToArray();
                 foreach (var source in sources)
                 {
-                    if (AssetPaths.Overlaps(source, outputRoot) || source.Equals(manifestPath, StringComparison.OrdinalIgnoreCase))
+                    if (AssetPaths.Overlaps(source, outputRoot) || AssetPathPolicy.Comparer.Equals(source, manifestPath))
                         throw AssetPaths.Unsafe(source);
                     AssetPaths.Inspect(source, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
+                    paths.Check(source, ct);
                     var size = new FileInfo(source).Length;
                     inputBytes += size;
                     if (size > FileDocumentStore.DefaultMaxDocumentBytes || inputBytes > MaxInputBytes)
@@ -104,6 +115,7 @@ public sealed class AssetPipeline
                 {
                     if (AssetPaths.Overlaps(font, outputRoot))
                         throw AssetPaths.Unsafe(font);
+                    paths.Check(font, ct);
                     if (!fontDirectories.Add(font))
                         continue;
                     if (fontDirectories.Count > 16)
@@ -208,12 +220,14 @@ public sealed class AssetPipeline
             }
 
             // Compare the complete batch before any mkdir/temp file/rename, even in build mode.
+            paths.Invalidate();
             var files = new List<AssetFileResult>();
             for (var index = 0; index < plans.Count; index++)
             {
                 ct.ThrowIfCancellationRequested();
                 var output = plans[index].Output;
                 AssetPaths.RejectCaseAliases(directory, output, PlatformCapability.AssetPipeline, ct);
+                paths.Check(output, ct);
                 var status = "missing";
                 if (inventory.Contains(output))
                 {
@@ -235,7 +249,7 @@ public sealed class AssetPipeline
                     ct.ThrowIfCancellationRequested();
                     if (files[index].Status == "unchanged")
                         continue;
-                    await PublishAsync(plans[index].Output, generated[index], ct);
+                    await PublishAsync(plans[index].Output, generated[index], paths, ct);
                     files[index] = files[index] with { Status = "written" };
                 }
             }
@@ -252,10 +266,16 @@ public sealed class AssetPipeline
         }
     }
 
-    private static async Task<byte[]> ReadBoundedAsync(string path, int maximum, CancellationToken ct)
+    private async Task<byte[]> ReadBoundedAsync(string path, int maximum, CancellationToken ct)
     {
-        await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read,
-            64 * 1024, FileOptions.Asynchronous | FileOptions.SequentialScan);
+        await using var stream = _open(path, new FileStreamOptions
+        {
+            Mode = FileMode.Open,
+            Access = FileAccess.Read,
+            Share = FileShare.Read,
+            BufferSize = 64 * 1024,
+            Options = FileOptions.Asynchronous | FileOptions.SequentialScan
+        });
         if (stream.Length > maximum)
             throw AssetManifest.Limit();
         var data = new byte[(int)stream.Length];
@@ -265,18 +285,27 @@ public sealed class AssetPipeline
         return data;
     }
 
-    private static async Task PublishAsync(string output, byte[] data, CancellationToken ct)
+    private async Task PublishAsync(string output, byte[] data, AssetPathPolicy paths, CancellationToken ct)
     {
         AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
+        paths.Check(output, ct);
         var directory = Path.GetDirectoryName(output)!;
         Directory.CreateDirectory(directory);
+        paths.Invalidate();
+        paths.Check(output, ct);
         AssetPaths.Inspect(directory, directory: true, required: true, PlatformCapability.AssetPipeline, ct);
         var temporary = Path.Combine(directory, $".agd-assets-{Guid.NewGuid():N}.tmp");
         var created = false;
         try
         {
-            await using (var stream = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write,
-                FileShare.None, 64 * 1024, FileOptions.Asynchronous))
+            await using (var stream = _open(temporary, new FileStreamOptions
+            {
+                Mode = FileMode.CreateNew,
+                Access = FileAccess.Write,
+                Share = FileShare.None,
+                BufferSize = 64 * 1024,
+                Options = FileOptions.Asynchronous
+            }))
             {
                 created = true;
                 await stream.WriteAsync(data, ct);
@@ -284,7 +313,10 @@ public sealed class AssetPipeline
             }
             ct.ThrowIfCancellationRequested();
             AssetPaths.Inspect(output, directory: false, required: false, PlatformCapability.AssetPipeline, ct);
+            paths.Invalidate();
+            paths.Check(output, ct);
             File.Move(temporary, output, overwrite: true);
+            paths.Invalidate();
         }
         finally
         {

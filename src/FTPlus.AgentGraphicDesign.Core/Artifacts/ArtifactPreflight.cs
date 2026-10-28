@@ -26,7 +26,8 @@ public static class ArtifactPreflight
     internal static async Task<ArtifactPreflightResult> RunAsync(
         string descriptorPath, CancellationToken cancellationToken,
         Action<byte[], ArtifactFileClaim, ArtifactCanvas>? verifyPayload = null,
-        ArtifactCapturePolicy? capturePolicy = null)
+        ArtifactCapturePolicy? capturePolicy = null,
+        Func<string, FileStreamOptions, Stream>? open = null)
     {
         void Check()
         {
@@ -46,7 +47,7 @@ public static class ArtifactPreflight
             if (string.IsNullOrEmpty(directory))
                 throw new DocumentEngineException(EngineErrors.InvalidArguments, "The descriptor must be a file in a bundle directory.");
 
-            var metadata = await ReadAsync(fullPath, expectedLength: null, cancellationToken, capturePolicy).ConfigureAwait(false);
+            var metadata = await ReadAsync(fullPath, expectedLength: null, cancellationToken, capturePolicy, open).ConfigureAwait(false);
             Check();
             // Conservative cumulative ownership for parser copies, duplicate-key sets, decoded
             // strings/models and canonical identity buffers, before any metadata interpretation.
@@ -118,7 +119,7 @@ public static class ArtifactPreflight
                 var file = descriptor.Files[fileIndex];
                 try
                 {
-                    var data = await ReadAsync(Path.Combine(directory, file.Path), file.ByteLength, cancellationToken, capturePolicy).ConfigureAwait(false);
+                    var data = await ReadAsync(Path.Combine(directory, file.Path), file.ByteLength, cancellationToken, capturePolicy, open).ConfigureAwait(false);
                     using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
                     for (var offset = 0; offset < data.Length; offset += ReadChunkBytes)
                     {
@@ -179,7 +180,7 @@ public static class ArtifactPreflight
     }
 
     private static async Task<byte[]> ReadAsync(string path, long? expectedLength, CancellationToken ct,
-        ArtifactCapturePolicy? capturePolicy)
+        ArtifactCapturePolicy? capturePolicy, Func<string, FileStreamOptions, Stream>? open)
     {
         void Check()
         {
@@ -188,8 +189,14 @@ public static class ArtifactPreflight
         }
         Check();
         Inspect(path, directory: false, ct);
-        await using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read,
-            bufferSize: 1, FileOptions.Asynchronous | FileOptions.SequentialScan);
+        await using var stream = (open ?? LeafFileIO.Open)(path, new FileStreamOptions
+        {
+            Mode = FileMode.Open,
+            Access = FileAccess.Read,
+            Share = FileShare.Read,
+            BufferSize = 1,
+            Options = FileOptions.Asynchronous | FileOptions.SequentialScan
+        });
         Check();
         var length = stream.Length;
         var limit = expectedLength.HasValue ? capturePolicy?.MaxFileBytes ?? MaxFileBytes : ArtifactDescriptorContract.MaxMetadataBytes;

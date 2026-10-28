@@ -12,20 +12,20 @@ public sealed class InspectionFactAttribute : FactAttribute
     }
 }
 
-public sealed class LinuxInspectionFactAttribute : FactAttribute
+public sealed class UnixInspectionFactAttribute : FactAttribute
 {
-    public LinuxInspectionFactAttribute()
+    public UnixInspectionFactAttribute()
     {
-        if (!OperatingSystem.IsLinux() || !PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline))
-            Skip = "Requires Linux with admitted asset-pipeline inspection";
+        if (!(OperatingSystem.IsLinux() || OperatingSystem.IsMacOS()) || !PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline))
+            Skip = "Requires Unix with admitted asset-pipeline inspection";
     }
 }
 
-public sealed class LinuxInspectionTheoryAttribute : TheoryAttribute
+public sealed class UnixInspectionTheoryAttribute : TheoryAttribute
 {
-    public LinuxInspectionTheoryAttribute()
+    public UnixInspectionTheoryAttribute()
     {
-        if (!OperatingSystem.IsLinux() || !PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline))
-            Skip = "Requires Linux with admitted asset-pipeline inspection";
+        if (!(OperatingSystem.IsLinux() || OperatingSystem.IsMacOS()) || !PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline))
+            Skip = "Requires Unix with admitted asset-pipeline inspection";
     }
 }

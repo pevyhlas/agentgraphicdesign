@@ -32,10 +32,10 @@ public sealed class InspectedFontSet
     public long CountedBytes { get; }
 
     internal static InspectedFontSet Inspect(IReadOnlyList<string> directories, string baseDirectory,
-        bool inspect, CancellationToken ct)
+        bool inspect, CancellationToken ct, Func<string, IEnumerable<string>>? enumerate = null)
     {
         var resolved = FontDirectoryRules.ResolveDirectories(directories, baseDirectory, inspect, ct);
-        return new InspectedFontSet(resolved, FontDirectoryRules.Enumerate(resolved, inspect, ct));
+        return new InspectedFontSet(resolved, FontDirectoryRules.Enumerate(resolved, inspect, ct, enumerate));
     }
 }
 
@@ -66,13 +66,14 @@ internal static class FontDirectoryRules
         }).ToImmutableArray();
     }
 
-    internal static ImmutableArray<FontEntry> Enumerate(ImmutableArray<string> directories, bool inspect, CancellationToken ct)
+    internal static ImmutableArray<FontEntry> Enumerate(ImmutableArray<string> directories, bool inspect, CancellationToken ct,
+        Func<string, IEnumerable<string>>? enumerate = null)
     {
         var entries = ImmutableArray.CreateBuilder<FontEntry>();
         foreach (var directory in directories)
         {
             ct.ThrowIfCancellationRequested();
-            var inspected = inspect ? FontDirectoryInspection.Inspect(directory, ct) : null;
+            var inspected = inspect ? FontDirectoryInspection.Inspect(directory, ct, enumerate) : null;
             if (!Directory.Exists(directory))
                 throw new ArgumentException("Font directory not found", nameof(directories));
             if (File.GetAttributes(directory).HasFlag(FileAttributes.ReparsePoint))
