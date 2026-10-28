@@ -1,6 +1,6 @@
 # Change: macOS asset file-type inspection
 
-**Opened**: 2026-10-28 · **Parts**: P1, P4 · **Journeys**: J-03, J-04, J-05 · **Tier**: T2 · **Parent**: 008-macos-qualification
+**Opened**: 2026-10-28 · **Parts**: P1, P4 · **Journeys**: J-03, J-04, J-05 · **Tier**: T3 · **Parent**: 008-macos-qualification
 
 ## Intent
 
@@ -14,6 +14,7 @@ Native pixels/still import remain refused until S2; qualification and release re
 
 | Level | ID | Edit | Note |
 |-------|----|------|------|
+| L0 | C-11 | owner-approved bounded S1 admission after proof | unqualified labels and all other gates retained |
 | L1 | D-28 S1 and progress evidence | implement accepted admission; bounded explicit S0→S1 comparison | no qualified pair added |
 | L2 | P1.I-09, P4.B-02 | report/enforce unqualified assetPipeline/artifactVerify on the accepted profile | other profile/capability policies unchanged |
 | Change | 008/T007 | record delivery after native proof and final gates | AC-05 still-import success remains with S2 |
@@ -24,11 +25,10 @@ Native pixels/still import remain refused until S2; qualification and release re
 - C-04: pure Core registry remains authoritative; every entry-point guard and MCP report agrees.
 - C-09: no file format, API or command/tool cutover. Progress tooling explicitly adds one accepted
   stage transition; old durable S0 evidence remains readable, not rewritten or relabelled.
-- C-11/Q-05 **conflict, owner decision required**: D-28 specifies S1 unqualified admission, but
-  current C-11 requires every unqualified guarded profile to fail closed and explicitly says no
-  S1–S3 admission is implied. The historical Apple-silicon qualification direction does not resolve
-  these contradictory current statements. No runtime admission is authorized by this plan.
-  Proposed S1 would add no qualified pair; Windows deviation stays in its separate inbox item.
+- C-11/Q-05: owner resolved the S1 conflict on2026-10-28 by selecting "Allow S1 (Recommended)":
+  only these two capabilities/profile may be admitted after native safety tests and all review/CI
+  gates. Labels stay unqualified; no qualification or S2/S3/release/deployment permission follows.
+  This is an owner-directed rule amendment, not a waiver of any required check or an agent exception.
 - Q-01/Q-02: no output/sample tolerance changes or broader support/qualification claims.
 - Q-03/Q-04: existing inspection-before-open, fixed bounds, cancellation, no partial writes and
   verified aliases hold. FIFO/device/socket/link leaves must be refused without opening them.
@@ -41,7 +41,7 @@ Base `bb035efd9fe69013904af612fa73cd3cff04b2ce`, merged028/PR21. Canonical-path 
 delivered, with accepted indexed sourcee62b4dc, complete3562-case records per mode and final-head
 equivalence. Retain028's failed first comparison and earlier026/027 evidence; no attempt reset.
 
-### Proposed implementation of D-28 S1, blocked on C-11 reconciliation
+### Owner-approved bounded D-28 S1 implementation
 
 Move only the macOS26+ arm64 .NET10 registry row from `[U,U,R,R,R,R]` to `[U,U,U,U,R,R]`.
 Regenerate and review the corresponding synthetic fixture. `AssetPaths.Inspect` already consumes
@@ -101,7 +101,7 @@ qualification remain parent008 obligations; do not count their refusal as editin
 
 ## Tasks
 
-- [ ] T001 Owner reconciliation of C-11 versus D-28 S1; then independent design integration review.
+- [ ] T001 Record owner reconciliation of C-11 versus D-28 S1; complete independent design review.
 - [ ] T002 Registry/fixture admission, file-probe native cases and bounded progress-stage migration.
 - [ ] T003 Complete Linux and two-mode native comparison; source/archive/installed proof and durable baseline.
 - [ ] T004 All five owning reviews, final exact-head gates and same-PR source closure.
@@ -119,24 +119,22 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28 S1, P1.I-09/P4.B-02 | C-11 conflict requires owner disposition before runtime admission | 0 | BLOCKED |
+| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 0 | NOT_RUN |
 | A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 0 | NOT_RUN |
 | A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 0 | NOT_RUN |
 | A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 0 | NOT_RUN |
 
 ## State
 
-**Step**: NEEDS_DECISION — current C-11 conflicts with D-28 staged admission
+**Step**: design review — owner resolved bounded S1 admission
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
 **Baseline**: merged028 atbb035ef, acceptedS0 sourcee62b4dc:3074PASS/480FAIL/8SKIP per mode.
 No029 implementation or native attempt yet. Failed predecessor attempts remain on their PRs.
-**Conflict**: C-11 (constraints.md:83–99) says guarded unqualified profiles must refuse and no
-S1–S3 admission is implied; D-28:69–76 says S1 admits the two asset capabilities as unqualified.
-008's historical qualification intent and the broad repair request do not select between these
-current rules. No constraint is changed, exception granted or new owner HOLD invented here.
-**Next**: publish blocked design checkpoint and resolve the inbox's S1 question with the owner.
-Recommended: explicitly permit only D-28 S1 after native file-safety proof and existing review/CI
-gates, retaining unqualified labels and separate S2/qualification/release gates. Alternatively keep
-runtime refusal until full qualification, developing proof through test-only probes in the meantime.
+**Owner decision**: 2026-10-28 conversation, question "May S1 enable assetPipeline and artifactVerify
+on .NET 10 Apple-silicon macOS 26+ after native safety tests and all review/CI gates pass, while still
+reporting them as unqualified?" Answer: "Allow S1 (Recommended)". This resolves the conflict raised
+atac25d14/PR22, for exactly that scope. C-11 and D-28 now incorporate it; the answered inbox item
+is removed. No review, runtime proof or later-stage authorization is implied by the answer.
+**Next**: publish owner-directed canon and obtain independent architecture/security design review.

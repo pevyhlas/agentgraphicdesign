@@ -223,26 +223,4 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
-### Reconcile macOS S1 admission with C-11
-
-*2026-10-28 · agent · open*
-
-The verified-path repair is merged in [PR #21](https://github.com/pevyhlas/agentgraphicdesign/pull/21):
-262 failures fixed, leaving480 failures/8 skips in each mode. The next accepted D-28 task is
-008/T007: admit `assetPipeline` and `artifactVerify` as **unqualified** on .NET10 osx-arm64,
-macOS26 or later. But [C-11](product/constraints.md) explicitly requires unqualified guarded
-profiles to fail closed and says no S1–S3 admission is implied. The two current rules conflict.
-[029](changes/029-asset-inspection.md) records the design and has made no production changes.
-
-1. **Permit bounded S1 after native proof** (Recommended): explicitly reconcile C-11 with D-28
-   for these two capabilities/profile only, after regular/special-file safety tests, complete
-   two-mode non-regression and all existing reviews/CI. They remain labelled unqualified; native
-   pixels/still import, qualification, release and deployment get no approval from this decision.
-2. **Keep refusal until full qualification**: develop file/backend proof through test-only paths,
-   and defer public admission until the complete qualification record passes; amend D-28 staging
-   accordingly. This delays usable macOS asset operations but preserves C-11 as written.
-
-**If no answer**: keep runtime S0 refusal; do not implement the admission change. Independent
-portability or test-only proof can continue without treating this as a platform exception.
-
 ## Your direction

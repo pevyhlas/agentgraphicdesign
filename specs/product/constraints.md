@@ -83,17 +83,21 @@ the budget, split into constraints/<area>.md and keep one line and a link per ar
 - **C-11 Owner-gated platforms**: qualifying a platform profile beyond .NET 10 Linux x64 is the
   owner's decision, made per profile with recorded qualification evidence. The guarded
   operations are the asset pipeline, artifact preflight, still import and native pixel storage
-  (P1.I-09); every unqualified profile must fail closed for them. The existing deviation remains
+  (P1.I-09); unqualified profiles fail closed except for the owner-approved S1 scope below. The existing deviation remains
   an owner inbox question: D-28 S0 retains unqualified Windows x64 .NET 10 pipeline/artifact
-  admission only; all Windows native operations now refuse. This port does not grant a C-11 exception.
+  admission only; all Windows native operations now refuse.
+  Planned S1 (change 029): `assetPipeline` and `artifactVerify` may run as **unqualified** only on
+  .NET 10 Apple-silicon macOS 26+, after native regular/special-file safety proof, complete two-mode
+  non-regression and all existing review/CI gates. This permission does not qualify that profile
+  or authorize native pixels, still import, S2/S3 admission, release or deployment.
   Vector document reads and writes (P1.I-02) and raster export are not guarded: they run on
-  every profile, unqualified off .NET 10 Linux x64 (also an inbox question). No S1–S3 platform
-  admission is implied.
+  every profile, unqualified off .NET 10 Linux x64 (also an inbox question).
   - Why: file safety rests on OS primitives verified per profile; an unverified profile could
     lose or corrupt sources while claiming success.
   - Scope: P1, P4; J-03, J-04, J-05.
   - Source: owner direction (platform support is maintainer-gated; other platforms fail
-    closed).
+    closed); owner, 2026-10-28: "Allow S1 (Recommended)" in response to the bounded macOS asset
+    access question recorded for [PR #22](https://github.com/pevyhlas/agentgraphicdesign/pull/22).
   - Revisit when: a profile has recorded qualification evidence (change 008 for Apple silicon
     macOS).
   - Exception: the owner, through the inbox.
