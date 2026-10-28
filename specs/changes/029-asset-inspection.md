@@ -48,9 +48,14 @@ Regenerate and review the corresponding synthetic fixture. `AssetPaths.Inspect` 
 `UnixFileMetadata.SystemNative_LStat`; its platform-neutral Mode distinguishes regular files
 from FIFO/socket/device leaves without opening them. Preserve all gates, exact refusal text,
 canonical path flow and link checks. Do not add an OS-specific stat layout or general link bypass.
+S1 also requires managed-output normalization-alias protection: macOS FormD comparison keys for
+planned collisions/overlap, bounded exact stored-component checks for existing paths, and native
+NFC/NFD source-preservation tests before publication. Actual IO retains original canonical spelling.
 
 The newly admitted reference/font prepasses follow the same registry, so their existing explicit
-inspection skips should become executed coverage. A failed newly executed case is a real blocker,
+inspection skips become executed coverage, including portable device/FIFO fixtures and a stable
+bare FIFO wrapper retaining its original three scenarios and argument-qualified Linux identities.
+A failed newly executed case is a real blocker,
 not grounds to retain the skip or loosen the assertion. Asset output publication stays on its
 existing managed path; native pixel storage and import target admission remain refused.
 
@@ -63,8 +68,9 @@ policies: S0=`[U,U,R,R,R,R]`, S1=`[U,U,U,U,R,R]`. Reject unknown, duplicate/miss
 nonempty requires or any qualified macOS capability. This classifier is tool-only, outside the
 I/O-free Core registry, and is not a second admission decision.
 
-For new runs, require the existing `platform-fixtures ROOT --check` against the built Core
-assembly, with bounded command/stdout/stderr/exit capture. Capture the tracked macOS26 fixture
+For new runs, capture locked exact-head restore/build and stable hashes of the checker/Core/four
+test assemblies, then `platform-fixtures ROOT --check`, all with bounded command/exit/output capture.
+Capture the tracked macOS26 fixture
 from the checked source and derive the record's Stage from it. `check` validates the captured
 fixture and successful fixture check, then demands header-stage agreement. Historic S0 records
 used as predecessors remain parseable; they do not acquire fabricated capture files. New-run
@@ -91,8 +97,11 @@ Restated008/AC-05 portion: regular-file asset build/check, lint and artifact pre
 complete on macOS with Linux-equivalent envelopes. RestatedAC-06: FIFO, socket, device, symlink
 and dangling components fail PATH_ESCAPE before leaf open, and FIFO cannot block. Cover input,
 manifest, output and inventory paths through Core and representative CLI/real MCP wire.
-No privileged device creation is required: use an existing fixed device read-only for type
-inspection and owned temporary paths for all writes. Preserve worker deadlines and cleanup.
+No privileged device creation: fixed devices are metadata-only. Call-local Core IO trap seams
+prove zero unsafe-leaf opens, with sentinel controls. Killable workers with deadlines/tree cleanup
+bound real Core/CLI/MCP special-file cases; snapshot ordinary bytes/mtimes/entries without reading
+special fixtures. Detailed corrective design and finding map are retained on PR22 and in ignored
+evidence `029-asset-inspection/design/integration-02.md` (S-01, T-01/T-02, P-01).
 
 Keep every accepted case identity and outcome unless it improves; no new skip/rename exception.
 Check unsupported OS/runtime/process-architecture tuples still refuse before writes and agree
@@ -137,4 +146,7 @@ on .NET 10 Apple-silicon macOS 26+ after native safety tests and all review/CI g
 reporting them as unqualified?" Answer: "Allow S1 (Recommended)". This resolves the conflict raised
 atac25d14/PR22, for exactly that scope. C-11 and D-28 now incorporate it; the answered inbox item
 is removed. No review, runtime proof or later-stage authorization is implied by the answer.
-**Next**: publish owner-directed canon and obtain independent architecture/security design review.
+**Design round1**: architecture/ops PASS0; security1HIGH (APFS normalization aliases), tests2MEDIUM
+(eight stable identities and observable no-open proof). Reports retained verbatim onPR22. Corrective
+design adds alias protection, Darwin fixtures/stable wrapper, IO traps/killable workers and explicit
+build/hash captures; it has no implementation/native proof yet. Next: scoped re-review before code.
