@@ -6,6 +6,19 @@ public interface IRenderer
 {
     RenderResult Render(Document document, RenderOptions options);
 
+    /// <summary>
+    /// Opens one sequential, call-scoped session after input validation. The caller disposes it
+    /// on success, failure and cancellation. Renderers must override to consume nonempty sets.
+    /// </summary>
+    IRenderSession OpenSession(InspectedFontSet fonts, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(fonts);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (!fonts.Entries.IsEmpty)
+            throw new NotSupportedException("This renderer does not support inspected font entries");
+        return new ForwardingRenderSession(this);
+    }
+
     RenderResult Render(Document document, RenderOptions options, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();

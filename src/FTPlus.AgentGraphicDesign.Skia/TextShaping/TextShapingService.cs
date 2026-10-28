@@ -34,6 +34,7 @@ public sealed class TextShapingService : IDisposable
     private readonly Dictionary<string, CachedTypeface> _typefaceCache = new(StringComparer.OrdinalIgnoreCase);
     private readonly FontResolutionOptions _fontOptions;
     private readonly FontDirectoryCatalog _directories;
+    private readonly bool _ownsDirectories;
     private readonly List<RenderDiagnostic> _diagnostics = [];
     private readonly HashSet<string> _diagnosedFamilies = new(StringComparer.OrdinalIgnoreCase);
     private bool _disposed;
@@ -51,6 +52,16 @@ public sealed class TextShapingService : IDisposable
         ArgumentNullException.ThrowIfNull(fontOptions);
         _fontOptions = fontOptions;
         _directories = FontDirectoryCatalog.Load(fontOptions.FontDirectories);
+        _ownsDirectories = true;
+    }
+
+    /// <summary>The session retains ownership; caches and substitution diagnostics stay per render.</summary>
+    internal TextShapingService(FontResolutionOptions fontOptions, FontDirectoryCatalog directories)
+    {
+        ArgumentNullException.ThrowIfNull(fontOptions);
+        ArgumentNullException.ThrowIfNull(directories);
+        _fontOptions = fontOptions;
+        _directories = directories;
     }
 
     public FontResolutionOptions FontOptions => _fontOptions;
@@ -613,7 +624,8 @@ public sealed class TextShapingService : IDisposable
                     cached.Typeface.Dispose();
             }
             _typefaceCache.Clear();
-            _directories.Dispose();
+            if (_ownsDirectories)
+                _directories.Dispose();
         }
     }
 }

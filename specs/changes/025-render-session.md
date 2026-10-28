@@ -54,7 +54,7 @@ registry prerequisites are merged. Independent review confirms this bounded desi
 
 ## Tasks
 
-- [ ] T001 Confirm recovered contract with independent architecture/security design review.
+- [x] T001 Confirm recovered contract with independent architecture/security design review.
 - [ ] T002 Implement012/T034 Core session API, Skia session/catalog and borrowing shapers.
 - [ ] T003 Implement012/T035: order/one-load counters, late file, cancellation/partial disposal,
   sequential reuse, default fallback, option refusal, forced non-admitted skips and diagnostics.
@@ -80,9 +80,11 @@ platforms are unchanged; ordinary installed rendering is regression evidence onl
 
 ## State
 
-**Step**: design review pending
+**Step**: implementation
 **Branch**: `025-render-session`; PR not opened yet.
 **Authority**: owner continuation and constitution's standing commit/push/PR/green-reviewed-merge
 policy. No release or platform-qualification authorization is inferred.
-**Attempts**: none. Broad macOS advisory failures and008 qualification stay open.
-**Next**: independent design confirmation, implementation and evidence, then review/delivery.
+**Design review**: architecture/security PASS0 at4fd790a after supplying the missing revision-bound
+  bounds capture; initial pending reports retained. No design/source correction was needed.
+**Attempts**: baseline133 tests PASS. Broad macOS advisory failures and008 qualification stay open.
+**Next**: implementation and evidence, then review/delivery.

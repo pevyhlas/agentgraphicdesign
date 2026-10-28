@@ -71,8 +71,10 @@ the owner (option A of 012/OD-S05-1), removed by the change 008 increment that a
   aggregate bound and colour parser; T005 their tests. The public008/PR-1 registry gate merged
   in child023/PR16; input sourcec0269e3 has clean-archive3495PASS/installed CLI66+MCP40PASS;
   corrected test-head7c27ba9 has3497 Linux tests and all required CI PASS. Public review commands
-  and call-scoped catalog loading are still PR-2c/PR-4 obligations, not part of this foundation.
-- [ ] PR-2c: T034 the render session; T035 its tests.
+   are still PR-4 obligations, not part of this foundation.
+- [x] PR-2c in child025-render-session: T034 the render session/catalog loading; T035 ownership,
+  cancellation, ordered bounded loading, font-use differentials and regression tests. Command
+  integration and whole sheet/analysis/gallery work bounds remain later increments.
 - [x] Shared transient-document builder (with T032): thread the render font policy (`--font-dir`,
   `--no-system-fonts`) into the sub-node bounds probe so the crop matches the shaped text, and
   surface the probe's bounds diagnostics (such as an unresolved typography token) on sub-node
@@ -132,8 +134,9 @@ criterion and task text is recovered from pre-public history before its incremen
 pre-public history; PR-1 passed implementation review round 1 in all four lenses (architecture, code,
 security, test), with its Linux x64 CI run recorded; the ranges, review reports and the criterion
 and task text are not public
-**Waiting on**: child021-review-inputs design and the public008/PR-1 registry prerequisite.
+**Waiting on**: no foundation prerequisite; sheets, analysis and gallery increments remain.
 **Delivered**: child018-review-foundation merged as public PR #11 with fresh source/installed
 evidence and independent reviews; child020-transient-builder merged as public PR #13 after frozen
 characterization, source/installed checks and four independent lenses. Change010 is already merged.
-**Next**: port008's shared capability registry, then T004/T005 in child021 and render sessions.
+Child021 inputs and child023 platform registry are merged; child025 delivers render sessions.
+**Next**: PR-3 matrix layout/compositor and PR-4 public sheet integration, then analysis and galleries.
