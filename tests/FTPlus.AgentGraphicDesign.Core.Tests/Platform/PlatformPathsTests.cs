@@ -28,7 +28,7 @@ public sealed class PlatformPathsTests : IDisposable
     [InlineData("/tmp/a/../b", "/private/tmp/b")]
     [InlineData("/tmpx/probe", "/tmpx/probe")]
     [InlineData("/VAR/probe", "/VAR/probe")]
-    [InlineData("/home/probe", "/home/probe")]
+    [InlineData("/home", "/home")]
     [InlineData("/private/tmp/probe", "/private/tmp/probe")]
     public void CanonicalIdentity_IsSharedByBothOverloads(string input, string expected)
     {

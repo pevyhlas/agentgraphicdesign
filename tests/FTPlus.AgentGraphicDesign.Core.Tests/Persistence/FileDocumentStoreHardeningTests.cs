@@ -151,7 +151,7 @@ public sealed class FileDocumentStoreHardeningTests : IDisposable
 
         var handle = engine.Open(document.Id.ToString());
         Assert.NotNull(handle);
-        Assert.Equal(Path.GetFullPath(sourcePath), handle.SourcePath);
+        Assert.Equal(FTPlus.AgentGraphicDesign.Core.Paths.PlatformPaths.FullPath(sourcePath), handle.SourcePath);
         engine.AddNode(handle.Document, null, new NewNodeSpec { Type = "rectangle" });
         engine.Save(handle, expectedRevn: 1);
 

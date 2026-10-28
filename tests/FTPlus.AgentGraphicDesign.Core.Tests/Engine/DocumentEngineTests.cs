@@ -193,7 +193,7 @@ public class DocumentEngineTests : IDisposable
         var handle = _engine.Open(path);
 
         Assert.NotNull(handle);
-        Assert.Equal(Path.GetFullPath(path), handle.SourcePath);
+        Assert.Equal(FTPlus.AgentGraphicDesign.Core.Paths.PlatformPaths.FullPath(path), handle.SourcePath);
     }
 
     [Fact]

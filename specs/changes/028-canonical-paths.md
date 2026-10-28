@@ -131,9 +131,9 @@ checks and required CI remain mandatory. Future qualification and S1/S2 integrat
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/D4, AC-20 | alias-verifier tables, cache/metadata failures and actual macOS alias facts | 0 | NOT_RUN |
+| A1 | D-28/D4, AC-20 | d15b97f: all helper/host alias cases pass in both native modes; full checks retained in run40731235328 | 1 | PASS |
 | A2 | AC-18 path portion, AC-19/21, P1.I-02/P4.I-01 | cross-surface canonical paths and strict-link/lexical negatives; S0 preserved | 0 | NOT_RUN |
-| A3 | AC-22, Q-01/Q-03/Q-04 | complete path inventory migration, source/archive/installed checks and default/private non-regression | 0 | NOT_RUN |
+| A3 | AC-22, Q-01/Q-03/Q-04 | run40731235328 COMPLETE but default-mode comparison fails on three raw-spelling expectations; correction pending | 1 | FAIL |
 | A4 | source delivery | all owning reviews, reviewed baseline index, final native equivalence and exact-head CI/review gate | 0 | NOT_RUN |
 
 ## State
@@ -161,3 +161,15 @@ PASS. Earlier helper49PASS retained. Host aliases, complete native comparison, c
 installed proof remain pending; no integrated A1–A4 PASS is claimed yet.
 **Next**: publish migrated source, dispatch both full native modes and clean-archive package proof,
 then all five owning implementation reviews. Design approvals do not approve implementation.
+**Native attempt1**: run40731235328 atd15b97f completes3562cases per mode. Default3070PASS/484FAIL/
+8SKIP; private3074PASS/480FAIL/8SKIP. All54newcases pass;261olddefaultfailures becomePASS. Three
+previouslypassing default cases expect raw `/var` strings (engine origin, inspected-font directories,
+session loaded paths); one stillfailing store-origin case has the same stale expectation. All four
+need canonical expected values while retaining raw inputs and original equality/ordering checks.
+No production repair is indicated. Comparison FAIL remains retained, not an accepted baseline.
+RequiredCI also catches the synthetic `/home` child fixture as personal-path text; use the system
+root itself for that negative case. Eightotherrequiredjobs pass. Code/security/architecture source
+reviews PASS0 atd15b97f; no acceptance or future-head approval implied.
+**Correction**: four canonical expectations and the fixed-root fixture pass171 targeted Linux
+cases; hygiene/self-test, warning-free build and format PASS. Production source unchanged since
+d15b97f. Next native attempt must clear the original comparison before any baseline replacement.
