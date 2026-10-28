@@ -24,6 +24,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FTPlus.AgentGraphicDesign.Skia\FTPlus.AgentGraphicDesign.Skia.csproj" />
     <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
+    <Compile Include="../Fixtures/fonts/PortableTestFonts.cs" Link="Fixtures/PortableTestFonts.cs" />
+    <Content Include="../Fixtures/fonts/*.ttf;../Fixtures/fonts/LICENSE" Link="Fixtures/fonts/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="../Fixtures/sub-node/*" Link="Fixtures/sub-node/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

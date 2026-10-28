@@ -76,8 +76,12 @@ the selected public evidence is indexed in `specs/records.md`, not a macOS quali
   008/T016a account provisioning is inapplicable to hosted CI.
 - [ ] 008/T012 `PathRedactor`, which also fixes the unanchored Core path pattern that garbles
   `/private/...` roots and relative store locations with a `tmp`, `var` or similar segment in
-  `STORE_CONFLICT` messages (deferred here from change 006); 008/T013a OFL-1.1 test fonts;
-  008/T004 corpus commands and the dispatch-only Linux corpus job.
+  `STORE_CONFLICT` messages (deferred here from change 006); 008/T004 corpus commands and the
+  dispatch-only Linux corpus job.
+- [x] 008/T013a OFL-1.1 test fonts in child027 ([PR #20](https://github.com/pevyhlas/agentgraphicdesign/pull/20)):
+  pinned test-only Noto Sans/Arabic replace four Linux font assumptions, preserving case names,
+  assertions and skips. Native progress fixes those four identities in both modes. Child027's
+  final owning reviews/exact-head gates govern acceptance; runtime font policy stays unchanged.
 - [ ] 008/T006 `PlatformPaths` and the alias canonicalizer; 008/T007 admit asset inspection (S1).
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).
@@ -147,8 +151,8 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: child026-macos-progress completes008/T003 delivery; owner2026-10-28 requested
-fixing the broad macOS advisory. Then T013a fonts, T006/T007 paths/asset inspection, Darwin pixel
+**Next**: child027-portable-fonts completes008/T013a delivery after merged026; owner2026-10-28
+requested fixing the broad macOS advisory. Then T006/T007 paths/asset inspection, Darwin pixel
 backend and final qualification follow the dependencies above. Native69 cases passed before023
 attestations, but aggregate checks failed on
 missing records until the final integration; do not substitute partial runs for that gate. Broad
@@ -161,3 +165,7 @@ private3016PASS/484FAIL/8skip. Exact source/digests and durable retrievable payl
 retained on PR19, not qualified or reclassified. Subsequent portability changes compare with the
 latest target-base index; final head/metadata equivalence stays required. Source progress does not
 clear this parent's qualification obligations or its earlier verification budget/holds.
+Child027's native40718432005 fixes exactly four prior failed identities per mode with no other
+outcome change: default2758PASS/742FAIL/8skip, private3020PASS/480FAIL/8skip. The proposed reviewed
+index replacement preserves source/digest/PR-payload binding and the predecessor comparison;
+final metadata-only native equivalence remains required. These fixes do not admit new capabilities.

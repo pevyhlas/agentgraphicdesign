@@ -30,6 +30,8 @@
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="../FTPlus.AgentGraphicDesign.Core.Tests/Pixels/StillImportFixture.cs" Link="Fixtures/StillImportFixture.cs" />
     <Compile Include="../Fixtures/legacy-contact-sheet/LegacyContactSheetFixture.cs" Link="Fixtures/LegacyContactSheetFixture.cs" />
+    <Compile Include="../Fixtures/fonts/PortableTestFonts.cs" Link="Fixtures/PortableTestFonts.cs" />
+    <Content Include="../Fixtures/fonts/*.ttf;../Fixtures/fonts/LICENSE" Link="Fixtures/fonts/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

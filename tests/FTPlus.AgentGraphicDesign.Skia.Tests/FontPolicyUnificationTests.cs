@@ -4,6 +4,7 @@ using FTPlus.AgentGraphicDesign.Core.Documents.Nodes;
 using FTPlus.AgentGraphicDesign.Core.Layout;
 using FTPlus.AgentGraphicDesign.Core.Lint;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
+using FTPlus.AgentGraphicDesign.TestFixtures;
 using Xunit;
 
 namespace FTPlus.AgentGraphicDesign.Skia.Tests;
@@ -16,8 +17,6 @@ namespace FTPlus.AgentGraphicDesign.Skia.Tests;
 /// </summary>
 public class FontPolicyUnificationTests
 {
-    private static readonly string DejaVuDirectory = "/usr/share/fonts/truetype/dejavu";
-
     private static Document TextDocument(Guid textId, string? fontFamily, string text = "Hello world", double canvasWidth = 120, double canvasHeight = 60) =>
         new()
         {
@@ -141,18 +140,18 @@ public class FontPolicyUnificationTests
     [Fact]
     public void GetBounds_FontDirectoryPolicy_ChangesRealMeasuredWidth()
     {
-        Assert.True(Directory.Exists(DejaVuDirectory), $"Font-policy bounds test needs DejaVu Sans in {DejaVuDirectory}");
+        var fontDirectory = PortableTestFonts.VerifiedDirectory();
 
         var textId = Guid.NewGuid();
-        var document = TextDocument(textId, fontFamily: "DejaVu Sans");
+        var document = TextDocument(textId, fontFamily: PortableTestFonts.SansFamily, text: PortableTestFonts.WidthProbe);
         var engine = new DocumentEngine(measurerFactory: policy => new SkiaTextMeasurer(policy));
 
         // Both measurements disable host fonts so the difference is the font directory alone:
-        // without it "DejaVu Sans" substitutes the bundled Inter; with it the real face is used.
+        // without it "Noto Sans" substitutes the bundled Inter; with it the real face is used.
         var substituted = engine.GetBounds(document, textId,
             new FontPolicy { SystemFonts = false }, CancellationToken.None);
         var resolved = engine.GetBounds(document, textId,
-            new FontPolicy { FontDirectories = [DejaVuDirectory], SystemFonts = false }, CancellationToken.None);
+            new FontPolicy { FontDirectories = [fontDirectory], SystemFonts = false }, CancellationToken.None);
 
         var substitutedBounds = substituted.Single(b => b.Id == textId);
         var resolvedBounds = resolved.Single(b => b.Id == textId);
@@ -160,7 +159,7 @@ public class FontPolicyUnificationTests
         Assert.True(resolvedBounds.Measured);
         Assert.True(
             Math.Abs(resolvedBounds.Local!.Value.Width - substitutedBounds.Local!.Value.Width) > 1.0,
-            $"DejaVu Sans and the bundled substitute should measure differently; got {resolvedBounds.Local!.Value.Width} vs {substitutedBounds.Local!.Value.Width}");
+            $"Noto Sans and the bundled substitute should measure differently; got {resolvedBounds.Local!.Value.Width} vs {substitutedBounds.Local!.Value.Width}");
     }
 
     /// <summary>A text measurer that reports a fixed line width and records whether it was disposed.</summary>
