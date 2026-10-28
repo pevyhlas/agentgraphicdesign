@@ -82,7 +82,10 @@ the selected public evidence is indexed in `specs/records.md`, not a macOS quali
   pinned test-only Noto Sans/Arabic replace four Linux font assumptions, preserving case names,
   assertions and skips. Native progress fixes those four identities in both modes. Child027's
   final owning reviews/exact-head gates govern acceptance; runtime font policy stays unchanged.
-- [ ] 008/T006 `PlatformPaths` and the alias canonicalizer; 008/T007 admit asset inspection (S1).
+- [x] 008/T006 `PlatformPaths` and verified aliases implemented in child028
+  ([PR #21](https://github.com/pevyhlas/agentgraphicdesign/pull/21)):262default-root failures fixed,
+  both modes now3074PASS/480FAIL/8SKIP. Its final exact-head gates govern source delivery.
+- [ ] 008/T007 admit asset inspection (S1).
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).
 - [ ] 008/T013 remaining test portability; 008/T014 script portability; 008/T015 `platform-qualify`
@@ -170,3 +173,7 @@ outcome change: default2758PASS/742FAIL/8skip, private3020PASS/480FAIL/8skip. Th
 index replacement preserves source/digest/PR-payload binding and the predecessor comparison.
 Final native40722320267 and all required checks passed at7dcc810 before PR20 merged as0852352;
 the indexed results reproduced exactly. These fixes do not admit new capabilities.
+Child028's native40732952769 ate62b4dc fixes all262additionaldefault-root failures; both modes
+have identical3562case/outcome bodies,3074PASS/480FAIL/8SKIP. All54newcases pass. Native1comparison
+failure and its expectation correction remain onPR21. A1–A3/source reviews pass; source delivery
+still requires the actual closing-head gates, and all parent qualification items remain open.

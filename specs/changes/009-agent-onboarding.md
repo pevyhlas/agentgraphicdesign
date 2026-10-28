@@ -46,6 +46,9 @@ External prerequisites, no fallback or stub: 009/E1 change 006 merged; 009/E2 00
 (registry, gates, the probe interface and vocabulary) before any task; 009/E3 008/T006 before
 phase B; 009/E4 008/T012 before B3; 009/E5 008/T019 before B5. From 008/T018 on, PR groups that
 touch platform-sensitive paths carry a zero-failure qualification record (D-28).
+009/E3's canonical-path implementation is in child028 ([PR #21](https://github.com/pevyhlas/agentgraphicdesign/pull/21));
+consume it after that PR's final exact-head gates and source merge. E4/E5 and platform qualification
+remain separate prerequisites; this does not complete phase B.
 
 ## Tasks
 
