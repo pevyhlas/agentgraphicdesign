@@ -35,7 +35,13 @@ public sealed class AssetNormalizationTests : IDisposable
         IEnumerable<string> Enumerate(string parent)
         {
             if (parent == _root) roots++;
-            foreach (var entry in Directory.EnumerateFileSystemEntries(parent)) { scanned++; yield return entry; }
+            // The injected budget fixture owns this directory tree, not the host's shared /tmp
+            // inventory. Pin ancestors to the real requested component; enumerate every actual
+            // entry in the owned parent and descendants, including the exact 4096/4097 boundary.
+            var entries = parent == _root || AssetPaths.Within(parent, _root)
+                ? Directory.EnumerateFileSystemEntries(parent)
+                : [Path.Combine(parent, PlatformPaths.RelativePath(parent, _root).Split(Path.DirectorySeparatorChar)[0])];
+            foreach (var entry in entries) { scanned++; yield return entry; }
         }
         // Real source loading, inspection, planning and comparison; only the inventory observer
         // and explicit macOS policy selection are injected so this regression also runs on Linux.

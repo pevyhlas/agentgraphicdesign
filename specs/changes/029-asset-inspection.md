@@ -14,7 +14,7 @@ Native pixels/still import remain refused until S2; qualification and release re
 
 | Level | ID | Edit | Note |
 |-------|----|------|------|
-| L0 | C-11 | owner-approved bounded S1 admission after proof | unqualified labels and all other gates retained |
+| L0 | C-11, Q-05 | owner-approved bounded S1 admission after proof | unqualified labels and all other gates retained |
 | L1 | D-28 S1 and progress evidence | implement accepted admission; bounded explicit S0→S1 comparison | no qualified pair added |
 | L2 | P1.I-09, P4.B-02 | report/enforce unqualified assetPipeline/artifactVerify on the accepted profile | other profile/capability policies unchanged |
 | Change | 008/T007 | record delivery after native proof and final gates | AC-05 still-import success remains with S2 |
@@ -114,14 +114,14 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 1 | FAIL |
-| A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 1 | PARTIAL |
-| A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 1 | FAIL |
-| A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 1 | FAIL |
+| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 2 | PASS |
+| A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 2 | PARTIAL |
+| A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 2 | PARTIAL |
+| A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 2 | PARTIAL |
 
 ## State
 
-**Step**: corrective implementation — first native comparison and implementation review findings
+**Step**: verification — native comparison passes; isolated package fixture correction
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
@@ -145,11 +145,14 @@ Linux3624PASS/0FAIL/0SKIP (Core2753, Skia154, CLI357, MCP360); stage/capture/CLI
 Later deadline/oracle refinements receive focused rechecks. Original failed build/fixture attempts
 are retained. Bare FIFO discovery plus three original argument cases are preserved; raw-format
 refusal now follows S1's gate with independent literal registry expectations. No tolerance weakened.
-Archive/package5443648PASS; implementation architecturePASS0, security1MEDIUM(missing host build
-prerequisites), code1MEDIUM(legacy alias scans bypass aggregate budget). Fix uses build-only tool
-references, one operation-local alias policy/cache, pipeline-level4096-entry/256-output proof and
-canonical expected/probed paths without weakening assertions. Next: clean Core-only proof, scoped
-reviews and native attempt2; installed special-file proof and closing gates remain outstanding.
+At754d639, code/security/architecture scoped fixes PASS0; fresh Core-only archive2754PASS and
+native2/run40755937608 passes both complete3625-case comparisons:3409PASS/216FAIL/0SKIP, identical
+bodies,264oldfailuresfixed/mode andall8former skips executed. Current-base comparisonPASS; no index
+reset. Package02fails only the new synthetic-mac budget fixture: isolated environment uses shared
+/tmp with>4096entries. Pinning unrelated ancestors in its injected enumeration retains realowned
+4096/4097entries,256outputs/allassertions; cleared-TMPDIR regressionPASS. Production bounds unchanged.
+Q-05's staleS0description now reflects the alreadyapprovedC11scope. Next: complete candidate native/
+archive/installed proof, test/ops review, durable records and final-head gates. Failed attempts retained.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368
