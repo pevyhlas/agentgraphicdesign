@@ -99,14 +99,14 @@ own T013a increment; native backend and final qualification remain008.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/P0, Q-05 |40703639791 BOM INVALID;40707681528 known test-failure RunInfo INVALID; both attempts retained | 2 | FAIL |
+| A1 | D-28/P0, Q-05 |40711135820 complete both modes;3508cases each; native and downloaded checks PASS; durable payload digests retrieved exactly | 3 | PASS |
 | A2 | Q-01/Q-05 |66record/comparison/predecessor/TRX fixtures,5started-process lifecycle fixtures; both actual native2 Core captures replay correctly | 3 | PASS |
-| A3 | D-28/D4/D7 |39source/inventory/workflow fixtures,15actual Bash syntax checks and45migration entries; bootstrap index required before final gate | 2 | BLOCKED |
+| A3 | D-28/D4/D7 |39source/inventory/workflow fixtures,15actual Bash syntax checks and45migration entries; accepted two-mode index present | 3 | PASS |
 | A4 | source delivery | Linux required CI, independent reviews and exact-head delivery gate | 0 | NOT_RUN |
 
 ## State
 
-**Step**: implementation
+**Step**: final verification and review
 **Branch**: `026-macos-progress`; [PR19](https://github.com/pevyhlas/agentgraphicdesign/pull/19), draft.
 **Authority**: owner2026-10-28 request to fix macOS advisory; constitution commit/push/PR/green
 reviewed merge. Earlier AGD macOS verification extension remains in scope; no AB native profiling.
@@ -116,8 +116,9 @@ found2mediums (accepted predecessor binding and package-smoke head checkout), ad
 design above; scoped ops design re-review PASS0 at ddd2d0c, first fix round.
 Local first checker invocation exposed a self-test root-resolution mistake; retained checker-01,
 corrected before checker-02 PASS (54progress and28portability fixtures). Build has0warnings/errors.
-**Evidence**: `.prdkit/cache/evidence/026-macos-progress/verification/`; native baseline/index and
-implementation reviews remain pending. No macOS failures cleared by this prerequisite.
+**Evidence**: `.prdkit/cache/evidence/026-macos-progress/verification/`; baseline manifest
+https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472675916. No macOS failures
+cleared by this prerequisite; final-head equivalence/reviews/CI remain pending.
 Full Linux3510PASS/0FAIL/0SKIP; initial outer120s timeout retained (Core/Skia complete, CLI interrupted),
 remaining CLI/MCP completed separately. Native first attempt exposed UTF8BOM; full discovery also
 needs stable test identities. Initial code review2mediums and architecture1medium (overlapping
@@ -131,8 +132,13 @@ At04ed4a4, code/security/architecture scoped re-reviews PASS0. Full test review 
 completed-failure RunInfo classification (native2 observed), missing Bash syntax/sed/readlink rules,
 and insufficient descendant liveness proof in cancellation/timeout/overflow fixtures. Fixround2
 implements them; actual native2 Core captures replay with2642unique names each, strict outcomes
-retained. Fresh complete native attempt3 is next. Repository gate intentionally requires the first
-accepted two-mode index before bootstrap can close; no generated empty baseline bypass.
+retained. Native attempt3 completed both modes: default2754PASS/746FAIL/8skip;
+private3016PASS/484FAIL/8skip. All cases discovered and checked exactly. Eight required jobs passed;
+repository gate failed solely on absent bootstrap index, now added. Both gzip/base64 records are
+retained in linked PR comment parts; fresh API retrieval reproduces exact bytes and SHA256.
+Test scoped fixround2 and operations full implementation reviews PASS0 at e069979. Final scoped
+code/security/architecture review covers the classifier/Bash delta and accepted index; final native
+head must reproduce all case/outcome sets after index/execution-only finalization.
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-code-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471718957
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471719532
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471720207

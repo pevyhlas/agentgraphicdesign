@@ -1,0 +1,17 @@
+{
+  "Version": 1,
+  "Records": [
+    {
+      "Mode": "default-tmpdir",
+      "SourceCommit": "e069979819887119615e6b462351faf66c690a52",
+      "Sha256": "537697304d3fd93105e19ede02baa033742a0c5949d58eed9f9331d7fc25706f",
+      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472675916"
+    },
+    {
+      "Mode": "private-tmp",
+      "SourceCommit": "e069979819887119615e6b462351faf66c690a52",
+      "Sha256": "0f3980500db60fc87794c811557f5a2c6bfdac931daffc245fd08ac6c5a9e6f6",
+      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472675916"
+    }
+  ]
+}

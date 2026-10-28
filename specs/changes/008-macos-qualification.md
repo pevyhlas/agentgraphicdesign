@@ -70,8 +70,10 @@ the selected public evidence is indexed in `specs/records.md`, not a macOS quali
   pre-public and freshly reviewed in the public port). Merge evidence (D-28 phase P0): Linux CI, plus a local macOS run of the
   008/T002 test classes on the pull request head in `private-tmp` mode, and those classes pass; no
   `macos-progress` record, which 008/T003 builds later.
-- [ ] 008/T003 repository checks (path-API ban, OS-guarded-return ban, workflow lint, bash 3.2
-  lint, the `macos-progress` record). 008/T016a account provisioning is inapplicable to hosted CI.
+- [x] 008/T003 repository checks in child026 ([PR #19](https://github.com/pevyhlas/agentgraphicdesign/pull/19)):
+  exact reasoned path/OS-return/Bash migration inventories, workflow lint, Bash syntax checks and
+  full two-mode `macos-progress` records. Child026's final reviews/head gates govern acceptance.
+  008/T016a account provisioning is inapplicable to hosted CI.
 - [ ] 008/T012 `PathRedactor`, which also fixes the unanchored Core path pattern that garbles
   `/private/...` roots and relative store locations with a `tmp`, `var` or similar segment in
   `STORE_CONFLICT` messages (deferred here from change 006); 008/T013a OFL-1.1 test fonts;
@@ -145,7 +147,7 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: child026-macos-progress implements008/T003 after merged023; owner2026-10-28 requested
+**Next**: child026-macos-progress completes008/T003 delivery; owner2026-10-28 requested
 fixing the broad macOS advisory. Then T013a fonts, T006/T007 paths/asset inspection, Darwin pixel
 backend and final qualification follow the dependencies above. Native69 cases passed before023
 attestations, but aggregate checks failed on
@@ -153,3 +155,9 @@ missing records until the final integration; do not substitute partial runs for 
 advisory Mac retained484 baseline failures and an earlier timing-sensitive cancellation failure;
 child023 does not clear these or qualify the platform. Windows x64's existing C-11 deviation remains
 the owner-inbox question. Future work inherits these outcomes and their evidence on PR #16.
+Child026's complete run40711135820 at e069979 has3508cases per mode: default2754PASS/746FAIL/8skip,
+private3016PASS/484FAIL/8skip. Exact source/digests and durable retrievable payloads are indexed in
+`.config/macos-progress-baseline.json`. The first two026 executions were INVALID parser attempts;
+retained on PR19, not qualified or reclassified. Subsequent portability changes compare with the
+latest target-base index; final head/metadata equivalence stays required. Source progress does not
+clear this parent's qualification obligations or its earlier verification budget/holds.
