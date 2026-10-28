@@ -60,12 +60,31 @@ under the existing trusted, quiescent filesystem model. This is not handle-based
 ### Preserve newer lexical checks
 
 021's ReferenceReader/FontDirectoryRules reject `link/..` before normalization. A blind GetFullPath
-substitution would hide the link. Preserve that check through an internal FullPath overload that
-accepts the existing inspection callback: construct the absolute spelling without collapsing dots,
-rewrite only the verified leading alias, inspect that spelling, then normalize and return the one
-canonical path for all later IO. The public FullPath contract and existing strict walks remain unchanged.
-The callback is an internal call-site integration, not a public bypass or capability override. All
-native-reference lexical refusals and aggregate pre-open budgets retain their current ordering.
+substitution would hide the link. Preserve that check through an internal FullPath overload, with
+this invariant: **whenever it succeeds, its result equals public FullPath for the same original
+input and base**. Both use only the public normalization-then-alias algorithm for final identity.
+
+The internal overload computes that final result from the original input/base, without opening it.
+Before final inspection, a component precheck retains the original absolute spelling and visits
+each accumulated prefix in order. Resolve each prefix through the same FullPath algorithm for its
+metadata check; never feed the rewritten prefix back into the original prefix accumulator. Check
+each component before processing the next `..`, rejecting a non-verified link (including dangling
+links) before it can be hidden. Preserve the existing intermediate-directory and missing-component
+checks. This precheck establishes lexical traversal safety, not permission to open its final prefix.
+
+Then invoke the existing strict inspector on the **exact final canonical path**, and return only
+that inspected string for all later IO. The callback cannot authorize a differently spelled path.
+Use this extra precheck only where inspection already applies; preserve the existing non-admitted
+reference/font behavior. Native-reference lexical refusals and aggregate pre-open budgets retain
+their ordering. No capability override or public bypass is introduced.
+
+Required counterexamples for every verified alias, with absolute and relative inputs/bases:
+`/tmp/../probe` resolves to `/probe` in both overloads, while `/./tmp/probe` resolves to
+`/private/tmp/probe`. The raw prefix accumulator must not turn the first into `/private/probe`.
+`/tmp/user-link/../probe` still refuses even if its normalized result is safe. Assert cross-overload
+equality, idempotence, relative-display equality, and that the actual later IO path equals the final
+strictly inspected path. Equivalent spelling is not assumed when `..` crosses an alias boundary;
+the accepted lexical normalization order defines identity.
 
 Font enumeration remains bounded and retains per-file skips. Enumerated filenames originate from
 the inspected canonical directory; retained FullName usage must be explicitly proven enumeration-only.
@@ -124,4 +143,10 @@ checks and required CI remain mandatory. Future qualification and S1/S2 integrat
 policy. AGD verification extension inherited; AB019 profiling hold and Dossier015 other-session work unchanged.
 **Baseline**: merged027 at0852352; accepted221e14a progress source default742/private480 failures,
 3508 cases and8 skips each. Failed026 parser attempts and027 width-probe attempts remain on their PRs.
-**Next**: publish design checkpoint and obtain owning design reviews; no production edits yet.
+**Design review**: initial architecture1HIGH/security1MEDIUM identify the same ordering defect:
+rewriting an alias before normalization changes `/tmp/../probe` identity. Fix round1 specifies one
+final algorithm, original-prefix lexical prechecks and strict inspection of the exact final IO path.
+A1–A4 remain NOT_RUN; this is a design correction, not an implementation or native attempt.
+**Review**: round 1 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..89cc3fa560fa1bd99c62345ff0ce10526150a27a · agd-security-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474584185
+**Review**: round 1 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..89cc3fa560fa1bd99c62345ff0ce10526150a27a · agd-architecture-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474584666
+**Next**: scoped design re-review of the identity correction; no production edits yet.
