@@ -86,7 +86,7 @@ covers this adaptation before implementation.
   timeout, incomplete discovery, checksum/source mismatch and stale/wrong predecessor.
 - [x] T003 Implement exact migration inventories and source/Bash/workflow checks with self-tests;
   preserve existing platform and qualification checks.
-- [ ] T004 Required source checks; native two-mode progress run and completeness review. Existing
+- [x] T004 Required source checks; native two-mode progress run and completeness review. Existing
   failures remain failures. Publish branch/PR, owning implementation reviews and exact-head gates.
 
 ## Checks
@@ -99,14 +99,14 @@ own T013a increment; native backend and final qualification remain008.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/P0, Q-05 |40711135820 complete both modes;3508cases each; native and downloaded checks PASS; durable payload digests retrieved exactly | 3 | PASS |
+| A1 | D-28/P0, Q-05 |40711135820 baseline;40713212673 reproduces all3508case/outcome rows per mode; native/downloaded checks and durable retrieval PASS | 4 | PASS |
 | A2 | Q-01/Q-05 |66record/comparison/predecessor/TRX fixtures,5started-process lifecycle fixtures; both actual native2 Core captures replay correctly | 3 | PASS |
 | A3 | D-28/D4/D7 |39source/inventory/workflow fixtures,15actual Bash syntax checks and45migration entries; accepted two-mode index present | 3 | PASS |
-| A4 | source delivery | Linux required CI, independent reviews and exact-head delivery gate | 0 | NOT_RUN |
+| A4 | source delivery |975beda: all9required jobs and both native modes PASS,5owning reviews PASS; closure head must rerun exact gates before merge | 1 | PASS |
 
 ## State
 
-**Step**: final verification and review
+**Step**: reviewed source complete; closure-head verification before merge
 **Branch**: `026-macos-progress`; [PR19](https://github.com/pevyhlas/agentgraphicdesign/pull/19), draft.
 **Authority**: owner2026-10-28 request to fix macOS advisory; constitution commit/push/PR/green
 reviewed merge. Earlier AGD macOS verification extension remains in scope; no AB native profiling.
@@ -122,7 +122,7 @@ cleared by this prerequisite; final-head equivalence/reviews/CI remain pending.
 Full Linux3510PASS/0FAIL/0SKIP; initial outer120s timeout retained (Core/Skia complete, CLI interrupted),
 remaining CLI/MCP completed separately. Native first attempt exposed UTF8BOM; full discovery also
 needs stable test identities. Initial code review2mediums and architecture1medium (overlapping
-mode exception); security PASS0 at11a9f4c. Fix round1 of implementation review now in progress.
+mode exception); security PASS0 at11a9f4c. Fix round1 resolved both findings at04ed4a4.
 Test-design correction PASS0 atcd954a5; all six fixture repairs preserve row counts/inputs/assertions
 (`fixture-correspondence.md`). Repeated Linux Core2644/MCP358 unique identities and outcomes match.
 Owned POSIX groups now cover direct exits, orphan pipe holders, deadlines, parent cancellation,
@@ -137,13 +137,24 @@ private3016PASS/484FAIL/8skip. All cases discovered and checked exactly. Eight r
 repository gate failed solely on absent bootstrap index, now added. Both gzip/base64 records are
 retained in linked PR comment parts; fresh API retrieval reproduces exact bytes and SHA256.
 Test scoped fixround2 and operations full implementation reviews PASS0 at e069979. Final scoped
-code/security/architecture review covers the classifier/Bash delta and accepted index; final native
-head must reproduce all case/outcome sets after index/execution-only finalization.
+code/security/architecture reviews PASS0 at975beda cover the classifier/Bash delta and accepted index.
+Native4 run40713212673 and PR40713225143 pass all9required jobs at975beda; both native modes
+reproduce all baseline case/outcome rows and every non-source header field. Final test/ops scoped
+reviews PASS0 accept A1/A3/A4 proof at975beda. Only record/verdict/log finalization follows;
+the closing exact head still must pass required CI, both native modes/equivalence, delivery and
+review gates. The unchanged484/746failures remain parent008 work, not qualified success.
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-code-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471718957
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471719532
 **Review**: round 3 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..11a9f4c19081a8229d607e921e103414fe2d21a5 · agd-architecture-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6471720207
 **Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472051194
 **Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472051757
 **Review**: round 5 · 11a9f4c19081a8229d607e921e103414fe2d21a5..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472052301
-**Next**: complete native baseline, retain/index both records, implementation review and exact-head
-gates, then T013a portable fonts.
+**Review**: round 5 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..04ed4a40ce9df95abdd36befd8601611b0f6beff · agd-test-reviewer · FAIL · 0 critical, 0 high, 3 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472443645
+**Review**: round 6 · 04ed4a40ce9df95abdd36befd8601611b0f6beff..e069979819887119615e6b462351faf66c690a52 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472719232
+**Review**: round 6 · 9b7150bbe8dc9a318c1f47e9f979ab20dac7232c..e069979819887119615e6b462351faf66c690a52 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472719763
+**Review**: round 7 · 04ed4a40ce9df95abdd36befd8601611b0f6beff..975bedab127f9902ed2711c51eb3d41c63240fd1 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472817745
+**Review**: round 7 · 04ed4a40ce9df95abdd36befd8601611b0f6beff..975bedab127f9902ed2711c51eb3d41c63240fd1 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472818239
+**Review**: round 7 · 04ed4a40ce9df95abdd36befd8601611b0f6beff..975bedab127f9902ed2711c51eb3d41c63240fd1 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472840678
+**Review**: round 8 · e069979819887119615e6b462351faf66c690a52..975bedab127f9902ed2711c51eb3d41c63240fd1 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472946591
+**Review**: round 8 · e069979819887119615e6b462351faf66c690a52..975bedab127f9902ed2711c51eb3d41c63240fd1 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/19#issuecomment-6472947056
+**Next**: final closure-head gates and authorized merge, then T013a portable fonts.
