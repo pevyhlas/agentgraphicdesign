@@ -60,7 +60,7 @@ registry prerequisites are merged. Independent review confirms this bounded desi
   sequential reuse, default fallback, option refusal, forced non-admitted skips and diagnostics.
   Compare directory-only family and Inter directory face across three sizes and region-only input
   against ordinary rendering, including empty-set sensitivity; retain legacy sheet goldens.
-- [ ] T004 Source/clean-archive/installed regression and required CI; four owning review lenses;
+- [x] T004 Source/clean-archive/installed regression and required source CI; four owning review lenses;
   reconcile012 State/Next in this PR and finalize after gates.
 
 ## Checks
@@ -76,7 +76,7 @@ platforms are unchanged; ordinary installed rendering is regression evidence onl
 | A1 | P1.B-16, Q-03 | T034/T035 session ownership, loading/order/cancellation and API defaults; focused-04 below | 0 production corrections | PASS |
 | A2 | Q-01, Q-02 | T035 differential font use/diagnostics, three sizes, region input; focused-04 and unchanged legacy goldens | 2 differential fixture corrections | PASS |
 | A3 | C-11, Q-03 | admitted inputs plus forced non-admitted skip/boundary and reparse recheck; focused-04 | 0 | PASS |
-| A4 | P1 rendering | source/archive and installed regression; required CI, adoption, doctor, reviews | 0 | NOT_RUN |
+| A4 | P1 rendering | source379323f: archive3510PASS, installed106PASS, requiredCI40669578222 and local gates PASS; final-head CI/review remain merge gates | 1 archive fixture correction | PASS |
 
 ## State
 
@@ -85,7 +85,7 @@ including original-font/Inter pixel sensitivity and strict-policy isolation. No 
 was exposed locally: SystemFonts toggles prove ordinary-render fallback parity here; actual system
 resolution is asserted on hosts exposing a usable family. This is not platform qualification.
 
-**Step**: source fixtures verified; corrected archive/installed proof and CI pending
+**Step**: source acceptance and all owning reviews PASS; exact final-head CI remains the merge gate
 **Branch**: `025-render-session`; [PR18](https://github.com/pevyhlas/agentgraphicdesign/pull/18), draft.
 **Authority**: owner continuation and constitution's standing commit/push/PR/green-reviewed-merge
 policy. No release or platform-qualification authorization is inferred.
@@ -96,5 +96,20 @@ policy. No release or platform-qualification authorization is inferred.
   diagnostics; system font manager exposed no usable family). focused-03 then12PASS/1FAIL narrowed
   the host-font assumption; focused-04 all13PASS after making that limitation explicit while
   retaining policy parity and available-host assertions. No production correction. All logs retained.
+  Corrected frozen archive at379323f:3510PASS/0FAIL/0SKIP; installed CLI66/MCP40PASS; exact-package
+  smoke exit0. Required CI40669578222 PASS; broad macOS advisory FAIL retained. Package hashes,
+  provenance, completed command and logs: verification/completion.md and PR evidence comment below.
   Broad macOS advisory failures and008 qualification stay open.
-**Next**: corrected clean-archive/installed proof, required CI, four owning reviews and delivery.
+**Implementation review**: code/security PASS0 and architecture PASS (one low provenance typo)
+  atf50bac5; scoped architecture PASS0 atef18d93 corrects it. Test review PASS0 after missing
+  completed package evidence supplied same-round; initial pending report retained. Only parent013 changed
+  since verified379323f; no runtime/test/package change.
+**Next**: finalize this execution record, exact-head gates and authorized merge.
+
+Evidence completion: https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466405677
+
+**Review**: round 2 · f18d3ba8a25266fa4f6dcfeb6d5ae6f9ccfa755a..f50bac5539747a3c5a324a0d54ddee9a8e3f09b6 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466297243
+**Review**: round 2 · f18d3ba8a25266fa4f6dcfeb6d5ae6f9ccfa755a..f50bac5539747a3c5a324a0d54ddee9a8e3f09b6 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466297775
+**Review**: round 2 · f18d3ba8a25266fa4f6dcfeb6d5ae6f9ccfa755a..f50bac5539747a3c5a324a0d54ddee9a8e3f09b6 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466307500
+**Review**: round 3 · f50bac5539747a3c5a324a0d54ddee9a8e3f09b6..ef18d93ee4d41f388111ff8c0e38d538961bf67f · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466358375
+**Review**: round 2 · f18d3ba8a25266fa4f6dcfeb6d5ae6f9ccfa755a..f50bac5539747a3c5a324a0d54ddee9a8e3f09b6 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/18#issuecomment-6466451850
