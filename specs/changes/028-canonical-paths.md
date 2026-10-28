@@ -113,7 +113,7 @@ silently weakening021's lexical inspection, moving IO into PlatformProfile, or f
 ## Tasks
 
 - [x] T001 Architecture/security design review of current-tree integration and recovered acceptance.
-- [ ] T002 Core canonicalizer/verifier seam and all surface migrations; tighten exact inventory.
+- [x] T002 Core canonicalizer/verifier seam and all surface migrations; tighten exact inventory.
 - [ ] T003 Negative/alias/mixed-spelling/lexical-inspection tests, native full comparison and package proof.
 - [ ] T004 Owning reviews, reviewed baseline replacement, final native/CI gates and same-PR source closure.
 
@@ -138,7 +138,7 @@ checks and required CI remain mandatory. Future qualification and S1/S2 integrat
 
 ## State
 
-**Step**: shared canonicalizer implementation, then caller migration
+**Step**: full native comparison and clean-archive verification
 **Authority**: owner's2026-10-28 fix request and standing feature commit/push/PR/green-reviewed-merge
 policy. AGD verification extension inherited; AB019 profiling hold and Dossier015 other-session work unchanged.
 **Baseline**: merged027 at0852352; accepted221e14a progress source default742/private480 failures,
@@ -151,9 +151,13 @@ A1–A4 remain NOT_RUN; this is a design correction, not an implementation or na
 **Review**: round 1 · 08523525cfff8770ebefaf56fb30da7acf9bbcf2..89cc3fa560fa1bd99c62345ff0ce10526150a27a · agd-architecture-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474584666
 **Review**: round 2 · 89cc3fa560fa1bd99c62345ff0ce10526150a27a..5ab53078af707fe8fe429fccc628dfd050c3eb74 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474675986
 **Review**: round 2 · 89cc3fa560fa1bd99c62345ff0ce10526150a27a..5ab53078af707fe8fe429fccc628dfd050c3eb74 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/21#issuecomment-6474676492
-**Implementation checkpoint**: shared path resolver, PAL metadata declaration and44focused helper/host
-cases added. Linux helper/registry selection49PASS/0FAIL/0SKIP; checker self-tests, portability lint,
-warning-free builds and format pass. Host alias tests have not run on macOS yet. Existing callers
-still await migration, so A1–A4 remain NOT_RUN rather than claiming integrated acceptance.
-**Next**: verify helper/seam cases, migrate callers without changing S0, then full native comparison
-and owning implementation reviews. Design approvals do not approve future implementation.
+**Implementation checkpoint**: all16 path inventory files and both FullName provenances migrated;
+actual CLI input/output operands also canonicalized. Core import and reference/font reads retain
+bounded/error ordering. MCP strict walk now includes ancestors above its root. No path allowances
+remain; two existing MCP test expectations use the accepted canonical spelling, with skips intact.
+Linux full run3557PASS/0FAIL/0SKIP; after added lock/output/dot cases and SVG file-load migration,
+targeted195Core/3CLI PASS. Builds warning-free, format/dependency/doctor/portability/platform gates
+PASS. Earlier helper49PASS retained. Host aliases, complete native comparison, clean-archive and
+installed proof remain pending; no integrated A1–A4 PASS is claimed yet.
+**Next**: publish migrated source, dispatch both full native modes and clean-archive package proof,
+then all five owning implementation reviews. Design approvals do not approve implementation.

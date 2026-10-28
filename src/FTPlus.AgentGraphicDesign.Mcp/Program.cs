@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Layout;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Pixels;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
@@ -48,7 +49,7 @@ public static class Program
 
         try
         {
-            var workingDirectory = Path.GetFullPath(parsed.WorkingDirectory ?? Environment.CurrentDirectory);
+            var workingDirectory = PlatformPaths.FullPath(parsed.WorkingDirectory ?? Environment.CurrentDirectory);
             var builder = Host.CreateEmptyApplicationBuilder(settings: null);
 
             builder.Services.AddSingleton(_ => new PathConfinement(workingDirectory));

@@ -24,7 +24,7 @@ public static class FontPolicyOptions
         }
         foreach (var directory in directories)
         {
-            if (!Directory.Exists(directory))
+            if (!SurfaceIO.TryResolvePath(directory, out var canonicalDirectory) || !Directory.Exists(canonicalDirectory))
             {
                 return new Result(false, null, EngineErrors.InvalidArguments, $"Font directory not found: {directory}");
             }

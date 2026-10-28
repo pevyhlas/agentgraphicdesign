@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using FTPlus.AgentGraphicDesign.Core.Assets;
 using FTPlus.AgentGraphicDesign.Core.Documents;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
@@ -67,8 +68,11 @@ internal sealed class ReferenceReader : IReferenceReader
                 if (Path.GetFileName(Path.TrimEndingDirectorySeparator(reference.DocumentPath)).Equals(NativeName, StringComparison.OrdinalIgnoreCase))
                     throw Unsupported();
                 var raw = Path.IsPathFullyQualified(reference.DocumentPath) ? reference.DocumentPath : Path.Combine(baseDirectory, reference.DocumentPath);
-                InspectReference(raw, ct);
-                var path = Path.GetFullPath(raw);
+                var path = _inspect
+                    ? PlatformPaths.FullPath(raw, null, canonical => InspectReference(canonical, ct), ct)
+                    : PlatformPaths.FullPath(raw);
+                if (!_inspect)
+                    InspectReference(path, ct);
                 paths.Add(path);
                 if (lengths.ContainsKey(path))
                     continue;
@@ -161,7 +165,7 @@ internal sealed class ReferenceReader : IReferenceReader
 
     internal static string? RelativePath(string baseDirectory, string path)
     {
-        var relative = Path.GetRelativePath(baseDirectory, path);
+        var relative = PlatformPaths.RelativePath(baseDirectory, path);
         return Path.IsPathRooted(relative) || relative == ".." || relative.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal)
             ? null : relative.Replace(Path.DirectorySeparatorChar, '/');
     }

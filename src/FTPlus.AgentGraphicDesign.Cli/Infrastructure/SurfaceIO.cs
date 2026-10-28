@@ -1,5 +1,6 @@
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Documents;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 
 namespace FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 
@@ -18,12 +19,13 @@ internal static class SurfaceIO
 
     public static string DisplayPath(string path)
     {
-        var relative = Path.GetRelativePath(Environment.CurrentDirectory, Path.GetFullPath(path));
+        var relative = PlatformPaths.RelativePath(Environment.CurrentDirectory, path);
         return relative.Replace(Path.DirectorySeparatorChar, '/');
     }
 
     public static bool TryCheckFileSize(string path, long maximumBytes, out string? error)
     {
+        path = PlatformPaths.FullPath(path);
         var length = new FileInfo(path).Length;
         if (length > maximumBytes)
         {
@@ -40,11 +42,14 @@ internal static class SurfaceIO
         string locator,
         CancellationToken cancellationToken)
     {
-        if (!Guid.TryParse(locator, out _) && File.Exists(locator) &&
-            new FileInfo(locator).Length > MaxInputFileBytes)
+        if (!Guid.TryParse(locator, out _))
         {
-            throw new DocumentEngineException("INPUT_TOO_LARGE",
-                $"Document exceeds the {MaxInputFileBytes} byte limit");
+            if (!TryResolvePath(locator, out var path))
+                return null;
+            locator = path;
+            if (File.Exists(locator) && new FileInfo(locator).Length > MaxInputFileBytes)
+                throw new DocumentEngineException("INPUT_TOO_LARGE",
+                    $"Document exceeds the {MaxInputFileBytes} byte limit");
         }
 
         var handle = engine.Open(locator, cancellationToken);
@@ -56,6 +61,22 @@ internal static class SurfaceIO
         }
 
         return handle;
+    }
+
+    // Preserve callers' existing not-found envelopes for invalid lexical input, while
+    // ensuring every successful existence/size/read check uses a canonical string.
+    public static bool TryResolvePath(string input, out string path)
+    {
+        try
+        {
+            path = PlatformPaths.FullPath(input);
+            return true;
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            path = string.Empty;
+            return false;
+        }
     }
 
     public static Task CreateDocumentFileAsync(

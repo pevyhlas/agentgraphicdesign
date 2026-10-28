@@ -151,8 +151,8 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: child027-portable-fonts completes008/T013a delivery after merged026; owner2026-10-28
-requested fixing the broad macOS advisory. Then T006/T007 paths/asset inspection, Darwin pixel
+**Next**: merged027-portable-fonts completes008/T013a; child028 implements T006 verified paths.
+Owner2026-10-28 requested fixing the broad macOS advisory. Then T007 asset inspection, Darwin pixel
 backend and final qualification follow the dependencies above. Native69 cases passed before023
 attestations, but aggregate checks failed on
 missing records until the final integration; do not substitute partial runs for that gate. Broad
@@ -167,5 +167,6 @@ latest target-base index; final head/metadata equivalence stays required. Source
 clear this parent's qualification obligations or its earlier verification budget/holds.
 Child027's native40718432005 fixes exactly four prior failed identities per mode with no other
 outcome change: default2758PASS/742FAIL/8skip, private3020PASS/480FAIL/8skip. The proposed reviewed
-index replacement preserves source/digest/PR-payload binding and the predecessor comparison;
-final metadata-only native equivalence remains required. These fixes do not admit new capabilities.
+index replacement preserves source/digest/PR-payload binding and the predecessor comparison.
+Final native40722320267 and all required checks passed at7dcc810 before PR20 merged as0852352;
+the indexed results reproduced exactly. These fixes do not admit new capabilities.

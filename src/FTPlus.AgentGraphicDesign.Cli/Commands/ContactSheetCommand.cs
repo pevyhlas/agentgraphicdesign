@@ -2,6 +2,7 @@ using System.ComponentModel;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using Spectre.Console.Cli;
 
@@ -123,12 +124,12 @@ public sealed class ContactSheetCommand : AsyncCommand<ContactSheetCommand.Setti
             ContactSheetLayout.Compute(settings.Files.Length, options);
 
             var entries = new List<ContactSheetEntry>(settings.Files.Length);
-            foreach (var file in settings.Files)
+            foreach (var input in settings.Files)
             {
                 ct.ThrowIfCancellationRequested();
-                if (!File.Exists(file))
+                if (!SurfaceIO.TryResolvePath(input, out var file) || !File.Exists(file))
                 {
-                    AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {file}", format);
+                    AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {input}", format);
                     return ExitCodes.GeneralError;
                 }
                 if (!SurfaceIO.TryCheckFileSize(file, SurfaceIO.MaxInputFileBytes, out var sizeError))
@@ -157,17 +158,18 @@ public sealed class ContactSheetCommand : AsyncCommand<ContactSheetCommand.Setti
                 return ExitCodes.GeneralError;
             }
 
-            var outputDir = Path.GetDirectoryName(Path.GetFullPath(settings.Output));
+            var outputPath = PlatformPaths.FullPath(settings.Output);
+            var outputDir = Path.GetDirectoryName(outputPath);
             if (!string.IsNullOrEmpty(outputDir))
             {
                 Directory.CreateDirectory(outputDir);
             }
 
-            await File.WriteAllBytesAsync(settings.Output, result.Data, ct);
+            await File.WriteAllBytesAsync(outputPath, result.Data, ct);
 
             var sheet = new
             {
-                path = SurfaceIO.DisplayPath(settings.Output),
+                path = SurfaceIO.DisplayPath(outputPath),
                 width = result.Width,
                 height = result.Height,
                 columns = result.Layout.Columns,

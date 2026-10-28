@@ -59,7 +59,10 @@ Speaks MCP over stdio, with one working directory as both confinement root and s
   `ProtocolTests.ToolsList_AllInputSchemas_HaveNoBooleanSubschemas`.
 - **P4.I-01 MCP confinement**: every MCP path resolves beneath the working directory; parent
   traversal, outside-root paths and symbolic-link or reparse-point traversal are rejected.
-  Enforced by: `PathConfinementTests`.
+  D-28's verified system aliases use their canonical spelling for roots, arguments and reported
+  `workingDirectory`; other links, including ancestors above the root, stay refused. CLI display
+  paths use canonical operands too. Enforced by: `PathConfinementTests`, `CanonicalConfinementTests`,
+  `ProtocolTests.WorkingDirectory_ConfinesPathsCorrectly`, `CanonicalPathCommandTests`.
 
 ## Interface guarantees
 

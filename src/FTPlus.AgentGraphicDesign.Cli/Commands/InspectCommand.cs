@@ -45,18 +45,18 @@ public sealed class InspectCommand : Command<InspectCommand.Settings>
 
         var format = parseResult.Format;
 
-        if (!System.IO.File.Exists(settings.File))
+        if (!SurfaceIO.TryResolvePath(settings.File, out var inputPath) || !System.IO.File.Exists(inputPath))
         {
             AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {settings.File}", format);
             return ExitCodes.GeneralError;
         }
-        if (!SurfaceIO.TryCheckFileSize(settings.File, SurfaceIO.MaxInputFileBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(inputPath, SurfaceIO.MaxInputFileBytes, out var sizeError))
         {
             AgentOutput.WriteError("INPUT_TOO_LARGE", sizeError!, format);
             return ExitCodes.InvalidArguments;
         }
 
-        var loadResult = _engine.TryLoadDocumentFromFile(settings.File, ct);
+        var loadResult = _engine.TryLoadDocumentFromFile(inputPath, ct);
 
         if (!loadResult.Success || loadResult.Document is null)
         {

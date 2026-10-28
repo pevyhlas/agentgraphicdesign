@@ -2,6 +2,7 @@ using System.ComponentModel;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Export;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Validation;
@@ -187,7 +188,7 @@ public sealed class ExportCommand : AsyncCommand<ExportCommand.Settings>
         }
         foreach (var directory in fontDirectories)
         {
-            if (!Directory.Exists(directory))
+            if (!SurfaceIO.TryResolvePath(directory, out var canonicalDirectory) || !Directory.Exists(canonicalDirectory))
             {
                 AgentOutput.WriteError(EngineErrors.InvalidArguments,
                     $"Font directory not found: {directory}", format);
@@ -204,18 +205,18 @@ public sealed class ExportCommand : AsyncCommand<ExportCommand.Settings>
             return ExitCodes.InvalidArguments;
         }
 
-        if (!File.Exists(settings.File))
+        if (!SurfaceIO.TryResolvePath(settings.File, out var inputPath) || !File.Exists(inputPath))
         {
             AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {settings.File}", format);
             return ExitCodes.GeneralError;
         }
-        if (!SurfaceIO.TryCheckFileSize(settings.File, SurfaceIO.MaxInputFileBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(inputPath, SurfaceIO.MaxInputFileBytes, out var sizeError))
         {
             AgentOutput.WriteError("INPUT_TOO_LARGE", sizeError!, format);
             return ExitCodes.InvalidArguments;
         }
 
-        var loadResult = _engine.TryLoadDocumentFromFile(settings.File, ct);
+        var loadResult = _engine.TryLoadDocumentFromFile(inputPath, ct);
 
         if (!loadResult.Success || loadResult.Document is null)
         {
@@ -326,9 +327,9 @@ public sealed class ExportCommand : AsyncCommand<ExportCommand.Settings>
                 return ExitCodes.GeneralError;
             }
 
-            var outputPath = settings.Output
-                ?? DeriveOutputPath(settings.File, settings.Symbol is null ? settings.Type : "symbol.svg");
-            var outputDir = Path.GetDirectoryName(Path.GetFullPath(outputPath));
+            var outputPath = PlatformPaths.FullPath(settings.Output
+                ?? DeriveOutputPath(inputPath, settings.Symbol is null ? settings.Type : "symbol.svg"));
+            var outputDir = Path.GetDirectoryName(outputPath);
             if (!string.IsNullOrEmpty(outputDir))
             {
                 Directory.CreateDirectory(outputDir);

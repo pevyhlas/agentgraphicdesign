@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 
 namespace FTPlus.AgentGraphicDesign.Core.Pixels;
 
@@ -266,13 +267,13 @@ internal static class NativePixelWire
             throw Fail("Input base directory must be an absolute vetted local path.", location);
         try
         {
-            string absolute = Path.GetFullPath(path, baseDirectory);
+            string absolute = PlatformPaths.FullPath(path, baseDirectory);
             if (absolute.Length > 4096) throw Fail("Normalized path exceeds its character limit.", location);
             if (confinementRoot is not null)
             {
                 if (confinementRoot.Length > 4096 || !Path.IsPathFullyQualified(confinementRoot))
                     throw Fail("Confinement root must be an absolute vetted local path.", location);
-                string root = Path.TrimEndingDirectorySeparator(Path.GetFullPath(confinementRoot));
+                string root = Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(confinementRoot));
                 string prefix = Path.EndsInDirectorySeparator(root) ? root : root + Path.DirectorySeparatorChar;
                 if (!string.Equals(absolute, root, StringComparison.Ordinal) && !absolute.StartsWith(prefix, StringComparison.Ordinal))
                     throw new NativePixelException("PATH_ESCAPE", "Input path escapes the configured root.", location);

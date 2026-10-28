@@ -819,7 +819,7 @@ public partial class ProtocolTests : IDisposable
         await StartServerAsync();
         await InitializeAsync();
         var capabilities = NativeData(await CallToolAsync("get_capabilities", new { }));
-        Assert.Equal(_testDir, capabilities.GetProperty("workingDirectory").GetString());
+        Assert.Equal(FTPlus.AgentGraphicDesign.Core.Paths.PlatformPaths.FullPath(_testDir), capabilities.GetProperty("workingDirectory").GetString());
         Assert.True(capabilities.GetProperty("domains").GetProperty("layeredStillPixels").GetBoolean());
         Assert.False(capabilities.GetProperty("domains").GetProperty("providedArtifactAdmission").GetBoolean());
         Assert.Equal(PlatformProfile.Current.ToCapabilitiesJson().ToJsonString(),

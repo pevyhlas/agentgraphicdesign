@@ -2,6 +2,7 @@ using System.ComponentModel;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using Spectre.Console.Cli;
 
 namespace FTPlus.AgentGraphicDesign.Cli.Commands;
@@ -350,13 +351,13 @@ public sealed class TokensImportCommand : AsyncCommand<TokensImportCommand.Setti
 
         var format = parseResult.Format;
 
-        if (!File.Exists(settings.TokensFile))
+        if (!SurfaceIO.TryResolvePath(settings.TokensFile, out var tokensPath) || !File.Exists(tokensPath))
         {
             AgentOutput.WriteError("FILE_NOT_FOUND", $"Tokens file not found: {settings.TokensFile}", format);
             return ExitCodes.GeneralError;
         }
 
-        if (!SurfaceIO.TryCheckFileSize(settings.TokensFile, SurfaceIO.MaxInputFileBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(tokensPath, SurfaceIO.MaxInputFileBytes, out var sizeError))
         {
             AgentOutput.WriteError("INPUT_TOO_LARGE", sizeError!, format);
             return ExitCodes.InvalidArguments;
@@ -374,7 +375,7 @@ public sealed class TokensImportCommand : AsyncCommand<TokensImportCommand.Setti
             return ExitCodes.GeneralError;
         }
 
-        var json = await File.ReadAllTextAsync(settings.TokensFile, ct);
+        var json = await File.ReadAllTextAsync(tokensPath, ct);
         var result = _engine.ImportDtcgTokens(handle.Document, json, ct);
         if (!result.Success)
         {
@@ -447,7 +448,7 @@ public sealed class TokensExportCommand : AsyncCommand<TokensExportCommand.Setti
             return ExitCodes.GeneralError;
         }
 
-        var outputPath = settings.Output ?? DeriveOutputPath(settings.Document);
+        var outputPath = PlatformPaths.FullPath(settings.Output ?? DeriveOutputPath(settings.Document));
         if (result.Content.Length > SurfaceIO.MaxOutputBytes)
         {
             AgentOutput.WriteError("OUTPUT_TOO_LARGE", "Token output exceeds the allowed limit", format);

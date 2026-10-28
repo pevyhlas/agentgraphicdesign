@@ -155,6 +155,23 @@ public sealed class PlatformPathsTests : IDisposable
     }
 
     [Theory]
+    [InlineData("tmp")]
+    [InlineData("var")]
+    [InlineData("etc")]
+    public void AliasBoundaryDots_InspectAndOpenTheLexicalDestination(string alias)
+    {
+        var destination = FullPath(Path.Combine(_root, "document.json"));
+        File.WriteAllText(destination, "lexical destination");
+        var input = "/" + alias + "/.." + destination;
+        string? inspected = null;
+        var resolved = FullPath(input, null, path => inspected = path);
+        Assert.Equal(destination, resolved);
+        Assert.Equal(destination, inspected);
+        Assert.Equal("lexical destination", File.ReadAllText(resolved));
+        Assert.Equal("document.json", RelativePath(_root, resolved));
+    }
+
+    [Theory]
     [InlineData("link", EngineErrors.PathEscape)]
     [InlineData("dangling", EngineErrors.PathEscape)]
     [InlineData("file", EngineErrors.PathEscape)]
@@ -181,5 +198,22 @@ public sealed class PlatformPathsTests : IDisposable
         File.WriteAllText(file, "sentinel");
         var refusal = new DocumentEngineException(EngineErrors.PathEscape, "final walk refused");
         Assert.Same(refusal, Assert.Throws<DocumentEngineException>(() => FullPath(file, null, _ => throw refusal)));
+    }
+
+    [Fact]
+    public void CancellationStopsLexicalInspectionBeforeFurtherMetadata()
+    {
+        using var cancellation = new CancellationTokenSource();
+        var prefixes = 0;
+        var inspected = false;
+        var resolver = new CanonicalPathResolver(true, ValidMetadata, (_, _) =>
+        {
+            prefixes++;
+            cancellation.Cancel();
+        });
+        Assert.Throws<OperationCanceledException>(() => resolver.FullPath("/tmp/sub/file", null,
+            _ => inspected = true, cancellation.Token));
+        Assert.Equal(1, prefixes);
+        Assert.False(inspected);
     }
 }

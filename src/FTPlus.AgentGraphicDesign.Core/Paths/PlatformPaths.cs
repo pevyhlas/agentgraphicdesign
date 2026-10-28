@@ -16,8 +16,8 @@ public static class PlatformPaths
         Path.GetRelativePath(FullPath(basePath), FullPath(path));
 
     // Only existing inspected reference/font callers use the additional lexical precheck.
-    internal static string FullPath(string path, string? basePath, Action<string> inspect) =>
-        Resolver.FullPath(path, basePath, inspect);
+    internal static string FullPath(string path, string? basePath, Action<string> inspect, CancellationToken ct = default) =>
+        Resolver.FullPath(path, basePath, inspect, ct);
 
     private static AliasMetadata? ReadAliasMetadata(string path)
     {
@@ -61,9 +61,10 @@ public static class PlatformPaths
             return full;
         }
 
-        internal string FullPath(string path, string? basePath, Action<string> inspect)
+        internal string FullPath(string path, string? basePath, Action<string> inspect, CancellationToken ct = default)
         {
             ArgumentNullException.ThrowIfNull(inspect);
+            ct.ThrowIfCancellationRequested();
             // Always compute identity from the original inputs. Rewriting before normalizing
             // would incorrectly turn /tmp/../file into /private/file instead of /file.
             var full = FullPath(path, basePath);
@@ -74,11 +75,13 @@ public static class PlatformPaths
                 [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], StringSplitOptions.RemoveEmptyEntries);
             for (var i = 0; i < parts.Length; i++)
             {
+                ct.ThrowIfCancellationRequested();
                 prefix = Path.Combine(prefix, parts[i]);
                 // Keep prefix in its original spelling: each link is checked before a later
                 // '..' can hide it, while dots crossing an alias retain lexical semantics.
                 _inspectPrefix(FullPath(prefix), i != parts.Length - 1);
             }
+            ct.ThrowIfCancellationRequested();
             inspect(full);
             return full;
         }
