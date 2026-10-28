@@ -55,8 +55,8 @@ registry prerequisites are merged. Independent review confirms this bounded desi
 ## Tasks
 
 - [x] T001 Confirm recovered contract with independent architecture/security design review.
-- [ ] T002 Implement012/T034 Core session API, Skia session/catalog and borrowing shapers.
-- [ ] T003 Implement012/T035: order/one-load counters, late file, cancellation/partial disposal,
+- [x] T002 Implement012/T034 Core session API, Skia session/catalog and borrowing shapers.
+- [x] T003 Implement012/T035: order/one-load counters, late file, cancellation/partial disposal,
   sequential reuse, default fallback, option refusal, forced non-admitted skips and diagnostics.
   Compare directory-only family and Inter directory face across three sizes and region-only input
   against ordinary rendering, including empty-set sensitivity; retain legacy sheet goldens.
@@ -73,18 +73,28 @@ platforms are unchanged; ordinary installed rendering is regression evidence onl
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | P1.B-16, Q-03 | T034/T035 session ownership, loading/order/cancellation and API defaults | 0 | NOT_RUN |
-| A2 | Q-01, Q-02 | T035 differential font use/diagnostics, three sizes, region input, legacy goldens | 0 | NOT_RUN |
-| A3 | C-11, Q-03 | admitted inputs plus forced non-admitted skip/boundary and reparse recheck tests | 0 | NOT_RUN |
+| A1 | P1.B-16, Q-03 | T034/T035 session ownership, loading/order/cancellation and API defaults; focused-04 below | 0 production corrections | PASS |
+| A2 | Q-01, Q-02 | T035 differential font use/diagnostics, three sizes, region input; focused-04 and unchanged legacy goldens | 2 differential fixture corrections | PASS |
+| A3 | C-11, Q-03 | admitted inputs plus forced non-admitted skip/boundary and reparse recheck; focused-04 | 0 | PASS |
 | A4 | P1 rendering | source/archive and installed regression; required CI, adoption, doctor, reviews | 0 | NOT_RUN |
 
 ## State
 
-**Step**: implementation
-**Branch**: `025-render-session`; PR not opened yet.
+Evidence: `.prdkit/cache/evidence/025-render-session/verification/`; focused-04 has13PASS/0FAIL,
+including original-font/Inter pixel sensitivity and strict-policy isolation. No usable host font
+was exposed locally: SystemFonts toggles prove ordinary-render fallback parity here; actual system
+resolution is asserted on hosts exposing a usable family. This is not platform qualification.
+
+**Step**: source fixtures verified; corrected archive/installed proof and CI pending
+**Branch**: `025-render-session`; [PR18](https://github.com/pevyhlas/agentgraphicdesign/pull/18), draft.
 **Authority**: owner continuation and constitution's standing commit/push/PR/green-reviewed-merge
 policy. No release or platform-qualification authorization is inferred.
 **Design review**: architecture/security PASS0 at4fd790a after supplying the missing revision-bound
   bounds capture; initial pending reports retained. No design/source correction was needed.
-**Attempts**: baseline133 tests PASS. Broad macOS advisory failures and008 qualification stay open.
-**Next**: implementation and evidence, then review/delivery.
+**Attempts**: baseline133PASS; initial focused142PASS/2fixtureFAIL (missing document ID); corrected
+  full source and frozen0a0bfb1 archive each3507PASS/3fixtureFAIL (canvas still asks measurement for
+  diagnostics; system font manager exposed no usable family). focused-03 then12PASS/1FAIL narrowed
+  the host-font assumption; focused-04 all13PASS after making that limitation explicit while
+  retaining policy parity and available-host assertions. No production correction. All logs retained.
+  Broad macOS advisory failures and008 qualification stay open.
+**Next**: corrected clean-archive/installed proof, required CI, four owning reviews and delivery.

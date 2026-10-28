@@ -172,7 +172,8 @@ public sealed class RenderSessionTests : IDisposable
         var source = Scene(family);
         var text = source.Root.Children[0];
         source.Root.Children.Add(new RectangleNode { Width = 12, Height = 12, Order = "a1" });
-        var builder = new TransientDocumentBuilder((_, _, _, _) => throw new InvalidOperationException("canvas needs no measure"));
+        // Canvas cropping ignores measured bounds; the builder still asks for diagnostics.
+        var builder = new TransientDocumentBuilder((_, _, _, _) => new TransientMeasurement(null, []));
         var transient = builder.Build(source);
         foreach (var region in new[] { false, true })
         {
@@ -239,14 +240,25 @@ public sealed class RenderSessionTests : IDisposable
     }
 
     [Fact]
-    public void SystemFontPolicyCanChangeBetweenSessionRenders()
+    public void SystemFontPolicyMatchesOrdinaryRenderingBetweenSessionRenders()
     {
-        var family = SKFontManager.Default.FontFamilies.First(name => !name.Equals("Inter", StringComparison.OrdinalIgnoreCase));
-        using var session = ((IRenderer)new SkiaRenderer()).OpenSession(Empty());
-        var scene = Scene(family);
-        Assert.Contains(session.Render(scene, Options).Diagnostics, d => d.Code == RenderDiagnosticCodes.FontSubstituted);
-        Assert.DoesNotContain(session.Render(scene, Options with { SystemFonts = true, StrictFonts = true }).Diagnostics,
-            d => d.Code == RenderDiagnosticCodes.FontSubstituted);
+        // Some native font managers enumerate no usable system family. That host exercises
+        // fallback parity; actual system resolution is asserted only when a family is available.
+        var systemFamily = SKFontManager.Default.FontFamilies.FirstOrDefault(name => !string.IsNullOrWhiteSpace(name)
+            && !name.Equals("Inter", StringComparison.OrdinalIgnoreCase) && TextShapingService.IsFontFamilyAvailable(name));
+        IRenderer renderer = new SkiaRenderer();
+        using var session = renderer.OpenSession(Empty());
+        var scene = Scene(systemFamily ?? "MissingSessionFont9Z");
+        foreach (var systemFonts in new[] { false, true, false })
+        {
+            var options = Options with { SystemFonts = systemFonts };
+            var actual = session.Render(scene, options);
+            var expected = renderer.Render(scene, options);
+            Assert.Equal(expected.Data, actual.Data);
+            Assert.Equal(expected.Diagnostics, actual.Diagnostics);
+            Assert.Equal(systemFamily is null || !systemFonts,
+                actual.Diagnostics.Any(d => d.Code == RenderDiagnosticCodes.FontSubstituted));
+        }
         Assert.Equal(EngineErrors.FontNotFound, Assert.Throws<DocumentEngineException>(() => session.Render(scene, Options with { StrictFonts = true })).Code);
     }
 
