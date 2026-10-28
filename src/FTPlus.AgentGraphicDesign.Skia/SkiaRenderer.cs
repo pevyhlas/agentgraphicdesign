@@ -45,10 +45,16 @@ public sealed class SkiaRenderer : IRenderer
     public RenderResult Render(Document document, RenderOptions options) =>
         Render(document, options, CancellationToken.None);
 
+    public IRenderSession OpenSession(InspectedFontSet fonts, CancellationToken cancellationToken = default) =>
+        new SkiaRenderSession(fonts, cancellationToken);
+
     public RenderResult Render(
         Document document,
         RenderOptions options,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken) => RenderCore(document, options, cancellationToken);
+
+    internal static RenderResult RenderCore(Document document, RenderOptions options,
+        CancellationToken cancellationToken, FontDirectoryCatalog? catalog = null)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(options);
@@ -62,7 +68,7 @@ public sealed class SkiaRenderer : IRenderer
 
         // Font directories are indexed here so an invalid font policy fails before any
         // surface is allocated and independently of whether the document has text.
-        using var context = new RenderContext(document, FontResolutionOptions.From(options), cancellationToken);
+        using var context = new RenderContext(document, FontResolutionOptions.From(options), cancellationToken, catalog);
         using var surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul))
             ?? throw new InvalidOperationException($"Unable to allocate Skia surface for {width}x{height} render");
         var canvas = surface.Canvas;
@@ -798,7 +804,8 @@ public sealed class SkiaRenderer : IRenderer
     private sealed class RenderContext(
         Document document,
         FontResolutionOptions fontOptions,
-        CancellationToken cancellationToken) : IDisposable
+        CancellationToken cancellationToken,
+        FontDirectoryCatalog? catalog) : IDisposable
     {
         private int _nodeCount;
         private int _pathCharacters;
@@ -813,7 +820,7 @@ public sealed class SkiaRenderer : IRenderer
         public TokenService TokenService { get; } = new();
 
         /// <summary>One shaping service per render so typefaces are resolved and cached once.</summary>
-        public TextShapingService TextShaping { get; } = new(fontOptions);
+        public TextShapingService TextShaping { get; } = catalog is null ? new(fontOptions) : new(fontOptions, catalog);
 
         public void Dispose() => TextShaping.Dispose();
 

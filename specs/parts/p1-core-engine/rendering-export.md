@@ -74,8 +74,16 @@ Format reference: [docs/format.md](../../../docs/format.md).
   bounded together at64 MiB, checked before reads and against actual captured bytes.
 - Review colours parse with Core's CSS rules, decide opacity on the ties-to-even alpha byte and
   normalize to lowercase `#rrggbb`; authored document colours retain their semantics.
-  Tests: `ReviewInputTests`, `InspectedFontSetTests`. Render sessions, catalog consumption of this
-  set and CLI/MCP review-surface cutover remain subsequent D-26 increments.
+  Tests: `ReviewInputTests`, `InspectedFontSetTests`.
+- `IRenderer.OpenSession` consumes an immutable inspected font set once. Skia opens only its Load
+  entries in order, rechecks final reparse state, retains ordered capped skip diagnostics and never
+  re-enumerates. Each sequential render borrows the session-owned catalog with its own shaping
+  cache, SystemFonts/StrictFonts policy and diagnostics; nonempty FontDirectories are a programming
+  error. The caller disposes the session on every path; partial load failure/cancellation disposes
+  acquired faces. The default renderer session only accepts zero entries. Ordinary renders use
+  the shared directory rules without the review inspection pre-pass, preserving export policy.
+  Tests: `RenderSessionTests`, existing text-shaping and legacy sheet goldens. Public review-command
+  integration, including shared legacy labels, remains subsequent D-26 work.
 
 - Raster document colors use Core's CSS RGBA parser, including `#rgba` and `#rrggbbaa`;
   Skia's ARGB hex interpretation never overrides document semantics. Regression:

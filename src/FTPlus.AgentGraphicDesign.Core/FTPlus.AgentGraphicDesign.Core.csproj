@@ -17,6 +17,7 @@
     <InternalsVisibleTo Include="agd" />
     <InternalsVisibleTo Include="agd-mcp" />
     <InternalsVisibleTo Include="FTPlus.AgentGraphicDesign.Core.Tests" />
+    <InternalsVisibleTo Include="FTPlus.AgentGraphicDesign.Skia" />
   </ItemGroup>
 
 </Project>

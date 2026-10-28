@@ -17,8 +17,6 @@ internal sealed class FontDirectoryCatalog : IDisposable
     public const long MaxFontFileBytes = FontResolutionOptions.MaxFontFileBytes;
     public const int MaxSkipDiagnostics = 32;
 
-    private static readonly string[] FontExtensions = [".ttf", ".otf"];
-
     private readonly List<Face> _faces = [];
     private readonly List<RenderDiagnostic> _diagnostics = [];
     private bool _disposed;
@@ -31,22 +29,52 @@ internal sealed class FontDirectoryCatalog : IDisposable
 
     public int FaceCount => _faces.Count;
 
-    public static FontDirectoryCatalog Load(IReadOnlyList<string> directories)
-    {
-        ArgumentNullException.ThrowIfNull(directories);
-        if (directories.Count > FontResolutionOptions.MaxFontDirectories)
-        {
-            throw new DocumentEngineException(EngineErrors.ResourceLimit,
-                $"At most {FontResolutionOptions.MaxFontDirectories} font directories are allowed");
-        }
+    public static FontDirectoryCatalog Load(IReadOnlyList<string> directories) =>
+        FromInspected(InspectedFontSet.Inspect(directories, Directory.GetCurrentDirectory(), inspect: false, default));
 
+    /// <summary>Consumes the counted set without enumeration. The optional loader is a test-only instance seam.</summary>
+    internal static FontDirectoryCatalog FromInspected(InspectedFontSet fonts,
+        CancellationToken cancellationToken = default, Func<string, SKTypeface?>? loadTypeface = null)
+    {
+        ArgumentNullException.ThrowIfNull(fonts);
+        cancellationToken.ThrowIfCancellationRequested();
+        loadTypeface ??= path => SKTypeface.FromFile(path);
         var catalog = new FontDirectoryCatalog();
         try
         {
-            foreach (var directory in directories)
+            foreach (var entry in fonts.Entries)
             {
-                catalog.LoadDirectory(directory);
+                cancellationToken.ThrowIfCancellationRequested();
+                if (entry is FontEntry.Skip skip)
+                {
+                    catalog.Skip(entry.Path, skip.Reason == FontSkipReason.SymbolicLink
+                        ? "it is a symbolic link or reparse point" : $"it exceeds {MaxFontFileBytes} bytes");
+                    continue;
+                }
+
+                // Keep the last-component reparse recheck. This is not handle-based TOCTOU protection.
+                if (File.GetAttributes(entry.Path).HasFlag(FileAttributes.ReparsePoint))
+                {
+                    catalog.Skip(entry.Path, "it is a symbolic link or reparse point");
+                    continue;
+                }
+                var typeface = loadTypeface(entry.Path);
+                try
+                {
+                    if (typeface is null || string.IsNullOrEmpty(typeface.FamilyName))
+                    {
+                        catalog.Skip(entry.Path, "it is not a readable TrueType/OpenType font");
+                        continue;
+                    }
+                    catalog._faces.Add(new Face(entry.Path, typeface.FamilyName, typeface.FontWeight, typeface.IsItalic, typeface));
+                    typeface = null; // Ownership transferred to the catalog.
+                }
+                finally
+                {
+                    typeface?.Dispose();
+                }
             }
+            cancellationToken.ThrowIfCancellationRequested();
         }
         catch
         {
@@ -87,53 +115,7 @@ internal sealed class FontDirectoryCatalog : IDisposable
         return lighter != 0 ? lighter : string.CompareOrdinal(candidate.Path, incumbent.Path);
     }
 
-    private void LoadDirectory(string directory)
-    {
-        if (string.IsNullOrWhiteSpace(directory))
-            throw new ArgumentException("Font directory path cannot be empty", nameof(directory));
-        var fullPath = Path.GetFullPath(directory);
-        if (!Directory.Exists(fullPath))
-            throw new ArgumentException($"Font directory not found: {directory}", nameof(directory));
-        if (File.GetAttributes(fullPath).HasFlag(FileAttributes.ReparsePoint))
-            throw new ArgumentException($"Font directory cannot be a symbolic link or reparse point: {directory}", nameof(directory));
-
-        var candidates = new DirectoryInfo(fullPath)
-            .EnumerateFiles("*", SearchOption.TopDirectoryOnly)
-            .Where(file => FontExtensions.Contains(file.Extension, StringComparer.OrdinalIgnoreCase))
-            .OrderBy(file => file.Name, StringComparer.Ordinal)
-            .ToList();
-        if (candidates.Count > MaxFilesPerDirectory)
-        {
-            throw new DocumentEngineException(EngineErrors.ResourceLimit,
-                $"Font directory contains more than {MaxFilesPerDirectory} font files: {directory}");
-        }
-
-        foreach (var file in candidates)
-        {
-            if (file.Attributes.HasFlag(FileAttributes.ReparsePoint))
-            {
-                Skip(file, "it is a symbolic link or reparse point");
-                continue;
-            }
-            if (file.Length > MaxFontFileBytes)
-            {
-                Skip(file, $"it exceeds {MaxFontFileBytes} bytes");
-                continue;
-            }
-
-            var typeface = SKTypeface.FromFile(file.FullName);
-            if (typeface is null || string.IsNullOrEmpty(typeface.FamilyName))
-            {
-                typeface?.Dispose();
-                Skip(file, "it is not a readable TrueType/OpenType font");
-                continue;
-            }
-
-            _faces.Add(new Face(file.FullName, typeface.FamilyName, typeface.FontWeight, typeface.IsItalic, typeface));
-        }
-    }
-
-    private void Skip(FileInfo file, string reason)
+    private void Skip(string path, string reason)
     {
         if (_diagnostics.Count == MaxSkipDiagnostics)
         {
@@ -144,7 +126,7 @@ internal sealed class FontDirectoryCatalog : IDisposable
         if (_diagnostics.Count > MaxSkipDiagnostics)
             return;
         _diagnostics.Add(new RenderDiagnostic(RenderDiagnosticCodes.FontFileSkipped,
-            $"Font file '{file.Name}' was ignored because {reason}"));
+            $"Font file '{Path.GetFileName(path)}' was ignored because {reason}"));
     }
 
     public void Dispose()
