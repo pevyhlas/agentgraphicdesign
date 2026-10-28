@@ -145,8 +145,10 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: after child023's final exact-head gates/merge, continue008/T003 and the later bounded
-increments above. Its native69 cases passed before attestations, but aggregate checks failed on
+**Next**: child026-macos-progress implements008/T003 after merged023; owner2026-10-28 requested
+fixing the broad macOS advisory. Then T013a fonts, T006/T007 paths/asset inspection, Darwin pixel
+backend and final qualification follow the dependencies above. Native69 cases passed before023
+attestations, but aggregate checks failed on
 missing records until the final integration; do not substitute partial runs for that gate. Broad
 advisory Mac retained484 baseline failures and an earlier timing-sensitive cancellation failure;
 child023 does not clear these or qualify the platform. Windows x64's existing C-11 deviation remains
