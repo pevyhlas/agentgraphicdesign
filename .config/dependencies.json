@@ -115,6 +115,32 @@
   ],
   "bundledAssets": [
     {
+      "id": "Noto-test-fonts",
+      "version": "ffebf8c1ee449e544955a7e813c54f9b73848eac",
+      "license": "OFL-1.1",
+      "scopes": ["test"],
+      "purpose": "Portable explicit-directory width, Arabic RTL and concurrent shaping fixtures; excluded from runtime tool packages",
+      "source": "https://github.com/notofonts/noto-fonts/tree/ffebf8c1ee449e544955a7e813c54f9b73848eac",
+      "files": [
+        {
+          "path": "tests/Fixtures/fonts/NotoSans-Regular.ttf",
+          "upstreamPath": "hinted/ttf/NotoSans/NotoSans-Regular.ttf",
+          "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5"
+        },
+        {
+          "path": "tests/Fixtures/fonts/NotoSansArabic-Regular.ttf",
+          "upstreamPath": "hinted/ttf/NotoSansArabic/NotoSansArabic-Regular.ttf",
+          "sha256": "ceea25b464a656dc3b26849bab9356740401af62aedf1bfa8b7f0d9b75925b1b"
+        },
+        {
+          "path": "tests/Fixtures/fonts/LICENSE",
+          "upstreamPath": "LICENSE",
+          "sha256": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb"
+        }
+      ],
+      "noticeMarker": "Noto test fonts (SIL Open Font License 1.1)"
+    },
+    {
       "id": "Inter",
       "version": "4.1",
       "license": "OFL-1.1",

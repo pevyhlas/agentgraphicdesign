@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FTPlus.AgentGraphicDesign.TestFixtures;
 using Xunit;
 
 namespace FTPlus.AgentGraphicDesign.Cli.Tests.Commands;
@@ -10,8 +11,6 @@ namespace FTPlus.AgentGraphicDesign.Cli.Tests.Commands;
 /// </summary>
 public class FontPolicyCommandTests : CommandTestBase
 {
-    private const string DejaVuDirectory = "/usr/share/fonts/truetype/dejavu";
-
     private static double TextNodeWidth(string json)
     {
         var nodes = JsonDocument.Parse(json).RootElement.GetProperty("data").GetProperty("nodes");
@@ -27,17 +26,17 @@ public class FontPolicyCommandTests : CommandTestBase
     [Fact]
     public void Bounds_FontDirectory_ChangesMeasuredWidth()
     {
-        Assert.True(Directory.Exists(DejaVuDirectory), $"bounds --font-dir test needs DejaVu Sans in {DejaVuDirectory}");
+        var fontDirectory = PortableTestFonts.VerifiedDirectory();
         var docPath = CreateTestDocument();
-        Assert.Equal(0, RunCommand("add", docPath, "text", "--text", "Hello world", "--font-family", "DejaVu Sans", "--font-size", "24").ExitCode);
+        Assert.Equal(0, RunCommand("add", docPath, "text", "--text", PortableTestFonts.WidthProbe, "--font-family", PortableTestFonts.SansFamily, "--font-size", "24").ExitCode);
 
         var (substitutedExit, substituted, _) = RunCommand("bounds", docPath, "--no-system-fonts", "-f", "json");
-        var (resolvedExit, resolved, _) = RunCommand("bounds", docPath, "--font-dir", DejaVuDirectory, "--no-system-fonts", "-f", "json");
+        var (resolvedExit, resolved, _) = RunCommand("bounds", docPath, "--font-dir", fontDirectory, "--no-system-fonts", "-f", "json");
 
         Assert.Equal(0, substitutedExit);
         Assert.Equal(0, resolvedExit);
         Assert.True(Math.Abs(TextNodeWidth(resolved) - TextNodeWidth(substituted)) > 1.0,
-            "DejaVu Sans and the bundled substitute should measure to different widths");
+            "Noto Sans and the bundled substitute should measure to different widths");
     }
 
     [Fact]

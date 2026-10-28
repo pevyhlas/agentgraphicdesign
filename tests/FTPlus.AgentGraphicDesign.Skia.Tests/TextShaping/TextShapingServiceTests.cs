@@ -2,6 +2,7 @@ using System.Text;
 using FTPlus.AgentGraphicDesign.Core;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Skia.TextShaping;
+using FTPlus.AgentGraphicDesign.TestFixtures;
 using Xunit;
 
 namespace FTPlus.AgentGraphicDesign.Skia.Tests.TextShaping;
@@ -9,21 +10,18 @@ namespace FTPlus.AgentGraphicDesign.Skia.Tests.TextShaping;
 /// <summary>
 /// Tests for HarfBuzz text shaping functionality. The default service resolves a
 /// missing family to the bundled Inter faces, so most tests are host independent;
-/// tests that need a script Inter lacks (Arabic) load DejaVu from an explicit font
+/// tests that need a script Inter lacks (Arabic) load pinned Noto fixtures from an explicit font
 /// directory the same way a caller would with <c>--font-dir</c>.
 /// </summary>
 public class TextShapingServiceTests : IDisposable
 {
-    private static readonly string DejaVuDirectory = "/usr/share/fonts/truetype/dejavu";
-
     private readonly TextShapingService _service = new();
 
-    private static TextShapingService CreateDejaVuService()
+    private static TextShapingService CreatePortableService()
     {
-        Assert.True(Directory.Exists(DejaVuDirectory), $"Arabic shaping tests need DejaVu Sans in {DejaVuDirectory}");
         return new TextShapingService(new FontResolutionOptions
         {
-            FontDirectories = [DejaVuDirectory],
+            FontDirectories = [PortableTestFonts.VerifiedDirectory()],
             SystemFonts = false,
             StrictFonts = true
         });
@@ -635,10 +633,10 @@ public class TextShapingServiceTests : IDisposable
     [Fact]
     public void ShapeText_ArabicRtl_ProducesDescendingUtf8Clusters()
     {
-        using var service = CreateDejaVuService();
+        using var service = CreatePortableService();
         var result = service.ShapeText("سلام", new TextShapingOptions
         {
-            FontFamily = "DejaVu Sans",
+            FontFamily = PortableTestFonts.ArabicFamily,
             Direction = TextDirection.RightToLeft,
             Language = "ar"
         });
@@ -657,11 +655,11 @@ public class TextShapingServiceTests : IDisposable
     [Fact]
     public async Task ShapeText_ConcurrentCalls_OnSharedService_AreSafeAndSemantic()
     {
-        using var service = CreateDejaVuService();
+        using var service = CreatePortableService();
         var tasks = Enumerable.Range(0, 64).Select(index => Task.Run(() =>
             service.ShapeText(index % 2 == 0 ? "office" : "سلام", new TextShapingOptions
             {
-                FontFamily = "DejaVu Sans",
+                FontFamily = index % 2 == 0 ? PortableTestFonts.SansFamily : PortableTestFonts.ArabicFamily,
                 Direction = index % 2 == 0 ? TextDirection.LeftToRight : TextDirection.RightToLeft,
                 Language = index % 2 == 0 ? "en" : "ar"
             }))).ToArray();
