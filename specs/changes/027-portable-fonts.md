@@ -49,7 +49,7 @@ fewer failures is a hypothesis until measured, not an acceptance shortcut.
 
 - [x] T001 Adopt pinned original fonts, test-only hash helper, approvals/notices and four fixture edits.
 - [x] T002 Verify Linux, exact native two-mode progress against acceptedbase, durable replacement.
-- [ ] T003 Owning reviews, final exact-head gates, source delivery and same-PR closure.
+- [x] T003 Owning reviews and reviewed-head source gates; same-PR closing-head delivery gates remain mandatory before merge.
 
 ## Checks
 
@@ -65,11 +65,11 @@ complete discovery/non-regression with no new skips, and required CI at exact fi
 | A1 |C-01/D-01|upstream bytes/license match; clean-archive package smoke221e14a; both packages exclude fonts/fixtures and contain updated notice|1|PASS|
 | A2 |P1.B-16/Q-01|Linux3510PASS/0FAIL/0SKIP and exact discovery; width/RTL/concurrency assertions pass; two prior failures retained|3|PASS|
 | A3 |D-28/P0/Q-05|40718432005 complete both3508case modes; latest-base comparison PASS; exactly four failed-to-passed cases, no other change|1|PASS|
-| A4 |source delivery|required CI, owning reviews, final native equivalence and review gate|0|NOT_RUN|
+| A4 |source delivery|c7f0ad5: all9required jobs, native equivalence/current-base comparison and4owning reviews PASS; closing-head gates mandatory before merge|1|PASS|
 
 ## State
 
-**Step**: independent review and final native equivalence
+**Step**: reviewed source complete; closing-head verification before merge
 **Branch**:027-portable-fonts; [PR20](https://github.com/pevyhlas/agentgraphicdesign/pull/20), draft.
 **Authority**: same owner request and standing source delivery policy; earlier AGD nativeverification
 extension remains scoped, AB019 native hold remains untouched. No release/deployment.
@@ -85,6 +85,16 @@ installed CLI66/MCP40pass at221e14a, warning-free build, format and package/prov
 Native40718432005 and its required source gates pass: default742fail/private480fail,8skips each.
 Comparator reads acceptedindex at verifiedbase82c4d9d and passes; exactly the four intended cases
 improve, no other identity/outcome change. Durable manifest6473706712 retains both full records;
-fresh APIretrieval reproduces indexed bytes/digests. Index replacement is proposed for owning
-review, not automatically accepted. Final head must reproduce accepted case/outcome bodies.
-**Next**: owning reviews, exact-head native equivalence, then source delivery; aliases/backend follow.
+fresh APIretrieval reproduces indexed bytes/digests. All4owning reviews PASS0 atc7f0ad5 accept
+the source and compared index replacement. Run40720369234 passed all9required jobs and both native
+modes; downloaded checks, exact equivalence to221e14a and current-base comparison PASS. Same-round
+test/operations evidence addenda accept this proof. Only record/verdict/log metadata follows;
+the actual closing head must pass required CI, native equivalence/current-base comparison and
+review/delivery gates before merge. Remaining742/480failures stay parent008 work.
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6473847536
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6473882961
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6473883756
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6473884378
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6474020502
+**Review**: round 1 · 82c4d9d5b2877660abf70e7dd84fca03050cd180..c7f0ad5952a8a973f2be54d392e2af55c09e7102 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/20#issuecomment-6474021072
+**Next**: closing-head gates and authorized source merge; aliases/asset inspection follow.
