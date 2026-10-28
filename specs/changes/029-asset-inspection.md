@@ -97,8 +97,8 @@ qualification remain parent008 obligations; do not count their refusal as editin
 ## Tasks
 
 - [x] T001 Record owner reconciliation of C-11 versus D-28 S1; complete independent design review.
-- [ ] T002 Registry/fixture admission, file-probe native cases and bounded progress-stage migration.
-- [ ] T003 Complete Linux and two-mode native comparison; source/archive/installed proof and durable baseline.
+- [x] T002 Registry/fixture admission, file-probe native cases and bounded progress-stage migration.
+- [x] T003 Complete Linux and two-mode native comparison; source/archive/installed proof and durable baseline.
 - [ ] T004 All five owning reviews, final exact-head gates and same-PR source closure.
 
 ## Checks
@@ -114,14 +114,14 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; owner-approved bounded S1 only | 2 | PASS |
-| A2 | AC-05 asset portion, AC-06 | real native regular-file success and special-file no-open refusal across Core/CLI/MCP; source and installed Linux proof | 2 | PARTIAL |
-| A3 | Q-01/Q-03/Q-05 progress integrity | stage classifier/capture/transition negatives; complete two-mode current-base non-regression and durable retrieval | 2 | PARTIAL |
-| A4 | source delivery | owning reviews, final-head native equivalence, required CI and review/delivery gates | 2 | PARTIAL |
+| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; native40757367407 at8e75a1c | 3 | PASS |
+| A2 | AC-05 asset portion, AC-06 | real native safety and source/archive3625PASS; installedCLI66/MCP40 plus8special-file cases at8e75a1c | 3 | PASS |
+| A3 | Q-01/Q-03/Q-05 progress integrity | stage negatives; two-mode current-base comparison and durable retrieval in PR22comment6479083236 | 3 | PASS |
+| A4 | source delivery | final five owning verdicts, metadata-head native equivalence and exact-head CI/review/delivery gates pending | 3 | BLOCKED |
 
 ## State
 
-**Step**: verification — native comparison passes; isolated package fixture correction
+**Step**: final review — source/native/package proof passes; metadata-head gates pending
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
@@ -151,8 +151,13 @@ bodies,264oldfailuresfixed/mode andall8former skips executed. Current-base compa
 reset. Package02fails only the new synthetic-mac budget fixture: isolated environment uses shared
 /tmp with>4096entries. Pinning unrelated ancestors in its injected enumeration retains realowned
 4096/4097entries,256outputs/allassertions; cleared-TMPDIR regressionPASS. Production bounds unchanged.
-Q-05's staleS0description now reflects the alreadyapprovedC11scope. Next: complete candidate native/
-archive/installed proof, test/ops review, durable records and final-head gates. Failed attempts retained.
+Q-05's staleS0description now reflects the alreadyapprovedC11scope. Native3/run40757367407 at8e75a1c
+reproduces all native2 outcomes/non-source headers and passes actual-base comparison. Package03
+passes clean-archive3625tests, installedCLI66/MCP40 and8extra installed special-file worker cases.
+Full native records published/retrieved with matching digests atPR22comment6479083236; replacement
+index proposed for owning review. No new skip/rename exceptions or tolerance changes. Three remaining
+artifact failures are case-insensitive fixture construction, retained with the other216failures in
+parent008; none is a newly failing case. Next: all five final reviews and closing-head native/CI gates.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368
@@ -161,3 +166,9 @@ archive/installed proof, test/ops review, durable records and final-head gates. 
 **Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477713018
 **Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477722702
 **Review**: round 2 · 22ea474db5ccc96258536f2c0b8a726ad5432aeb..ce5462caf220fbaee222443577c92381a5cf7898 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477751084
+**Review**: round 3 · bb035efd9fe69013904af612fa73cd3cff04b2ce..5443648ef836dc1f0a4b239f68c5dfd96c5bd642 · agd-code-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478592547
+**Review**: round 3 · bb035efd9fe69013904af612fa73cd3cff04b2ce..5443648ef836dc1f0a4b239f68c5dfd96c5bd642 · agd-security-reviewer · FAIL · 0 critical, 0 high, 1 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478592969
+**Review**: round 3 · bb035efd9fe69013904af612fa73cd3cff04b2ce..5443648ef836dc1f0a4b239f68c5dfd96c5bd642 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478593390
+**Review**: round 4 · 5443648ef836dc1f0a4b239f68c5dfd96c5bd642..754d63949e70f683c0a55b59b0885de06231a436 · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478817729
+**Review**: round 4 · 5443648ef836dc1f0a4b239f68c5dfd96c5bd642..754d63949e70f683c0a55b59b0885de06231a436 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478832517
+**Review**: round 4 · 5443648ef836dc1f0a4b239f68c5dfd96c5bd642..754d63949e70f683c0a55b59b0885de06231a436 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6478832939
