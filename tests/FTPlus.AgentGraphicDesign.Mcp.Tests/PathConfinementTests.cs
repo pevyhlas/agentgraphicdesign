@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Mcp;
 using Xunit;
 
@@ -32,7 +33,7 @@ public class PathConfinementTests : IDisposable
         Assert.True(result.Success);
         Assert.Null(result.ErrorCode);
         Assert.NotNull(result.Path);
-        Assert.StartsWith(_testDir, result.Path);
+        Assert.StartsWith(PlatformPaths.FullPath(_testDir), result.Path);
         Assert.EndsWith("document.agd.json", result.Path);
     }
 
@@ -45,7 +46,7 @@ public class PathConfinementTests : IDisposable
 
         Assert.True(result.Success);
         Assert.Null(result.ErrorCode);
-        Assert.Equal(absolutePath, result.Path);
+        Assert.Equal(PlatformPaths.FullPath(absolutePath), result.Path);
     }
 
     [Fact]
@@ -112,7 +113,7 @@ public class PathConfinementTests : IDisposable
         Assert.True(result.Success);
         Assert.Null(result.ErrorCode);
         Assert.NotNull(result.Path);
-        Assert.StartsWith(_testDir, result.Path);
+        Assert.StartsWith(PlatformPaths.FullPath(_testDir), result.Path);
     }
 
     [Fact]
@@ -131,7 +132,7 @@ public class PathConfinementTests : IDisposable
     [Fact]
     public void WorkingDirectory_ReturnsNormalizedPath()
     {
-        Assert.Equal(_testDir, _confinement.WorkingDirectory);
+        Assert.Equal(PlatformPaths.FullPath(_testDir), _confinement.WorkingDirectory);
     }
 
     [Fact]

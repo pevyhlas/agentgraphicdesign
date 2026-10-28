@@ -50,19 +50,19 @@ public sealed class ImportCommand : AsyncCommand<ImportCommand.Settings>
 
         var format = parseResult.Format;
 
-        if (!File.Exists(settings.File))
+        if (!SurfaceIO.TryResolvePath(settings.File, out var inputPath) || !File.Exists(inputPath))
         {
             AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {settings.File}", format);
             return ExitCodes.GeneralError;
         }
 
-        if (!SurfaceIO.TryCheckFileSize(settings.File, SurfaceIO.MaxInputFileBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(inputPath, SurfaceIO.MaxInputFileBytes, out var sizeError))
         {
             AgentOutput.WriteError("INPUT_TOO_LARGE", sizeError!, format);
             return ExitCodes.InvalidArguments;
         }
 
-        var extension = Path.GetExtension(settings.File).ToLowerInvariant();
+        var extension = Path.GetExtension(inputPath).ToLowerInvariant();
         if (extension != ".svg")
         {
             AgentOutput.WriteError("UNSUPPORTED_FORMAT", $"Only SVG import is supported; got: {extension}", format);
@@ -76,7 +76,7 @@ public sealed class ImportCommand : AsyncCommand<ImportCommand.Settings>
         }
 
         var options = new SvgImportOptions { DocumentName = settings.Name };
-        var svg = await File.ReadAllTextAsync(settings.File, ct);
+        var svg = await File.ReadAllTextAsync(inputPath, ct);
         var result = _engine.ImportSvg(svg, options, ct);
 
         if (!result.Success || result.Document is null)
@@ -86,7 +86,7 @@ public sealed class ImportCommand : AsyncCommand<ImportCommand.Settings>
         }
 
         var document = result.Document;
-        var outputPath = settings.Output ?? DeriveOutputPath(settings.File);
+        var outputPath = settings.Output ?? DeriveOutputPath(inputPath);
 
         try
         {

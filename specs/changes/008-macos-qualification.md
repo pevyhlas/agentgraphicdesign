@@ -82,7 +82,10 @@ the selected public evidence is indexed in `specs/records.md`, not a macOS quali
   pinned test-only Noto Sans/Arabic replace four Linux font assumptions, preserving case names,
   assertions and skips. Native progress fixes those four identities in both modes. Child027's
   final owning reviews/exact-head gates govern acceptance; runtime font policy stays unchanged.
-- [ ] 008/T006 `PlatformPaths` and the alias canonicalizer; 008/T007 admit asset inspection (S1).
+- [x] 008/T006 `PlatformPaths` and verified aliases implemented in child028
+  ([PR #21](https://github.com/pevyhlas/agentgraphicdesign/pull/21)):262default-root failures fixed,
+  both modes now3074PASS/480FAIL/8SKIP. Its final exact-head gates govern source delivery.
+- [ ] 008/T007 admit asset inspection (S1).
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).
 - [ ] 008/T013 remaining test portability; 008/T014 script portability; 008/T015 `platform-qualify`
@@ -151,8 +154,8 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: child027-portable-fonts completes008/T013a delivery after merged026; owner2026-10-28
-requested fixing the broad macOS advisory. Then T006/T007 paths/asset inspection, Darwin pixel
+**Next**: merged027-portable-fonts completes008/T013a; child028 implements T006 verified paths.
+Owner2026-10-28 requested fixing the broad macOS advisory. Then T007 asset inspection, Darwin pixel
 backend and final qualification follow the dependencies above. Native69 cases passed before023
 attestations, but aggregate checks failed on
 missing records until the final integration; do not substitute partial runs for that gate. Broad
@@ -167,5 +170,10 @@ latest target-base index; final head/metadata equivalence stays required. Source
 clear this parent's qualification obligations or its earlier verification budget/holds.
 Child027's native40718432005 fixes exactly four prior failed identities per mode with no other
 outcome change: default2758PASS/742FAIL/8skip, private3020PASS/480FAIL/8skip. The proposed reviewed
-index replacement preserves source/digest/PR-payload binding and the predecessor comparison;
-final metadata-only native equivalence remains required. These fixes do not admit new capabilities.
+index replacement preserves source/digest/PR-payload binding and the predecessor comparison.
+Final native40722320267 and all required checks passed at7dcc810 before PR20 merged as0852352;
+the indexed results reproduced exactly. These fixes do not admit new capabilities.
+Child028's native40732952769 ate62b4dc fixes all262additionaldefault-root failures; both modes
+have identical3562case/outcome bodies,3074PASS/480FAIL/8SKIP. All54newcases pass. Native1comparison
+failure and its expectation correction remain onPR21. A1–A3/source reviews pass; source delivery
+still requires the actual closing-head gates, and all parent qualification items remain open.

@@ -50,6 +50,8 @@
   claimed. Enforced by: `FileDocumentStoreHardeningTests`.
   Vector storage remains unguarded on every profile and unqualified off .NET 10 Linux x64;
   the S0 platform registry does not add a vector file gate (D-28).
+  D-28's verified macOS aliases share a canonical source and lock path; raw alias spellings do
+  not create separate store identities. Enforced by: `CanonicalStoreTests`, `PlatformPathsTests`.
 - **P1.I-03 Bounded queries**: node listing and inspection page their results and stop at
   published scan and depth limits with `RESOURCE_LIMIT`. Enforced by: `NodePageTests`, `HardeningTests`.
 

@@ -1,4 +1,7 @@
 using System.Collections.Immutable;
+using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Paths;
+using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Rendering;
 
@@ -31,7 +34,7 @@ public sealed class InspectedFontSet
     internal static InspectedFontSet Inspect(IReadOnlyList<string> directories, string baseDirectory,
         bool inspect, CancellationToken ct)
     {
-        var resolved = FontDirectoryRules.ResolveDirectories(directories, baseDirectory);
+        var resolved = FontDirectoryRules.ResolveDirectories(directories, baseDirectory, inspect, ct);
         return new InspectedFontSet(resolved, FontDirectoryRules.Enumerate(resolved, inspect, ct));
     }
 }
@@ -43,17 +46,23 @@ internal static class FontDirectoryRules
     internal const int MaxFilesPerDirectory = 256;
     internal const long MaxFontFileBytes = 8 * 1024 * 1024;
 
-    internal static ImmutableArray<string> ResolveDirectories(IReadOnlyList<string> directories, string baseDirectory)
+    internal static ImmutableArray<string> ResolveDirectories(IReadOnlyList<string> directories, string baseDirectory,
+        bool inspect, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(directories);
         if (directories.Count > MaxFontDirectories)
             throw new DocumentEngineException(EngineErrors.ResourceLimit, "At most 16 font directories are allowed");
         return directories.Select(directory =>
         {
+            ct.ThrowIfCancellationRequested();
             if (string.IsNullOrWhiteSpace(directory))
                 throw new ArgumentException("Font directory path cannot be empty", nameof(directories));
-            // Preserve unnormalised components for the inspection pre-pass (link/.. must not hide a link).
-            return Path.IsPathFullyQualified(directory) ? directory : Path.Combine(baseDirectory, directory);
+            var raw = Path.IsPathFullyQualified(directory) ? directory : Path.Combine(baseDirectory, directory);
+            // Inspect lexical prefixes before dots can hide a link, then the exact final path.
+            return inspect
+                ? PlatformPaths.FullPath(raw, null,
+                    canonical => AssetPaths.Inspect(canonical, directory: true, required: true, PlatformCapability.AssetPipeline, ct), ct)
+                : PlatformPaths.FullPath(raw);
         }).ToImmutableArray();
     }
 
@@ -76,7 +85,7 @@ internal static class FontDirectoryRules
             foreach (var file in files)
             {
                 ct.ThrowIfCancellationRequested();
-                if (!IsFont(file.FullName))
+                if (!IsFont(file.Name))
                     continue;
                 if (candidates.Count == MaxFilesPerDirectory)
                     throw new DocumentEngineException(EngineErrors.ResourceLimit, "Font directory contains more than 256 font files");
@@ -86,13 +95,14 @@ internal static class FontDirectoryRules
             foreach (var file in candidates)
             {
                 ct.ThrowIfCancellationRequested();
+                var path = Path.Combine(directory, file.Name);
                 // Never query length through a link, including a dangling link.
                 if (file.Attributes.HasFlag(FileAttributes.ReparsePoint))
-                    entries.Add(new FontEntry.Skip(file.FullName, FontSkipReason.SymbolicLink));
+                    entries.Add(new FontEntry.Skip(path, FontSkipReason.SymbolicLink));
                 else if (file.Length > MaxFontFileBytes)
-                    entries.Add(new FontEntry.Skip(file.FullName, FontSkipReason.Oversize));
+                    entries.Add(new FontEntry.Skip(path, FontSkipReason.Oversize));
                 else
-                    entries.Add(new FontEntry.Load(file.FullName, file.Length));
+                    entries.Add(new FontEntry.Load(path, file.Length));
             }
         }
         return entries.ToImmutable();

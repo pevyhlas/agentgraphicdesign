@@ -38,12 +38,13 @@ public sealed class ListDocumentsCommand : Command<ListDocumentsCommand.Settings
         var format = parseResult.Format;
         var directory = settings.Directory ?? System.IO.Directory.GetCurrentDirectory();
 
-        if (!System.IO.Directory.Exists(directory))
+        if (!SurfaceIO.TryResolvePath(directory, out var canonicalDirectory) || !System.IO.Directory.Exists(canonicalDirectory))
         {
             AgentOutput.WriteError("DIRECTORY_NOT_FOUND", $"Directory not found: {directory}", format);
             return ExitCodes.GeneralError;
         }
 
+        directory = canonicalDirectory;
         var documents = new List<object>();
 
         foreach (var file in System.IO.Directory.EnumerateFiles(directory, "*.agd.json"))
@@ -76,7 +77,7 @@ public sealed class ListDocumentsCommand : Command<ListDocumentsCommand.Settings
 
         AgentOutput.WriteSuccess($"{documents.Count} document(s) found", format, new
         {
-            directory = Path.GetFullPath(directory),
+            directory,
             count = documents.Count,
             documents
         });

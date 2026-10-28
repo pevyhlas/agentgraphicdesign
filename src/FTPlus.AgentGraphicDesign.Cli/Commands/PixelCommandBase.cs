@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Globalization;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Pixels;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -66,7 +67,7 @@ public abstract class PixelCommandBase<TSettings>(NativePixelService service) : 
             throw new NativePixelException(EngineErrors.InvalidArguments, "A local path must be provided.");
         try
         {
-            return Path.GetFullPath(path);
+            return PlatformPaths.FullPath(path);
         }
         catch (Exception e) when (e is ArgumentException or NotSupportedException or PathTooLongException)
         {
@@ -122,6 +123,7 @@ public abstract class PixelCommandBase<TSettings>(NativePixelService service) : 
         FileInfo info;
         try
         {
+            path = PlatformPaths.FullPath(path);
             info = new FileInfo(path);
         }
         catch (Exception e) when (e is ArgumentException or NotSupportedException or PathTooLongException or IOException or UnauthorizedAccessException)

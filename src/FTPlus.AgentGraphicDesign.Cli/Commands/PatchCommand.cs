@@ -153,18 +153,18 @@ public sealed class PatchCommand : Command<PatchCommand.Settings>
         }
 
         var path = settings.File!;
-        if (!System.IO.File.Exists(path))
+        if (!SurfaceIO.TryResolvePath(path, out var canonicalPath) || !System.IO.File.Exists(canonicalPath))
         {
             throw new DocumentEngineException("FILE_NOT_FOUND", $"Operations file not found: {path}");
         }
 
-        if (!SurfaceIO.TryCheckFileSize(path, PatchLimits.MaxJsonBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(canonicalPath, PatchLimits.MaxJsonBytes, out var sizeError))
         {
             throw new DocumentEngineException("INPUT_TOO_LARGE", sizeError!);
         }
 
         ct.ThrowIfCancellationRequested();
-        return System.IO.File.ReadAllText(path);
+        return System.IO.File.ReadAllText(canonicalPath);
     }
 
     private static void WritePatchError(PatchError error, OutputFormat format) =>

@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Assets;
@@ -24,8 +24,8 @@ internal static class AssetPaths
                 name[3] is >= '1' and <= '9' or '\u00b9' or '\u00b2' or '\u00b3')
                 throw Unsafe(relative);
         }
-        var path = Path.TrimEndingDirectorySeparator(Path.GetFullPath(relative, directory));
-        if (!Within(path, directory))
+        var path = Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(relative, directory));
+        if (!Within(path, PlatformPaths.FullPath(directory)))
             throw Unsafe(relative);
         return path;
     }
@@ -39,7 +39,7 @@ internal static class AssetPaths
 
     internal static void RejectCaseAliases(string directory, string path, PlatformCapability capability, CancellationToken ct)
     {
-        var parts = Path.GetRelativePath(directory, path).Split(Path.DirectorySeparatorChar);
+        var parts = PlatformPaths.RelativePath(directory, path).Split(Path.DirectorySeparatorChar);
         var current = directory;
         foreach (var part in parts)
         {
@@ -102,9 +102,9 @@ internal static class AssetPaths
             {
                 try
                 {
-                    if (LStat(current, out var status) != 0)
+                    if (UnixFileMetadata.LStat(current, out var status) != 0)
                         throw new IOException($"Cannot inspect asset file: {current}");
-                    if ((status.Mode & 0xF000) != 0x8000)
+                    if ((status.Mode & UnixFileMetadata.TypeMask) != UnixFileMetadata.RegularType)
                         throw Unsafe(current);
                 }
                 catch (Exception ex) when (ex is DllNotFoundException or EntryPointNotFoundException or BadImageFormatException)
@@ -145,31 +145,4 @@ internal static class AssetPaths
 
     internal static DocumentEngineException Unsafe(string path) =>
         new(EngineErrors.PathEscape, $"Asset path must be confined, free of symlinks/reparse points, and of the required file type: {path}");
-
-    // Private PAL ABI behind the capability gate (S0: .NET 10 Linux x64; Windows never reaches it).
-    // FileAttributes alone cannot distinguish Unix regular files from FIFOs/devices.
-    [DllImport("System.Native", EntryPoint = "SystemNative_LStat", SetLastError = true)]
-    private static extern int LStat([MarshalAs(UnmanagedType.LPUTF8Str)] string path, out UnixFileStatus status);
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct UnixFileStatus
-    {
-        public int Flags;
-        public int Mode;
-        public uint Uid;
-        public uint Gid;
-        public long Size;
-        public long ATime;
-        public long ATimeNsec;
-        public long MTime;
-        public long MTimeNsec;
-        public long CTime;
-        public long CTimeNsec;
-        public long BirthTime;
-        public long BirthTimeNsec;
-        public long Dev;
-        public long RDev;
-        public long Ino;
-        public uint UserFlags;
-    }
 }

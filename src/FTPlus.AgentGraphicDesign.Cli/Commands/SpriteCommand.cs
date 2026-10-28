@@ -2,6 +2,7 @@ using System.ComponentModel;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Export;
 using FTPlus.AgentGraphicDesign.Core.Validation;
 using Spectre.Console.Cli;
@@ -94,11 +95,11 @@ public sealed class SpriteCommand : AsyncCommand<SpriteCommand.Settings>
 
         try
         {
-            foreach (var file in settings.Files)
+            foreach (var input in settings.Files)
             {
-                if (!File.Exists(file))
+                if (!SurfaceIO.TryResolvePath(input, out var file) || !File.Exists(file))
                 {
-                    AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {file}", format);
+                    AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {input}", format);
                     return ExitCodes.GeneralError;
                 }
                 if (!SurfaceIO.TryCheckFileSize(file, SurfaceIO.MaxInputFileBytes, out var sizeError))
@@ -169,17 +170,18 @@ public sealed class SpriteCommand : AsyncCommand<SpriteCommand.Settings>
                 return ExitCodes.GeneralError;
             }
 
-            var outputDir = Path.GetDirectoryName(Path.GetFullPath(settings.Output));
+            var outputPath = PlatformPaths.FullPath(settings.Output);
+            var outputDir = Path.GetDirectoryName(outputPath);
             if (!string.IsNullOrEmpty(outputDir))
             {
                 Directory.CreateDirectory(outputDir);
             }
 
-            await File.WriteAllBytesAsync(settings.Output, data, ct);
+            await File.WriteAllBytesAsync(outputPath, data, ct);
 
             var spriteResult = new
             {
-                path = SurfaceIO.DisplayPath(settings.Output),
+                path = SurfaceIO.DisplayPath(outputPath),
                 symbols = symbolIds,
                 size = data.Length,
                 mimeType = "image/svg+xml"

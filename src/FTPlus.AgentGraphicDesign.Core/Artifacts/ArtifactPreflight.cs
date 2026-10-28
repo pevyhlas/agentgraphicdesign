@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Artifacts;
@@ -40,7 +41,7 @@ public static class ArtifactPreflight
 
         try
         {
-            var fullPath = Path.GetFullPath(descriptorPath);
+            var fullPath = PlatformPaths.FullPath(descriptorPath);
             var directory = Path.GetDirectoryName(fullPath);
             if (string.IsNullOrEmpty(directory))
                 throw new DocumentEngineException(EngineErrors.InvalidArguments, "The descriptor must be a file in a bundle directory.");

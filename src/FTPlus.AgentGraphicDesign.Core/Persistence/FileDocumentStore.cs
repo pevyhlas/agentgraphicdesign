@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using FTPlus.AgentGraphicDesign.Core.Documents;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
 
 namespace FTPlus.AgentGraphicDesign.Core.Persistence;
@@ -18,7 +19,7 @@ public sealed class FileDocumentStore : IDocumentStore
         if (maxDocumentBytes is <= 0 or > int.MaxValue)
             throw new ArgumentOutOfRangeException(nameof(maxDocumentBytes));
 
-        _basePath = Path.TrimEndingDirectorySeparator(Path.GetFullPath(basePath));
+        _basePath = Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(basePath));
         _maxDocumentBytes = maxDocumentBytes;
 
         // Portable .NET does not expose no-follow handles for every operation. Rejecting
@@ -303,12 +304,12 @@ public sealed class FileDocumentStore : IDocumentStore
 
     private void EnsureNoAncestorStoreMarkers()
     {
-        var parent = Directory.GetParent(_basePath);
+        var parent = Path.GetDirectoryName(_basePath);
         while (parent is not null)
         {
-            if (File.Exists(Path.Combine(parent.FullName, ".agd-store.lock")))
-                throw EnclosingStore(parent.FullName);
-            parent = parent.Parent;
+            if (File.Exists(Path.Combine(parent, ".agd-store.lock")))
+                throw EnclosingStore(parent);
+            parent = Path.GetDirectoryName(parent);
         }
     }
 
@@ -345,7 +346,7 @@ public sealed class FileDocumentStore : IDocumentStore
 
     private string EnsureConfinedSafePath(string path)
     {
-        var fullPath = Path.GetFullPath(path);
+        var fullPath = PlatformPaths.FullPath(path);
         var basePrefix = Path.EndsInDirectorySeparator(_basePath)
             ? _basePath
             : _basePath + Path.DirectorySeparatorChar;
@@ -364,9 +365,9 @@ public sealed class FileDocumentStore : IDocumentStore
 
     private static void EnsureNoReparsePoints(string path)
     {
-        var fullPath = Path.GetFullPath(path);
+        var fullPath = PlatformPaths.FullPath(path);
         var root = Path.GetPathRoot(fullPath) ?? throw UnsafePath(path);
-        var relative = Path.GetRelativePath(root, fullPath);
+        var relative = PlatformPaths.RelativePath(root, fullPath);
         var current = root;
 
         foreach (var part in relative.Split(
@@ -408,7 +409,7 @@ public sealed class FileDocumentStore : IDocumentStore
     private DocumentEngineException ContainedStore(string lockPath)
     {
         var holder = Path.GetDirectoryName(_basePath) ?? _basePath;
-        var innerRoot = Path.GetRelativePath(holder, Path.GetDirectoryName(lockPath)!);
+        var innerRoot = PlatformPaths.RelativePath(holder, Path.GetDirectoryName(lockPath)!);
         return new(EngineErrors.StoreConflict,
             $"Nested document stores are not supported: this store would contain the existing store at '{innerRoot}'. " +
             "Move or remove that inner store, or run from a directory that does not contain it.");

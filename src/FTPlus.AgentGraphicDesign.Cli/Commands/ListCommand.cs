@@ -2,6 +2,7 @@ using System.ComponentModel;
 using FTPlus.AgentGraphicDesign.Cli.Output;
 using FTPlus.AgentGraphicDesign.Cli.Infrastructure;
 using FTPlus.AgentGraphicDesign.Core;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Documents;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
 using Spectre.Console;
@@ -54,7 +55,7 @@ public sealed class ListCommand : Command<ListCommand.Settings>
 
     private int ListDocuments(OutputFormat format, CancellationToken cancellationToken)
     {
-        var currentDir = Directory.GetCurrentDirectory();
+        var currentDir = PlatformPaths.FullPath(Directory.GetCurrentDirectory());
         var documents = new List<DocumentSummary>();
 
         foreach (var file in Directory.EnumerateFiles(currentDir, "*.agd.json"))

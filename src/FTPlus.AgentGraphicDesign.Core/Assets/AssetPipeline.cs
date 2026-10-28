@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using FTPlus.AgentGraphicDesign.Core.Export;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
@@ -43,7 +44,7 @@ public sealed class AssetPipeline
             // Reject traversal before normalization so a link/.. pair cannot hide a link.
             if (manifestPath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Contains(".."))
                 throw AssetPaths.Unsafe(manifestPath);
-            manifestPath = Path.GetFullPath(manifestPath);
+            manifestPath = PlatformPaths.FullPath(manifestPath);
             AssetPaths.Inspect(manifestPath, directory: false, required: true, PlatformCapability.AssetPipeline, ct);
             var directory = Path.GetDirectoryName(manifestPath)!;
             var manifest = AssetManifest.Parse(await ReadBoundedAsync(manifestPath, MaxManifestBytes, ct));
@@ -182,8 +183,8 @@ public sealed class AssetPipeline
                             var message = diagnostic.Message.Length <= MaxDiagnosticMessageCharacters ? diagnostic.Message
                                 : diagnostic.Message[..(MaxDiagnosticMessageCharacters - truncated.Length)] + truncated;
                             diagnostics.Add(new AssetPipelineDiagnostic(
-                                Path.GetRelativePath(directory, source).Replace(Path.DirectorySeparatorChar, '/'),
-                                Path.GetRelativePath(directory, plan.Output).Replace(Path.DirectorySeparatorChar, '/'), diagnostic.Code, message));
+                                PlatformPaths.RelativePath(directory, source).Replace(Path.DirectorySeparatorChar, '/'),
+                                PlatformPaths.RelativePath(directory, plan.Output).Replace(Path.DirectorySeparatorChar, '/'), diagnostic.Code, message));
                         }
                     }
                     catch (Exception ex) when (ex is not (DocumentEngineException or OperationCanceledException or OutOfMemoryException))
@@ -222,10 +223,10 @@ public sealed class AssetPipeline
                         (await ReadBoundedAsync(output, expected.Length, ct)).AsSpan().SequenceEqual(expected)
                         ? "unchanged" : "stale";
                 }
-                files.Add(new AssetFileResult(Path.GetRelativePath(directory, output).Replace(Path.DirectorySeparatorChar, '/'), status));
+                files.Add(new AssetFileResult(PlatformPaths.RelativePath(directory, output).Replace(Path.DirectorySeparatorChar, '/'), status));
             }
             foreach (var orphan in inventory.Where(path => !plans.Any(plan => plan.Output == path)).Order(StringComparer.Ordinal))
-                files.Add(new AssetFileResult(Path.GetRelativePath(directory, orphan).Replace(Path.DirectorySeparatorChar, '/'), "unexpected"));
+                files.Add(new AssetFileResult(PlatformPaths.RelativePath(directory, orphan).Replace(Path.DirectorySeparatorChar, '/'), "unexpected"));
 
             if (!check)
             {

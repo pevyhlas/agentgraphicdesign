@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 
 namespace FTPlus.AgentGraphicDesign.Mcp;
 
@@ -18,7 +19,7 @@ public sealed class PathConfinement
             throw new ArgumentException("Working directory cannot be empty", nameof(workingDirectory));
         }
 
-        _workingDirectory = Path.TrimEndingDirectorySeparator(Path.GetFullPath(workingDirectory));
+        _workingDirectory = Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(workingDirectory));
         _rootPrefix = _workingDirectory.EndsWith(Path.DirectorySeparatorChar)
             ? _workingDirectory
             : _workingDirectory + Path.DirectorySeparatorChar;
@@ -49,7 +50,7 @@ public sealed class PathConfinement
 
         try
         {
-            var absolutePath = Path.GetFullPath(Path.IsPathRooted(userPath)
+            var absolutePath = PlatformPaths.FullPath(Path.IsPathRooted(userPath)
                 ? userPath
                 : Path.Combine(_workingDirectory, userPath));
 
@@ -82,7 +83,7 @@ public sealed class PathConfinement
 
     public string RelativePath(string confinedPath)
     {
-        var relative = Path.GetRelativePath(_workingDirectory, confinedPath);
+        var relative = PlatformPaths.RelativePath(_workingDirectory, confinedPath);
         return relative.Replace(Path.DirectorySeparatorChar, '/');
     }
 
@@ -93,19 +94,10 @@ public sealed class PathConfinement
 
     private string? FindReparsePoint(string absolutePath)
     {
-        if (TryGetAttributes(_workingDirectory, out var rootAttributes) &&
-            rootAttributes.HasFlag(FileAttributes.ReparsePoint))
-        {
-            return "Working directory contains a symbolic link or reparse point";
-        }
-
-        var relative = Path.GetRelativePath(_workingDirectory, absolutePath);
-        if (relative == ".")
-        {
-            return null;
-        }
-
-        var current = _workingDirectory;
+        // Include ancestors of the configured root: canonicalization grants only verified
+        // system aliases, never an arbitrary link above an otherwise ordinary root.
+        var current = Path.GetPathRoot(absolutePath)!;
+        var relative = PlatformPaths.RelativePath(current, absolutePath);
         foreach (var segment in relative.Split(
             [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar],
             StringSplitOptions.RemoveEmptyEntries))

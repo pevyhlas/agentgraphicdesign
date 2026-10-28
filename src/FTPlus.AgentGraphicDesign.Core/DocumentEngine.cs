@@ -9,6 +9,7 @@ using FTPlus.AgentGraphicDesign.Core.Lint;
 using FTPlus.AgentGraphicDesign.Core.Ordering;
 using FTPlus.AgentGraphicDesign.Core.Patching;
 using FTPlus.AgentGraphicDesign.Core.PathOperations;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Persistence;
 using FTPlus.AgentGraphicDesign.Core.Rendering;
 using FTPlus.AgentGraphicDesign.Core.Serialization;
@@ -146,6 +147,15 @@ public sealed class DocumentEngine : IDocumentEngine
     public DeserializeResult TryLoadDocumentFromFile(string filePath, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        try
+        {
+            filePath = PlatformPaths.FullPath(filePath);
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            // Preserve File.Exists' previous invalid-input result for this non-throwing loader.
+            return DeserializeResult.Fail(new ParseError { Message = $"File not found: {filePath}" });
+        }
         if (!File.Exists(filePath))
         {
             return DeserializeResult.Fail(new ParseError { Message = $"File not found: {filePath}" });
@@ -182,10 +192,19 @@ public sealed class DocumentEngine : IDocumentEngine
                 : new DocumentHandle(fromStore.Document, fromStore.SourcePath) { IsStoreSource = true };
         }
 
-        if (File.Exists(idOrPath))
+        string fullPath;
+        try
         {
-            var fromFile = LoadDocumentFromFile(idOrPath, cancellationToken);
-            return fromFile is null ? null : new DocumentHandle(fromFile, Path.GetFullPath(idOrPath));
+            fullPath = PlatformPaths.FullPath(idOrPath);
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            return null;
+        }
+        if (File.Exists(fullPath))
+        {
+            var fromFile = LoadDocumentFromFile(fullPath, cancellationToken);
+            return fromFile is null ? null : new DocumentHandle(fromFile, fullPath);
         }
 
         return null;
@@ -227,7 +246,7 @@ public sealed class DocumentEngine : IDocumentEngine
         lock (DocumentSynchronization.For(document))
         {
             DocumentSynchronization.EnsureSupportedVersion(document);
-            var fullPath = Path.GetFullPath(filePath);
+            var fullPath = PlatformPaths.FullPath(filePath);
             AtomicDocumentFile.Save(fullPath, document, expectedRevn, cancellationToken: cancellationToken);
         }
     }
@@ -240,7 +259,7 @@ public sealed class DocumentEngine : IDocumentEngine
         lock (DocumentSynchronization.For(document))
         {
             DocumentSynchronization.EnsureSupportedVersion(document);
-            AtomicDocumentFile.Create(Path.GetFullPath(filePath), document, cancellationToken: cancellationToken);
+            AtomicDocumentFile.Create(PlatformPaths.FullPath(filePath), document, cancellationToken: cancellationToken);
         }
     }
 
@@ -1683,6 +1702,14 @@ public sealed class DocumentEngine : IDocumentEngine
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        try
+        {
+            filePath = PlatformPaths.FullPath(filePath);
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            return SvgImportResult.Fail("FILE_NOT_FOUND", $"File not found: {filePath}");
+        }
         if (!File.Exists(filePath))
         {
             return SvgImportResult.Fail("FILE_NOT_FOUND", $"File not found: {filePath}");

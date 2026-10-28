@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using FTPlus.AgentGraphicDesign.Core.Assets;
+using FTPlus.AgentGraphicDesign.Core.Paths;
 using FTPlus.AgentGraphicDesign.Core.Platform;
 
 namespace FTPlus.AgentGraphicDesign.Core.Pixels.Storage;
@@ -313,7 +314,7 @@ internal static partial class NativePixelStore
     {
         if (string.IsNullOrWhiteSpace(path) || path.Length > 4096 || !Path.IsPathFullyQualified(path))
             throw new NativePixelException(EngineErrors.InvalidArguments, "A replacement input path must be an absolute local path.", location, opIndex);
-        return Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
+        return Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(path));
     }
 
     // ---- Query helpers -----------------------------------------------------
@@ -492,7 +493,7 @@ internal static partial class NativePixelStore
         int colon = outputPath.IndexOf(':');
         if (colon >= 0 && Uri.CheckSchemeName(outputPath[..colon]))
             throw new NativePixelException(EngineErrors.InvalidArguments, "The output path must be an absolute local file path.");
-        string output = Path.TrimEndingDirectorySeparator(Path.GetFullPath(outputPath));
+        string output = Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(outputPath));
 
         // Source-collision rejection. Overlaps (case-insensitive) covers the asset directory, every
         // referenced payload/owned temporary under it, and any ancestor of it. The reserved sibling
@@ -583,7 +584,7 @@ internal static partial class NativePixelStore
             throw new NativePixelException(EngineErrors.InvalidArguments, "The asset directory is missing or too long.");
         if (!Path.IsPathFullyQualified(assetDirectory))
             throw new NativePixelException(EngineErrors.InvalidArguments, "The asset directory must be an absolute local path.");
-        return Path.TrimEndingDirectorySeparator(Path.GetFullPath(assetDirectory));
+        return Path.TrimEndingDirectorySeparator(PlatformPaths.FullPath(assetDirectory));
     }
 
     /// <summary>Any entry, including a dangling link, means the Create target is occupied.</summary>

@@ -47,7 +47,8 @@ public sealed class RenderSessionTests : IDisposable
                 Assert.Empty(result.Diagnostics);
                 Assert.All(faces, face => Assert.NotEqual(IntPtr.Zero, face.Handle));
             }
-            Assert.Equal(new[] { Path.Combine(_root, "A.ttf"), Path.Combine(_root, "z.ttf") }, loaded);
+            Assert.Equal(new[] { Path.Combine(_root, "A.ttf"), Path.Combine(_root, "z.ttf") }
+                .Select(path => FTPlus.AgentGraphicDesign.Core.Paths.PlatformPaths.FullPath(path)), loaded);
         }
         Assert.All(faces, face => Assert.Equal(IntPtr.Zero, face.Handle));
     }

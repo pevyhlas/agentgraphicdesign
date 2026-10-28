@@ -24,7 +24,8 @@ public sealed class InspectedFontSetTests : IDisposable
         File.WriteAllText(Path.Combine(directory, "B.ttf"), "1");
         using (var file = File.Create(Path.Combine(directory, "big.ttf"))) file.SetLength(8 * 1024 * 1024 + 1);
         var set = InspectedFontSet.Inspect(["fonts", "empty"], _root, inspect, default);
-        Assert.Equal(new[] { directory, Path.Combine(_root, "empty") }, set.Directories);
+        Assert.Equal(new[] { directory, Path.Combine(_root, "empty") }
+            .Select(path => FTPlus.AgentGraphicDesign.Core.Paths.PlatformPaths.FullPath(path)), set.Directories);
         Assert.Equal(new[] { "B.ttf", "a.TTF", "a.otf", "big.ttf" }, set.Entries.Select(entry => Path.GetFileName(entry.Path)));
         Assert.Equal(new long[] { 1, 2, 3 }, set.Entries.OfType<FontEntry.Load>().Select(entry => entry.Length));
         Assert.Equal(FontSkipReason.Oversize, Assert.IsType<FontEntry.Skip>(set.Entries[3]).Reason);

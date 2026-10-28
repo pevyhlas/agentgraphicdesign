@@ -56,18 +56,18 @@ public sealed class ValidateCommand : Command<ValidateCommand.Settings>
             return ExitCodes.InvalidArguments;
         }
 
-        if (!File.Exists(settings.File))
+        if (!SurfaceIO.TryResolvePath(settings.File, out var inputPath) || !File.Exists(inputPath))
         {
             AgentOutput.WriteError("FILE_NOT_FOUND", $"File not found: {settings.File}", format);
             return ExitCodes.GeneralError;
         }
-        if (!SurfaceIO.TryCheckFileSize(settings.File, SurfaceIO.MaxInputFileBytes, out var sizeError))
+        if (!SurfaceIO.TryCheckFileSize(inputPath, SurfaceIO.MaxInputFileBytes, out var sizeError))
         {
             AgentOutput.WriteError("INPUT_TOO_LARGE", sizeError!, format);
             return ExitCodes.InvalidArguments;
         }
 
-        var loadResult = _engine.TryLoadDocumentFromFile(settings.File, ct);
+        var loadResult = _engine.TryLoadDocumentFromFile(inputPath, ct);
 
         if (!loadResult.Success || loadResult.Document is null)
         {
@@ -85,7 +85,7 @@ public sealed class ValidateCommand : Command<ValidateCommand.Settings>
             var data = new
             {
                 valid = isValid,
-                locator = SurfaceIO.DisplayPath(settings.File),
+                locator = SurfaceIO.DisplayPath(inputPath),
                 errors = result.Errors.Select(e => new { e.Code, e.Message, e.Path }),
                 warnings = result.Warnings.Select(w => new { w.Code, w.Message, w.Path })
             };
