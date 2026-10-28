@@ -67,6 +67,16 @@ covers this adaptation before implementation.
   job is dispatch-only in the existing CI workflow, so it can run on an unmerged feature ref.
   A hosted progress run establishes both root-mode baselines;
   subsequent008 source PRs must compare head-bound records before merge (D-28/P0).
+- Full-suite preflight exposed duplicate/truncated display names and three nonserializable
+  MemberData theories (Document objects and a resource delegate), plus two Unicode display
+  transport differences. Repair their identity using short serializable case keys; construct the
+  exact same inputs/delegates inside the tests. Preserve assertions, input sets, counts and skips;
+  no missing-discovery allowlist or method-count substitute. Test-design confirmation precedes
+  those fixture edits. XML accepts its observed UTF8 transport BOM; TSV stays canonical/BOM-free.
+- Initial implementation review requires owned POSIX process groups for command cleanup on every
+  failure and skip exceptions explicitly scoped by root mode. Keep the command group alive until
+  its direct exit is recorded; the parent terminates the group even if descendants retain pipes.
+  Lifecycle and asymmetric-mode fixtures verify the fixes.
 
 ## Tasks
 
@@ -89,7 +99,7 @@ own T013a increment; native backend and final qualification remain008.
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28/P0, Q-05 | complete head-bound two-mode source progress records, honest existing failures | 0 | NOT_RUN |
+| A1 | D-28/P0, Q-05 |40703639791: both modes INVALID at Core TRX BOM; all failed artifacts retained | 1 | FAIL |
 | A2 | Q-01/Q-05 | 54record/comparison/predecessor/TRX fixtures, checker-02 evidence | 1 | PASS |
 | A3 | D-28/D4/D7 | 28source/inventory/workflow fixtures and45 exact migration entries, checker-02 | 1 | PASS |
 | A4 | source delivery | Linux required CI, independent reviews and exact-head delivery gate | 0 | NOT_RUN |
@@ -97,16 +107,20 @@ own T013a increment; native backend and final qualification remain008.
 ## State
 
 **Step**: implementation
-**Branch**: `026-macos-progress`; no PR yet.
+**Branch**: `026-macos-progress`; [PR19](https://github.com/pevyhlas/agentgraphicdesign/pull/19), draft.
 **Authority**: owner2026-10-28 request to fix macOS advisory; constitution commit/push/PR/green
 reviewed merge. Earlier AGD macOS verification extension remains in scope; no AB native profiling.
 **Attempts**: latest484-failure run is retained inherited evidence, not a new repair attempt.
-No026 native execution yet; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
+First026 native execution invalid; parent qualification A1–A7 remain open. Initial test design PASS0; ops design
 found2mediums (accepted predecessor binding and package-smoke head checkout), addressed in the
 design above; scoped ops design re-review PASS0 at ddd2d0c, first fix round.
 Local first checker invocation exposed a self-test root-resolution mistake; retained checker-01,
 corrected before checker-02 PASS (54progress and28portability fixtures). Build has0warnings/errors.
 **Evidence**: `.prdkit/cache/evidence/026-macos-progress/verification/`; native baseline/index and
 implementation reviews remain pending. No macOS failures cleared by this prerequisite.
+Full Linux3510PASS/0FAIL/0SKIP; initial outer120s timeout retained (Core/Skia complete, CLI interrupted),
+remaining CLI/MCP completed separately. Native first attempt exposed UTF8BOM; full discovery also
+needs stable test identities. Initial code review2mediums and architecture1medium (overlapping
+mode exception); security PASS0 at11a9f4c. Fix round1 of implementation review now in progress.
 **Next**: complete native baseline, retain/index both records, implementation review and exact-head
 gates, then T013a portable fonts.
