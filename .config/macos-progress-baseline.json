@@ -3,15 +3,15 @@
   "Records": [
     {
       "Mode": "default-tmpdir",
-      "SourceCommit": "8e75a1cc3df053c9ce2fb095e448de80126690e2",
-      "Sha256": "e4d2eebefe5f531b616b26a80a88b1b49e079483412f3cbdf3e7ca78b7ce920d",
-      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6479083236"
+      "SourceCommit": "bb49370e2ea0e1e6189c9367d019933ba4ec51a4",
+      "Sha256": "7015ecc52e7aebd7f5d2a745965f226c8f3e9abaa17d673e237c623040a55f3d",
+      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493207032"
     },
     {
       "Mode": "private-tmp",
-      "SourceCommit": "8e75a1cc3df053c9ce2fb095e448de80126690e2",
-      "Sha256": "960e28ab5acab946c47301a09c33e5756f9184ad84bd4d821c369b00ec5d380d",
-      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6479083236"
+      "SourceCommit": "bb49370e2ea0e1e6189c9367d019933ba4ec51a4",
+      "Sha256": "46728f2657d3605d2afecdd90ed9f1a3bfeda47ad193237c24a89b311e6ad8ef",
+      "Evidence": "https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493207032"
     }
   ]
 }

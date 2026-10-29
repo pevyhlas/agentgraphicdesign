@@ -114,14 +114,14 @@ must reproduce accepted case outcomes and non-source headers before source merge
 
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
-| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; native40757367407 at8e75a1c | 3 | PASS |
-| A2 | AC-05 asset portion, AC-06 | real native safety and source/archive3625PASS; installedCLI66/MCP40 plus8special-file cases at8e75a1c | 3 | PASS |
-| A3 | Q-01/Q-03/Q-05 progress integrity | stage negatives; two-mode current-base comparison and durable retrieval in PR22comment6479083236 | 3 | PASS |
-| A4 | source delivery | closing40848620385 comparison FAIL on existing timing-sensitive cancellation case; deterministic correction/review pending | 4 | FAIL |
+| A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; native40850263439 atbb49370 | 5 | PASS |
+| A2 | AC-05 asset portion, AC-06 | real native safety and source/archive3625PASS; installedCLI66/MCP40 plus8special-file cases atbb49370 | 5 | PASS |
+| A3 | Q-01/Q-03/Q-05 progress integrity | stage negatives; corrected cancellation and two-mode current-base comparison; durable retrieval PR22comment6493207032 | 5 | PASS |
+| A4 | source delivery | deterministic cancellation repair passes native40850263439; scoped reviews and closing-head gates pending | 5 | BLOCKED |
 
 ## State
 
-**Step**: verification repair — closing cancellation race needs deterministic coverage
+**Step**: corrective review — deterministic cancellation passes native; refreshed package proof
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
@@ -170,6 +170,12 @@ The original100000-node reverse-order scenario and exception assertion remain; a
 call-local visit observer coordinates cancellation after128visited nodes, with bounded waits and
 an exact stop-count assertion. Public traversal/cancellation checks remain the same. No timer,
 skip or tolerance relaxation; this bounded verification repair needs owning re-review and fresh proof.
+**Repair attempt5**: bb49370/native40850263439 passes both complete3625-case records and actual-base
+S0:S1 comparison:3409PASS/216FAIL/0SKIP, identical outcomes/non-source headers to8e75a1c. All ten
+independent cancellation repetitions pass. Package04 passes3625archive tests and installedCLI66/
+MCP40 plus8extra installed special-file cases. New full records published/retrieved with
+matching hashes atPR22comment6493207032; previous records and failed closing attempt remain intact.
+No L0/L1 delta since the owner's75d06a1 confirmation. Scoped owning reviews remain required.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368

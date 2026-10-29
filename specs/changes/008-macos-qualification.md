@@ -187,3 +187,8 @@ The216remaining failures include guarded native/still-import paths, three case-i
 fixture setups, one SVG numerical expectation and three Skia tolerance cases; preserve their
 scenarios/assertions under T008–T011/T013 and corpus work. This parent's A7 still-import/native
 portion and A1 zero-failure qualification remain unverified; S1 does not pass either parent item.
+The first029closing run40848620385 at45664cf exposed the known timing-sensitive broad-traversal
+cancellation test in default mode. Its failed comparison is retained. A deterministic call-local
+observer preserves the100000-node scenario/exception assertion and pins cancellation after128visits;
+native40850263439 atbb49370 reproduces all earlier successful S1 outcomes. This test repair does
+not alter platform policy, cancellation behavior, limits or any remaining qualification obligation.
