@@ -117,11 +117,11 @@ must reproduce accepted case outcomes and non-source headers before source merge
 | A1 | D-28 S1, P1.I-09/P4.B-02 | registry tuples/fixtures, host agreement and unchanged refusals; native40757367407 at8e75a1c | 3 | PASS |
 | A2 | AC-05 asset portion, AC-06 | real native safety and source/archive3625PASS; installedCLI66/MCP40 plus8special-file cases at8e75a1c | 3 | PASS |
 | A3 | Q-01/Q-03/Q-05 progress integrity | stage negatives; two-mode current-base comparison and durable retrieval in PR22comment6479083236 | 3 | PASS |
-| A4 | source delivery | final five owning verdicts, metadata-head native equivalence and exact-head CI/review/delivery gates pending | 3 | BLOCKED |
+| A4 | source delivery | closing40848620385 comparison FAIL on existing timing-sensitive cancellation case; deterministic correction/review pending | 4 | FAIL |
 
 ## State
 
-**Step**: final verification — all five reviews and owner confirmation pass; metadata-head gates pending
+**Step**: verification repair — closing cancellation race needs deterministic coverage
 **Authority**: owner's2026-10-28 macOS repair request and standing feature commit/push/PR/reviewed-
 green source-merge policy; AGD extended verification budget inherited. AB019 profiling remains
 held/exhausted2/2; Dossier015 stays in its other session. No release/deployment authorization.
@@ -162,6 +162,14 @@ parent008; none is a newly failing case. Next: all five final reviews and closin
 the owner answered "Confirm S1 (Recommended)" to the final specification at that exact head;
 the full question/answer is retained inPR22comment6492788816. Required CI at75d06a1 is green;
 native equality on the final metadata head and exact-head review/delivery gates remain pending.
+**Closing attempt4**: run40848620385 at45664cf has green required CI but default-mode comparison
+FAIL: `NodePageTests.Cancellation_DuringBroadTraversalIsObserved` finished before its1ms timer fired.
+Private mode retains indexed outcomes. Complete captures and failed comparison remain preserved;
+the setup invocation with an incorrect full SHA refused before inspection and was corrected.
+The original100000-node reverse-order scenario and exception assertion remain; an internal,
+call-local visit observer coordinates cancellation after128visited nodes, with bounded waits and
+an exact stop-count assertion. Public traversal/cancellation checks remain the same. No timer,
+skip or tolerance relaxation; this bounded verification repair needs owning re-review and fresh proof.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368

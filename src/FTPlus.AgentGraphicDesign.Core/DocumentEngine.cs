@@ -345,9 +345,15 @@ public sealed class DocumentEngine : IDocumentEngine
     }
 
     public NodePage ListNodesPage(Document document, NodePageQuery query, CancellationToken cancellationToken = default)
+        => ListNodesPage(document, query, cancellationToken, null);
+
+    // Call-local observation supports deterministic in-progress cancellation verification.
+    // Public callers always use the same traversal with no observer.
+    internal NodePage ListNodesPage(Document document, NodePageQuery query, CancellationToken cancellationToken,
+        Action<int>? onNodeVisited)
     {
         lock (DocumentSynchronization.For(document))
-            return NodePageTraversal.Query(document, query, cancellationToken);
+            return NodePageTraversal.Query(document, query, cancellationToken, onNodeVisited);
     }
 
     /// <summary>Lowercase type name for a node ("rectangle", "frame", ...).</summary>
