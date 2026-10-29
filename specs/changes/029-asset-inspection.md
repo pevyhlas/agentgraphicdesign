@@ -176,6 +176,11 @@ independent cancellation repetitions pass. Package04 passes3625archive tests and
 MCP40 plus8extra installed special-file cases. New full records published/retrieved with
 matching hashes atPR22comment6493207032; previous records and failed closing attempt remain intact.
 No L0/L1 delta since the owner's75d06a1 confirmation. Scoped owning reviews remain required.
+**Metadata verification6**: run40851991757 atadf38d0 passes both capture checks, actual-base S0:S1
+comparison and full indexed-body/non-source-header equality; all required CI jobs are green.
+All five round6 scoped verdicts PASS0. Initial check-review correctly reports missing recorded
+round6 coverage; the verdict lines below supply it. Closing record/log-only commit is still
+revalidated natively and through exact-head gates before merge; broad advisory remains failing.
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477604826
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-security-reviewer · FAIL · 0 critical, 1 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477605294
 **Review**: round 1 · bb035efd9fe69013904af612fa73cd3cff04b2ce..22ea474db5ccc96258536f2c0b8a726ad5432aeb · agd-test-reviewer · FAIL · 0 critical, 0 high, 2 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6477556368
@@ -196,3 +201,8 @@ No L0/L1 delta since the owner's75d06a1 confirmation. Scoped owning reviews rema
 **Review**: round 5 · 754d63949e70f683c0a55b59b0885de06231a436..75d06a1bf1d93199a598c99ff79708aa7be39588 · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6492787761
 **Review**: round 5 · 754d63949e70f683c0a55b59b0885de06231a436..75d06a1bf1d93199a598c99ff79708aa7be39588 · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6492788264
 **Review**: round 5 · bb035efd9fe69013904af612fa73cd3cff04b2ce..75d06a1bf1d93199a598c99ff79708aa7be39588 · owner · PASS · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6492788816
+**Review**: round 6 · 75d06a1bf1d93199a598c99ff79708aa7be39588..adf38d0b6bac0025588fdb9694191a509b72265b · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493362872
+**Review**: round 6 · 75d06a1bf1d93199a598c99ff79708aa7be39588..adf38d0b6bac0025588fdb9694191a509b72265b · agd-test-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493363417
+**Review**: round 6 · 75d06a1bf1d93199a598c99ff79708aa7be39588..adf38d0b6bac0025588fdb9694191a509b72265b · agd-ops-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493363904
+**Review**: round 6 · 75d06a1bf1d93199a598c99ff79708aa7be39588..adf38d0b6bac0025588fdb9694191a509b72265b · agd-security-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493364379
+**Review**: round 6 · 75d06a1bf1d93199a598c99ff79708aa7be39588..adf38d0b6bac0025588fdb9694191a509b72265b · agd-architecture-reviewer · PASS · 0 critical, 0 high, 0 medium, 0 low · https://github.com/pevyhlas/agentgraphicdesign/pull/22#issuecomment-6493364900
