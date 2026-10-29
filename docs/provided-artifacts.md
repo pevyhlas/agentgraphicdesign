@@ -376,8 +376,8 @@ asset-drift exit `6`.
 ## Filesystem and Non-Guarantees
 
 Both operations require a **trusted, quiescent local filesystem**. They reuse the
-existing .NET 10 Linux x64-qualified file inspection. Development source's S0 registry
-admits Windows x64 .NET 10 artifact verification unqualified; Windows arm64, other
+existing .NET 10 Linux x64-qualified file inspection. Development source's S1 registry
+admits Windows x64 .NET10 and macOS26+ arm64 .NET10 artifact verification unqualified; Windows arm64, other
 runtime majors and other Unix configurations fail closed. No new platform is qualified.
 Inspection and opening are separate operations, not hostile replacement-safe
 confinement. Source hard links do not confer ownership: only freshly captured

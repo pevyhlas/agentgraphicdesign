@@ -44,7 +44,8 @@ public sealed class PlatformRegistryTests
 {
     private static readonly PlatformCapability[] AllCapabilities = Enum.GetValues<PlatformCapability>();
 
-    // Independent handwritten S0 oracle, not derived from the registry or regenerated fixtures.
+    // Keep original S0 row arguments as discovery identities. The one S1 delta has its own
+    // handwritten literal oracle below, independent of registry/fixture generation.
     public static TheoryData<string, string> StageS0Table() => new()
     {
         { "dotnet10-linux-x64", "qualified qualified qualified qualified qualified qualified" },
@@ -63,7 +64,9 @@ public sealed class PlatformRegistryTests
     public void Registry_MatchesTheLiteralStageTable(string tuple, string qualifications)
     {
         var profile = PlatformTuples.Build(tuple);
-        var expected = qualifications.Split(' ');
+        var expected = tuple == "dotnet10-osx-arm64-26.0"
+            ? new[] { "unqualified", "unqualified", "unqualified", "unqualified", "refused", "refused" }
+            : qualifications.Split(' ');
         Assert.Equal(expected, profile.Capabilities.Select(p => PlatformWireNames.Name(p.Qualification)));
         Assert.Equal(AllCapabilities, profile.Capabilities.Select(p => p.Capability));
         for (var i = 0; i < AllCapabilities.Length; i++)
@@ -154,7 +157,10 @@ public sealed class PlatformRegistryTests
         var p = PlatformProfile.For(OSPlatform.OSX, Architecture.Arm64, PlatformTuples.Runtime10, new(major, minor));
         Assert.Equal(floor, p.MatchedOsFloor);
         Assert.Equal($"{major}.{minor}", p.OsVersion);
-        Assert.False(p.GateAdmits(PlatformCapability.AssetPipeline));
+        Assert.Equal(major >= 26, p.GateAdmits(PlatformCapability.AssetPipeline));
+        Assert.Equal(major >= 26, p.GateAdmits(PlatformCapability.ArtifactVerify));
+        Assert.False(p.GateAdmits(PlatformCapability.NativePixels));
+        Assert.False(p.GateAdmits(PlatformCapability.StillImport));
         Assert.True(p.GateAdmits(PlatformCapability.Vector));
     }
 

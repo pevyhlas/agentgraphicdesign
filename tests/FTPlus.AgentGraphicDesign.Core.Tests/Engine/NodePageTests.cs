@@ -58,10 +58,29 @@ public sealed class NodePageTests
         var document = engine.CreateDocument("active-cancel");
         for (var i = 0; i < 99_999; i++) document.Root.Children.Add(new GroupNode { Id = Guid.NewGuid(), Order = (99_999 - i).ToString("D6") });
         using var cancellation = new CancellationTokenSource();
-        using var started = new ManualResetEventSlim();
-        var task = Task.Run(() => { started.Set(); return engine.ListNodesPage(document, new NodePageQuery(), cancellation.Token); });
-        started.Wait();
-        cancellation.CancelAfter(1);
+        var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var resume = new ManualResetEventSlim();
+        var visited = 0;
+        var task = Task.Run(() => engine.ListNodesPage(document, new NodePageQuery(), cancellation.Token, count =>
+        {
+            visited = count;
+            if (count != 128) return;
+            Assert.False(cancellation.IsCancellationRequested);
+            started.SetResult();
+            Assert.True(resume.Wait(TimeSpan.FromSeconds(5)), "Cancellation coordinator did not release traversal");
+        }));
+        Exception? coordinationError = null;
+        try
+        {
+            coordinationError = await Record.ExceptionAsync(() => started.Task.WaitAsync(TimeSpan.FromSeconds(5)));
+        }
+        finally
+        {
+            cancellation.Cancel();
+            resume.Set();
+        }
         await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await task);
+        Assert.Null(coordinationError);
+        Assert.Equal(128, visited);
     }
 }

@@ -31,17 +31,20 @@ internal sealed class ReferenceReader : IReferenceReader
     private readonly bool _inspect;
     private readonly long _maxInputBytes;
     private readonly Func<string, Stream> _open;
+    private readonly Func<string, IEnumerable<string>>? _fontEntries;
 
     internal ReferenceReader() : this(PlatformProfile.Current.GateAdmits(PlatformCapability.AssetPipeline), MaxInputBytes,
         path => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 81920, FileOptions.Asynchronous))
     { }
 
     // Internal test seams only: no public gate override, budget override or input-open hook.
-    internal ReferenceReader(bool inspect, long maxInputBytes, Func<string, Stream> open)
+    internal ReferenceReader(bool inspect, long maxInputBytes, Func<string, Stream> open,
+        Func<string, IEnumerable<string>>? fontEntries = null)
     {
         _inspect = inspect;
         _maxInputBytes = maxInputBytes;
         _open = open;
+        _fontEntries = fontEntries;
     }
 
     public async Task<ReferenceInputs> ReadAsync(IReadOnlyList<AssetReference> references,
@@ -84,7 +87,7 @@ internal sealed class ReferenceReader : IReferenceReader
                 CheckTotal(total);
             }
 
-            var fonts = InspectedFontSet.Inspect(fontDirectories, baseDirectory, _inspect, ct);
+            var fonts = InspectedFontSet.Inspect(fontDirectories, baseDirectory, _inspect, ct, _fontEntries);
             total += fonts.CountedBytes;
             CheckTotal(total); // Includes all distinct lengths and fonts BEFORE the first document open.
             var captured = new Dictionary<string, CapturedDocument>(comparer);

@@ -85,7 +85,10 @@ the selected public evidence is indexed in `specs/records.md`, not a macOS quali
 - [x] 008/T006 `PlatformPaths` and verified aliases implemented in child028
   ([PR #21](https://github.com/pevyhlas/agentgraphicdesign/pull/21)):262default-root failures fixed,
   both modes now3074PASS/480FAIL/8SKIP. Its final exact-head gates govern source delivery.
-- [ ] 008/T007 admit asset inspection (S1).
+- [x] 008/T007 asset inspection (S1) implemented in child029
+  ([PR #22](https://github.com/pevyhlas/agentgraphicdesign/pull/22)): owner-approved unqualified
+  pipeline/artifact admission with bounded alias protection; both modes3409PASS/216FAIL/0SKIP.
+  Child029's final owning reviews and exact-head gates govern source delivery, not qualification.
 - [ ] 008/T008 backend split and the Linux locking matrix; 008/T009 Darwin backend with seam tables;
   008/T010 real-seam APFS fixtures; 008/T011 stored-name gate and the macOS product-path tests (S2).
 - [ ] 008/T013 remaining test portability; 008/T014 script portability; 008/T015 `platform-qualify`
@@ -154,9 +157,9 @@ with low notes only, both in the pre-public history; the ranges, review reports 
 and task text are not public
 **Waiting on**: remaining qualification implementation and evidence; hosted runner choice resolved
 by the owner's GitHub macOS CI direction (child 019-macos-ci). Porting follows the inbox default.
-**Next**: merged027-portable-fonts completes008/T013a; child028 implements T006 verified paths.
-Owner2026-10-28 requested fixing the broad macOS advisory. Then T007 asset inspection, Darwin pixel
-backend and final qualification follow the dependencies above. Native69 cases passed before023
+**Next**: child029 completes T007's bounded S1 asset inspection after merged028's verified paths.
+Owner2026-10-28 requested fixing the broad macOS advisory. Darwin pixel backend/S2, remaining
+test portability and final qualification follow the dependencies above. Native69 cases passed before023
 attestations, but aggregate checks failed on
 missing records until the final integration; do not substitute partial runs for that gate. Broad
 advisory Mac retained484 baseline failures and an earlier timing-sensitive cancellation failure;
@@ -177,3 +180,15 @@ Child028's native40732952769 ate62b4dc fixes all262additionaldefault-root failur
 have identical3562case/outcome bodies,3074PASS/480FAIL/8SKIP. All54newcases pass. Native1comparison
 failure and its expectation correction remain onPR21. A1–A3/source reviews pass; source delivery
 still requires the actual closing-head gates, and all parent qualification items remain open.
+Child029's native40757367407 at8e75a1c passes S0:S1 comparison against the accepted028 index:
+both modes have identical3625-case bodies,3409PASS/216FAIL/0SKIP. All264fixedfailures per mode and
+all8former skips execute successfully. Failed native1 and package02 attempts remain onPR22.
+The216remaining failures include guarded native/still-import paths, three case-insensitive artifact
+fixture setups, one SVG numerical expectation and three Skia tolerance cases; preserve their
+scenarios/assertions under T008–T011/T013 and corpus work. This parent's A7 still-import/native
+portion and A1 zero-failure qualification remain unverified; S1 does not pass either parent item.
+The first029closing run40848620385 at45664cf exposed the known timing-sensitive broad-traversal
+cancellation test in default mode. Its failed comparison is retained. A deterministic call-local
+observer preserves the100000-node scenario/exception assertion and pins cancellation after128visits;
+native40850263439 atbb49370 reproduces all earlier successful S1 outcomes. This test repair does
+not alter platform policy, cancellation behavior, limits or any remaining qualification obligation.

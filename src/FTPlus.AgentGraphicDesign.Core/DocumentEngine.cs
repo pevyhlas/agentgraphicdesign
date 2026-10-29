@@ -33,6 +33,9 @@ public sealed class DocumentEngine : IDocumentEngine
     private readonly Dictionary<string, IExportAdapter> _exportAdapters;
     private readonly PathOperationsService _pathOps = new();
     private readonly TokenService _tokenService = new();
+    private readonly Func<string, FileStreamOptions, Stream> _fileOpen = LeafFileIO.Open;
+
+    internal DocumentEngine(Func<string, FileStreamOptions, Stream> fileOpen) : this() => _fileOpen = fileOpen;
 
     /// <param name="store">Store for ID-based operations; omit for purely file-based use.</param>
     /// <param name="exportAdapters">Export adapters keyed by <see cref="IExportAdapter.Id"/>; defaults to SVG.</param>
@@ -166,7 +169,7 @@ public sealed class DocumentEngine : IDocumentEngine
             var json = AtomicDocumentFile.ReadAllBytesBounded(
                 filePath,
                 FileDocumentStore.DefaultMaxDocumentBytes,
-                cancellationToken);
+                cancellationToken, _fileOpen);
             return DocumentSerializer.TryDeserialize(json);
         }
         catch (IOException ex)
@@ -342,9 +345,15 @@ public sealed class DocumentEngine : IDocumentEngine
     }
 
     public NodePage ListNodesPage(Document document, NodePageQuery query, CancellationToken cancellationToken = default)
+        => ListNodesPage(document, query, cancellationToken, null);
+
+    // Call-local observation supports deterministic in-progress cancellation verification.
+    // Public callers always use the same traversal with no observer.
+    internal NodePage ListNodesPage(Document document, NodePageQuery query, CancellationToken cancellationToken,
+        Action<int>? onNodeVisited)
     {
         lock (DocumentSynchronization.For(document))
-            return NodePageTraversal.Query(document, query, cancellationToken);
+            return NodePageTraversal.Query(document, query, cancellationToken, onNodeVisited);
     }
 
     /// <summary>Lowercase type name for a node ("rectangle", "frame", ...).</summary>

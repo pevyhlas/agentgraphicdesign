@@ -20,7 +20,7 @@ The supported authoring/build/check platform is .NET 10 Linux x64. Consumer
 applications can target other platforms: committed SVG/PNG/JPEG assets do not require
 AGD at runtime. Additional authoring platforms need their own qualification.
 
-Development source reports the per-capability [S0 registry](platform-registry.md), with
+Development source reports the per-capability [S1 registry](platform-registry.md), with
 explicit unqualified/refused states; this does not expand released platform support.
 
 ## Install into an isolated tool directory

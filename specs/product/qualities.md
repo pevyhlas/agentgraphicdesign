@@ -22,11 +22,12 @@ qualities/<area>.md and keep one line and a link per area here. -->
   safety is qualified only on .NET 10 Linux x64 now; Apple silicon on APFS with macOS 26 or
   later is planned, with its own CI lane. One shared asset file probe guards the asset
   pipeline, artifact preflight, still import and native pixel storage, with an explicit
-  capability at each call. D-28 S0 retains .NET 10 Linux x64 qualification and Windows x64
-  .NET 10 unqualified pipeline/artifact admission; all other guarded capabilities refuse with
+  capability at each call. D-28 S1 retains .NET 10 Linux x64 qualification and Windows x64
+  .NET 10 unqualified pipeline/artifact admission; the owner's bounded C-11 scope also permits
+  those two capabilities unqualified on .NET10 macOS26+ arm64. Other guarded capabilities refuse with
   `ASSET_PLATFORM_UNSUPPORTED`. Windows native reads now refuse too. Qualifying a further
   profile remains the owner's decision (C-11). C-11 still requires guarded unqualified profiles
-  to fail closed; the retained Windows pipeline/artifact deviation remains in the owner inbox,
+  to fail closed apart from that S1 scope; the retained Windows pipeline/artifact deviation remains in the owner inbox,
   not silently ratified by the registry port. Vector document reads/writes and raster export
   are not guarded by the probe: they run on every profile, and their
   file-safety promise (Q-04, P1.I-02) is qualified only on .NET 10 Linux x64 (inbox).

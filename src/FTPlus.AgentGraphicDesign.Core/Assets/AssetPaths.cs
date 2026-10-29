@@ -31,39 +31,11 @@ internal static class AssetPaths
     }
 
     internal static bool Within(string path, string directory) =>
-        path.StartsWith(Path.EndsInDirectorySeparator(directory) ? directory : directory + Path.DirectorySeparatorChar,
+        AssetPathPolicy.Key(path).StartsWith(AssetPathPolicy.Key(Path.EndsInDirectorySeparator(directory) ? directory : directory + Path.DirectorySeparatorChar),
             StringComparison.OrdinalIgnoreCase);
 
     internal static bool Overlaps(string first, string second) =>
-        first.Equals(second, StringComparison.OrdinalIgnoreCase) || Within(first, second) || Within(second, first);
-
-    internal static void RejectCaseAliases(string directory, string path, PlatformCapability capability, CancellationToken ct)
-    {
-        var parts = PlatformPaths.RelativePath(directory, path).Split(Path.DirectorySeparatorChar);
-        var current = directory;
-        foreach (var part in parts)
-        {
-            if (!Inspect(current, directory: true, required: false, capability, ct))
-                return;
-            var count = 0;
-            var found = false;
-            foreach (var entry in Directory.EnumerateFileSystemEntries(current))
-            {
-                ct.ThrowIfCancellationRequested();
-                if (++count > MaxInventoryEntries)
-                    throw AssetManifest.Limit();
-                var name = Path.GetFileName(entry);
-                if (!name.Equals(part, StringComparison.OrdinalIgnoreCase))
-                    continue;
-                if (!name.Equals(part, StringComparison.Ordinal))
-                    throw AssetManifest.Invalid($"On-disk case alias for asset output '{path}': {entry}");
-                found = true;
-            }
-            if (!found)
-                return;
-            current = Path.Combine(current, part);
-        }
-    }
+        AssetPathPolicy.Comparer.Equals(first, second) || Within(first, second) || Within(second, first);
 
     /// <summary>Checks every component before opening anything, including broken links.</summary>
     internal static bool Inspect(string path, bool directory, bool required, PlatformCapability capability, CancellationToken ct)

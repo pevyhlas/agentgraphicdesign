@@ -9,20 +9,21 @@ The member has ordinal object keys: `architecture`, `capabilities`, `os`, `osVer
 Architecture is the **process** architecture; Rosetta x64 is not arm64. Linux OS version
 is the kernel version. There is no aggregate `qualified` flag or live availability probe.
 
-## Stage S0
+## Stage S1
 
 | Profile | vector / rasterExport | assetPipeline / artifactVerify | stillImport / nativePixels |
 |---|---|---|---|
 | .NET 10 Linux x64 | qualified | qualified | qualified |
 | .NET 10 Windows x64 | unqualified | unqualified | refused |
+| .NET 10 macOS 26+ arm64 | unqualified | unqualified | refused |
 | All other tuples | unqualified | refused | refused |
 
 Unqualified means admitted best-effort, not supported. Refused means
 `ASSET_PLATFORM_UNSUPPORTED` before any write, with the path-free registry text preserved
 through CLI/MCP and storage wrappers. Windows native **reads** now refuse as well as writes;
 Windows arm64 and runtime majors other than 10 no longer pass the guarded probe. Vector
-storage and raster export remain unguarded. No macOS backend, APFS admission, live probe,
-S1–S3 admission or new qualification is included.
+storage and raster export remain unguarded. S1 admits macOS asset inspection and managed pipeline
+writes; it adds no native pixel backend, still import, live probe or platform qualification.
 
 ## Developer checks
 

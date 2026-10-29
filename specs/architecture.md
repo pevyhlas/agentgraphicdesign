@@ -85,8 +85,8 @@ All decisions: [decisions](architecture/decisions.md). Moved and retired IDs:
 ## Risks
 
 - File safety is claimed only where it is qualified; P1 storage relies on a quiescent local
-  filesystem and on Linux primitives. D-28's S0 registry refuses guarded operations except
-  on .NET 10 Linux x64 and unqualified Windows x64 .NET 10 pipeline/artifact paths. All native
+  filesystem and on Linux primitives. D-28's S1 registry admits .NET10 Linux x64, unqualified
+  Windows x64 pipeline/artifact paths and owner-approved unqualified macOS26+ arm64 asset paths. All native
   pixel operations now refuse on Windows, including reads. Vector/raster remain unguarded,
   unqualified off Linux x64; no macOS backend or qualification is implied (P1.I-09).
 - Agents may still need more calls than a person would; the bet is checked through real use

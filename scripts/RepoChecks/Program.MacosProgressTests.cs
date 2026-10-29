@@ -133,6 +133,7 @@ internal static partial class Program
         }
         finally { Directory.Delete(dir, recursive: true); }
         RunProgressProcessSelfTests(errors);
+        RunProgressStageSelfTests(errors);
         Console.WriteLine($"macOS progress self-tests: {count} record/comparison/predecessor/TRX fixtures.");
     }
 }

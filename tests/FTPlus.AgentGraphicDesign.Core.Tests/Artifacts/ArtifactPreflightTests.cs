@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using FTPlus.AgentGraphicDesign.Core.Artifacts;
+using FTPlus.AgentGraphicDesign.Core.Tests.Assets;
 using FTPlus.AgentGraphicDesign.Core.Tests.Schema;
 using Microsoft.Win32.SafeHandles;
 using Xunit;
@@ -18,7 +19,7 @@ namespace FTPlus.AgentGraphicDesign.Core.Tests.Artifacts;
 
 public sealed class ArtifactPreflightTests : IDisposable
 {
-    private readonly string _root = Path.Combine(Path.GetTempPath(), "agd-pf-private-input-marker-" + Guid.NewGuid().ToString("N"));
+    private readonly string _root = FileProbeWorker.FixtureRoot ?? Path.Combine(Path.GetTempPath(), "agd-pf-private-input-marker-" + Guid.NewGuid().ToString("N"));
     private readonly byte[] _png = Convert.FromBase64String(File.ReadAllText(FixturePath("preflight-rgba.png.base64")));
     private readonly ProvidedArtifactDescriptor _model = ArtifactDescriptorContract.Parse(
         File.ReadAllBytes(FixturePath("preflight-bundle.json"))).Descriptor!;
@@ -415,26 +416,36 @@ public sealed class ArtifactPreflightTests : IDisposable
     [InlineData("payload")]
     public async Task UnixFifos_AreRejectedWithoutBlockingOpen(string location)
     {
-        if (!OperatingSystem.IsLinux())
+        if (!(OperatingSystem.IsLinux() || OperatingSystem.IsMacOS()))
             return;
+        if (!FileProbeWorker.IsChild)
+        {
+            await FileProbeWorker.RunAsync("artifact-fifo", location);
+            return;
+        }
         var path = WriteBundle();
         var target = location == "descriptor" ? path : Path.Combine(Bundle, _model.Files[0].Path);
         File.Delete(target);
         Assert.Equal(0, MakeFifo(target, 0x180));
 
-        await Task.Run(() => AssertFailureAsync(path, EngineErrors.PathEscape)).WaitAsync(TimeSpan.FromSeconds(10));
+        await AssertFailureAsync(path, EngineErrors.PathEscape);
     }
 
     [Fact]
     public async Task UnixSocket_IsRejectedBeforeOpen()
     {
-        if (!OperatingSystem.IsLinux())
+        if (!(OperatingSystem.IsLinux() || OperatingSystem.IsMacOS()))
             return;
+        if (!FileProbeWorker.IsChild)
+        {
+            await FileProbeWorker.RunAsync("artifact-socket");
+            return;
+        }
         var model = _model with { Files = [_model.Files[0] with { Path = "s.png" }] };
         var path = WriteBundle(model);
         var target = Path.Combine(Bundle, "s.png");
         File.Delete(target);
-        var socketDirectory = Directory.CreateTempSubdirectory("agd-s-");
+        var socketDirectory = Directory.CreateDirectory(Path.Combine(FileProbeWorker.OwnerRoot!, "socket"));
         try
         {
             // Bind below the socket path limit even when TMPDIR plus the bundle name is long.

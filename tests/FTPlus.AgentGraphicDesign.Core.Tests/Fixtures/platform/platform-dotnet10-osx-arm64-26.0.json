@@ -13,12 +13,12 @@
     },
     {
       "capability": "assetPipeline",
-      "qualification": "refused",
+      "qualification": "unqualified",
       "requires": {}
     },
     {
       "capability": "artifactVerify",
-      "qualification": "refused",
+      "qualification": "unqualified",
       "requires": {}
     },
     {

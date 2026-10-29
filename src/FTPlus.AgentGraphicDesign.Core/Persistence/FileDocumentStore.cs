@@ -543,15 +543,17 @@ internal static class AtomicDocumentFile
     internal static byte[] ReadAllBytesBounded(
         string path,
         long maximumBytes,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        Func<string, FileStreamOptions, Stream>? open = null)
     {
-        using var stream = new FileStream(
-            path,
-            FileMode.Open,
-            FileAccess.Read,
-            FileShare.ReadWrite | FileShare.Delete,
-            bufferSize: 64 * 1024,
-            FileOptions.SequentialScan);
+        using var stream = (open ?? LeafFileIO.Open)(path, new FileStreamOptions
+        {
+            Mode = FileMode.Open,
+            Access = FileAccess.Read,
+            Share = FileShare.ReadWrite | FileShare.Delete,
+            BufferSize = 64 * 1024,
+            Options = FileOptions.SequentialScan
+        });
         if (stream.Length > maximumBytes)
             throw ResourceLimit(path, maximumBytes);
 

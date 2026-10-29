@@ -16,7 +16,8 @@ public sealed record NodePage(Guid RootId, int Total, int Offset, int Limit, boo
 
 internal static class NodePageTraversal
 {
-    public static NodePage Query(Document document, NodePageQuery query, CancellationToken cancellationToken)
+    public static NodePage Query(Document document, NodePageQuery query, CancellationToken cancellationToken,
+        Action<int>? onNodeVisited = null)
     {
         ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(query);
@@ -48,6 +49,7 @@ internal static class NodePageTraversal
             var node = entry.Node;
             if (node is null || node.Id == Guid.Empty || !seen.Add(node.Id))
                 throw new DocumentEngineException(EngineErrors.InvalidProperty, "Invalid or duplicate node in query");
+            onNodeVisited?.Invoke(scanned);
 
             if (indices.Count > entry.Depth)
                 indices.RemoveRange(entry.Depth, indices.Count - entry.Depth);

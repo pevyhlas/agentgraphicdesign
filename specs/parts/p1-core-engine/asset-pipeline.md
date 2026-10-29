@@ -31,14 +31,19 @@ and the [asset pipeline guide](../../../docs/asset-pipeline.md).
 - **P1.I-09 Capability-specific file gate**: every shared regular-file inspection/inventory
   names its capability from Core's I/O-free D-28 registry: pipeline/lint inputs use
   `assetPipeline`, preflight/verify use `artifactVerify`, import input uses `stillImport`,
-  and native storage/lock inspection uses `nativePixels`. At S0, all six capabilities retain
+  and native storage/lock inspection uses `nativePixels`. At S1, all six capabilities retain
   Linux x64 .NET 10 qualification; Windows x64 .NET 10 admits only pipeline and artifact
-  verification unqualified (including managed pipeline output writes). Every other guarded
+  verification unqualified (including managed pipeline output writes). Owner-approved S1 also
+  admits those two capabilities unqualified on .NET10 osx-arm64 macOS26+. Every other guarded
   profile refuses with `ASSET_PLATFORM_UNSUPPORTED`, preserving the registry text before any
   write. Windows arm64, other runtime majors and Windows native reads no longer pass through.
   Vector/raster remain unguarded and unqualified off Linux x64. Tests: `PlatformRegistryTests`,
   `PlatformGateAgreementTests`, all three platform entry-point refusal classes and
   `AssetPipelineTests.PlatformGuard_FollowsTheRegistryGate`. No live availability probe is built.
+- Managed macOS asset paths keep exact stored spelling for existing components and compare
+  planned collisions/overlap with FormD, ordinal-ignore-case keys. Keys never replace I/O paths.
+  Component inventories are bounded to4096 entries/parent and65536 scanned entries/operation;
+  unsafe aliases fail before publication. Tests: `AssetPathPolicyTests`, `AssetNormalizationTests`.
 
 ## Interface guarantees
 
