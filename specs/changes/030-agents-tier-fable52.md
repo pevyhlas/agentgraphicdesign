@@ -40,12 +40,13 @@ Tier map (local `high` = `deep`, `standard` = `standard`) and the absence of ove
 | Item | Proves | Check | Attempts | Result |
 |------|--------|-------|----------|--------|
 | A1 | agents.md tier map | `render-agents.sh --check` and `--resolve`: deep → openai/gpt-6.2-astra high, standard → openai/gpt-6.2-sol high; snapshot sha256 matches `.ref` | 1 | PASS |
-| A2 | constitution (Commands) | `check-adoption.sh` and `doctor.sh` pass locally; required CI green on the exact head | 0 | NOT_RUN |
+| A2 | constitution (Commands) | `check-adoption.sh` and `doctor.sh` pass locally; source head 17a12e0 required CI (tests core/cli/mcp/skia, coverage, dependency/security/format, package smoke, readiness, native P0) PASS in [run 45383833817](https://github.com/pevyhlas/agentgraphicdesign/actions/runs/45383833817); advisory macOS 26 job FAIL is pre-existing on main; closing head still needs exact-head CI | 1 | PASS |
 
 ## State
 
-**Step**: review
-**Waiting on**: independent code review and exact-head CI
-**Next**: dispatch agd-code-reviewer on the committed range
+**Step**: closing
+**Waiting on**: closing-head CI
+**Next**: close into specs/log.md, then merge the exact green head
 <!-- One line per verdict (workflows/change.md, Review):
 **Review**: round <n> · <base sha>..<reviewed head sha> · <reviewer> · PASS|FAIL · <n> critical, <n> high, <n> medium, <n> low · <link> -->
+**Review**: round 1 · 4fa3cfa97542f31ee04433c8defc82c5a746f6a4..17a12e0c912d3ae6208f858190cc2eabd7c3d1dc · agd-code-reviewer · PASS · 0 critical, 0 high, 0 medium, 1 low · https://github.com/pevyhlas/agentgraphicdesign/pull/24#issuecomment-7130066679
