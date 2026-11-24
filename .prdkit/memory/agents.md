@@ -24,7 +24,7 @@ never a reviewer tier; `fast` resolves to `light`. Reviewers must not inherit th
 session's model/effort: every projection carries an explicit model and variant. A
 deviation is an override row with a Reason, never a hand-edited projection.
 
-Tier baseline: agent-library tiers.json@0856aa639778
+Tier baseline: agent-library tiers.json@2a56396e769c
 (the snapshot is project-owned with no public upstream; the baseline token is the first
 12 hex of the snapshot sha256, not an upstream commit; see `tiers.json.ref`)
 Banned models: claude-opus-5

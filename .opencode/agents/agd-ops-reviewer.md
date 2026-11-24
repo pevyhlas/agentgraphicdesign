@@ -2,7 +2,7 @@
 name: agd-ops-reviewer
 description: Review AGD CI, tool packaging, release provenance, supported-platform claims and consumer bootstrap.
 mode: all
-model: openai/gpt-6.1-sol
+model: openai/gpt-6.2-sol
 variant: high
 permission:
   '*': deny

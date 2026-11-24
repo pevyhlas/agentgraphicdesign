@@ -2,8 +2,8 @@
 name: agd-architecture-reviewer
 description: Review AGD document/native formats, engine and MCP contracts, write atomicity, artifact identities and cross-domain boundaries.
 mode: all
-model: openai/gpt-6.1-sol
-variant: xhigh
+model: openai/gpt-6.2-astra
+variant: high
 permission:
   '*': deny
   read: { '*': allow, '*.env': deny, '*.env.*': deny, '*.env.example': allow }

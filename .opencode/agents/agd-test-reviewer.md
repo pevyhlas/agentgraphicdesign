@@ -2,7 +2,7 @@
 name: agd-test-reviewer
 description: Review AGD test and verification evidence across Core, CLI, real MCP wire, installed packages and visual output.
 mode: all
-model: openai/gpt-6.1-sol
+model: openai/gpt-6.2-sol
 variant: high
 permission:
   '*': deny

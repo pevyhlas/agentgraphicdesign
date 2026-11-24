@@ -2,8 +2,8 @@
 name: agd-security-reviewer
 description: Review AGD input/path confinement, original-byte MCP validation, resource bounds, permissive licensing and artifact trust.
 mode: all
-model: openai/gpt-6.1-sol
-variant: xhigh
+model: openai/gpt-6.2-astra
+variant: high
 permission:
   '*': deny
   read: { '*': allow, '*.env': deny, '*.env.*': deny, '*.env.example': allow }

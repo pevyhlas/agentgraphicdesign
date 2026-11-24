@@ -2,7 +2,7 @@
 name: agd-code-reviewer
 description: Review AGD correctness, shared Core semantics, CLI/MCP parity, deterministic serialization and error handling.
 mode: all
-model: openai/gpt-6.1-sol
+model: openai/gpt-6.2-sol
 variant: high
 permission:
   '*': deny
