@@ -92,7 +92,7 @@ J-06 to J-08 are outlined hypotheses, and no stage marks them.
 *2026-10-20 · agent · open*
 
 CI runs the Product-Kit doctor non-strict. Strict mode fails while inbox questions are open,
-and on the [archive](archive.md)'s missing Base commit: the pre-public history cannot be named
+and on the archive's missing Base commit: the pre-public history cannot be named
 here, but this repository's first commit can be recorded as Base once it exists.
 
 1. **Switch to strict once this inbox has no open questions and Base names this repository's

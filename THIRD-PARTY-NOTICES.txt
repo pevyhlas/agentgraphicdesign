@@ -11,7 +11,7 @@ native-assets packages is redistributed unmodified beside this file as
 THIRD-PARTY-NOTICES-SKIASHARP.txt; the native libraries section explains how
 the two files fit together.
 
-Source-only Product-Kit 1.2.1 files vendored under .prdkit/ (scripts, workflows,
+Source-only Product-Kit 3.1.5 files vendored under .prdkit/ (scripts, workflows,
 templates listed in .prdkit/.manifest) and the command copies under
 .claude/commands/ and .opencode/commands/ retain their upstream MIT license and the
 GitHub Spec Kit notice, reproduced verbatim in .opencode/LICENSE.product-kit.

@@ -45,7 +45,7 @@
   "very succint and to the point readme", public Product-Kit, fixes/roadmap continuation and
   "generate logos for AGD and AB via their respective workflows". Full source:
   `c900ca9:specs/inbox.md`, Public projects, fixes and logos. README, constitution and
-  [PRs8–10](../log.md) enact the delivered portions; continuing domains remain changes013/014,
+  PRs8–10 enact the delivered portions; continuing domains remain changes013/014,
   and artwork adoption/release gates are not inferred. On2026-10-25, "go ahead - we should setup
   github CI for mac os" selected hosted CI (same source, GitHub macOS CI); PR12 implemented it,
   with full platform qualification retained in change008.
