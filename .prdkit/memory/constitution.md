@@ -6,14 +6,14 @@
   outward-facing actions. Never assign the intent owner implementation tasks.
 - **Rigor**: full
 - **Lifecycle**: see `specs/product/lifecycle.md`; the maintainer set the status to experimental.
-- **Version**: 2.1.0 (Product-Kit 1.1 restructure, 2026-10-22)
+- **Version**: 2.2.0 (Product-Kit 3.1.5 cutover, 2026-11-26)
 
 `Rigor: full` also makes medium review findings block and requires independent review of every
 substantive change; `light` follows the tiers in `.prdkit/workflows/protocol.md`.
 
 Product intent lives in `specs/product.md` and `specs/product/` (L0), `specs/architecture.md` and
 `specs/architecture/` (L1) and `specs/parts/` (L2); this file holds authority, commands, review
-policy and principles. History questions go to `specs/archive.md`, read on demand only.
+policy and principles. History questions go to `.prdkit/history/archive.md`, read on demand only.
 
 ## Action policy
 
@@ -23,7 +23,10 @@ Standing maintainer policy:
 - **Branch push and pull request**: agents push feature branches and open pull requests.
 - **Merge**: agents merge a pull request once its exact head has green required CI, every
   required review verdict is recorded and passes, and `check-review.sh` passes on that head for
-  change branches. Never push directly to `main`.
+  change branches. Product-Kit 3.x's `check-review.sh` reads published GitHub reviews and needs
+  `review-host`, `review-publishers` and `review-owner` in `.prdkit/memory/config.md`; until the
+  maintainer sets them, agents record verdicts as pull request comments and leave change pull
+  requests merge-ready for the maintainer to merge. Never push directly to `main`.
 - **Release**: tags, GitHub Releases and asset uploads are maintainer actions or need explicit
   maintainer confirmation per release; scripts never publish (Q-06).
 - **Deploy**: there is no deployment target; adding one needs maintainer approval and a

@@ -10,7 +10,7 @@ admission are planned. Lifecycle: **experimental**, stage Public preview (0.x; f
 may still change between minor versions; `specs/product/lifecycle.md`). Product intent is in
 `specs/product.md` and `specs/product/` (L0) and `specs/architecture.md` and
 `specs/architecture/` (L1, parts in `specs/parts/`); open changes are in `specs/changes/` and
-open maintainer questions in `specs/inbox.md`. History questions go to `specs/archive.md`, read
+open maintainer questions in `specs/inbox.md`. History questions go to `.prdkit/history/archive.md`, read
 on demand only.
 
 **Namespace:** `FTPlus.AgentGraphicDesign`
@@ -102,7 +102,8 @@ src/FTPlus.AgentGraphicDesign.Cli/            CLI surface (agd command)
 src/FTPlus.AgentGraphicDesign.Mcp/            MCP server (stdio transport)
 tests/                                        xUnit tests
 examples/                                     Sample .agd.json documents
-specs/                                        Product (L0), architecture (L1), parts (L2), changes, inbox, records, archive.md
+specs/                                        Product (L0), architecture (L1), parts (L2), changes, inbox, records
+.prdkit/history/                              Closed-change log and archive (history only, read on demand)
 docs/contracts/                               Normative v1 contracts for native pixels, still import and provided artifacts
 ```
 

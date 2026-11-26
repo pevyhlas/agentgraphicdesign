@@ -1,13 +1,13 @@
-Vendored Product-Kit 1.2.1 content in this repository is licensed under the upstream MIT
+Vendored Product-Kit 3.1.5 content in this repository is licensed under the upstream MIT
 notice below, reproduced verbatim: the kit scripts, workflows and templates listed in
 .prdkit/.manifest, and the command copies in .claude/commands/prdkit*.md and
 .opencode/commands/prdkit*.md. Project-owned policy and records under .prdkit/memory/, the
 retained .prdkit/agent-library/ snapshot, and project agent definitions/projections are
 AGD's own MIT-licensed content (see LICENSE and .prdkit/agent-library/tiers.json.ref);
-they are not represented as files shipped by Product-Kit 1.2.1.
-Source: Product-Kit release v1.2.1 (https://github.com/pevyhlas/product-kit/releases/tag/v1.2.1), vendored as
+they are not represented as files shipped by Product-Kit 3.1.5.
+Source: Product-Kit release v3.1.5 (https://github.com/pevyhlas/product-kit/releases/tag/v3.1.5), vendored as
 copies; this repository does not track the kit source.
-Revision: 589589aeae2791d7e509214b9fb82b014bd59f82
+Revision: 2ffad1d81364c12d794fff18b7b52f96157c1c9e
 
 MIT License
 

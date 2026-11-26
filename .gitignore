@@ -60,3 +60,5 @@ specs/**/traces/
 *.patch
 .prdkit/cache/
 .prdkit/retrospective/
+.prdkit/.install-lock
+.prdkit/.install-state

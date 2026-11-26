@@ -1,0 +1,1 @@
+- 2026-11-26 031-pk315-agentlib110: Product-Kit 1.2.1 to 3.1.5 — operations, C-01, Q-06 — tooling only; review gate, library open — [PR #25](https://github.com/pevyhlas/agentgraphicdesign/pull/25)

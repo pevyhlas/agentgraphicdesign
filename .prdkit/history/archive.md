@@ -4,18 +4,20 @@
 What still binds lives in the spec, never here. Agents read this file on demand (a history
 question, before re-trying a direction), never by default. Each entry is a few lines; its
 details stay in git at the base. Past the budget, condense older entries harder.
-new-change.sh reads the Base and Last lines to never reuse an old feature number. -->
+The Allocated through line keeps new change numbers above the 0.x features; never lower it. -->
 
 **Base**: the pre-public main branch, before this repository started from fresh history; that
 history is not part of this repository.
 
-**Last 0.x feature**: 005; new changes number above it.
+**Log condensed through**: none
+
+**Allocated through**: 005
 
 ## Releases before the public repository
 
 - **Outcome**: v0.1.0 (2026-09-02), the v0.2.0-preview.2 prerelease and stable v0.3.0
   (2026-10-01) were published as GitHub Release bundles, qualified on .NET 10 Linux x64 only.
-  Their assets are not republished here; the [changelog](../CHANGELOG.md) records each.
+  Their assets are not republished here; the [changelog](../../CHANGELOG.md) records each.
 - **Lesson**: build every release from a clean archive of one commit, freeze the bundle, and
   verify the hosted bytes against it; later evidence commits never change a release.
 
