@@ -5,7 +5,7 @@ authority or weaken verification. Engineering policy lives in the constitution.
 
 ## Configuration
 
-- adoption-manifest-sha256: c26db47e07d676dfd428a75fe3cb7c84a3f428aec3b14998d071aac79e5c635e
+- adoption-manifest-sha256: 2500ce063f0f4c3a07a0419cbe5610a168d7809040b81b4055486cd1e412f333
 
 ## Meaning
 
