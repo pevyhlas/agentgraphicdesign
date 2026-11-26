@@ -21,11 +21,12 @@ Standing maintainer policy:
 
 - **Commit**: agents commit intended work on a feature branch, never directly on `main`.
 - **Branch push and pull request**: agents push feature branches and open pull requests.
-- **Merge**: agents merge a pull request once its exact head has green required CI and every
-  required review verdict is recorded on the pull request and passes. Product-Kit 3.x's native
-  review gate (`check-review.sh`) also applies once the maintainer configures `review-host`,
-  `review-publishers` and `review-owner` in `.prdkit/memory/config.md`; until then verdicts are
-  pull request comments. Never push directly to `main`.
+- **Merge**: agents merge a pull request once its exact head has green required CI, every
+  required review verdict is recorded and passes, and `check-review.sh` passes on that head for
+  change branches. Product-Kit 3.x's `check-review.sh` reads published GitHub reviews and needs
+  `review-host`, `review-publishers` and `review-owner` in `.prdkit/memory/config.md`; until the
+  maintainer sets them, agents record verdicts as pull request comments and leave change pull
+  requests merge-ready for the maintainer to merge. Never push directly to `main`.
 - **Release**: tags, GitHub Releases and asset uploads are maintainer actions or need explicit
   maintainer confirmation per release; scripts never publish (Q-06).
 - **Deploy**: there is no deployment target; adding one needs maintainer approval and a

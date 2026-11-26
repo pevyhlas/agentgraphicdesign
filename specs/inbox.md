@@ -223,4 +223,34 @@ waits on this ([D-21](decisions/D-21.md), Determinism).
 
 **If no answer**: option 1 as the working assumption; the text-outline increment stays gated.
 
+### Configure the Product-Kit 3.x review gate
+
+*2026-11-26 · agent · open*
+
+Product-Kit 3.1.5 replaced the record-based `check-review.sh` with one that reads published
+GitHub reviews and needs `review-host`, `review-publishers` and `review-owner` in
+`.prdkit/memory/config.md`. Until they are set the constitution's merge rule cannot pass, so
+agents post verdicts as pull request comments and leave change pull requests for you to merge.
+
+1. **Configure the gate** (Recommended): name the review host, the accounts that publish
+   verdicts and the owner; agents merge again once the gate passes.
+2. **Accept comment verdicts**: amend the merge rule so recorded pull request comment verdicts
+   plus green CI let agents merge without the gate.
+
+**If no answer**: agents keep leaving change pull requests for you to merge.
+
+### Allow the shared agent library in this public repository
+
+*2026-11-26 · agent · open*
+
+Change 031 held the agent-library 1.1.0 sync of the five reviewers: it vendors the library's
+agent bodies, lens skills and tier snapshot, whose license does not yet cover redistribution in
+this public MIT repository.
+
+1. **License the library for public consumers** (Recommended): then sync the five reviewers as
+   local variants (code, security, tests, architecture, ops) with Claude projections.
+2. **Keep AGD's own reviewers**: AGD stays outside the library; definitions remain project-owned.
+
+**If no answer**: the reviewers stay as they are.
+
 ## Your direction
